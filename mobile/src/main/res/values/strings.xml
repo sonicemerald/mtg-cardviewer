@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MTG Deck Viewer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="search_hint">Search for name or color</string>
+
+    <color name="black">#000</color>
+    <color name="blue">#5CD6FF</color>
+    <color name="red">#ffcc625b</color>
+    <color name="green">#ff85d386</color>
+    <color name="gold">#CC9900</color>
+    <color name="orangered">#FF4500</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="white">#fff</color>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>Browse Cards</item>
+        <item>Decks</item>
+        <item>Life Counter</item>
+    </string-array>
+
+    <string-array name="nav_drawer_sorting_items">
+        <item>All</item>
+        <item>Planeswalkers</item>
+        <item>Creatures</item>
+        <item>Artifacts</item>
+        <item>Enchantments</item>
+        <item>Sorcery\'s</item>
+        <item>Instants</item>
+        <item>Land</item>
+    </string-array>
+
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <!-- Will require CustomListView Adapter -->
+    <array name="nav_drawer_icons"></array>
+
+    <!--Search-->
+    <string name="title_activity_search_results">SearchResultsActivity</string>
+
+    <!--Rarity Spinner -->
+    <string-array name="rarity">
+        <item>All</item>
+        <item>Common</item>
+        <item>Uncommon</item>
+        <item>Rare</item>
+        <item>Mythic Rare</item>
+    </string-array>
+
+</resources>

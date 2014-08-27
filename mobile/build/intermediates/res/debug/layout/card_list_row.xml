@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/CardListRow"
+    style="@style/nowCardStyle">
+
+<!--Card Name-->
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cardName_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingRight="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/subtype_tv"
+        android:paddingLeft="16dp"
+        android:layout_below="@id/cardName_tv"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/manaCost_tv"
+        android:layout_alignTop="@+id/raritytextView"
+        android:layout_toLeftOf="@+id/raritytextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:padding="15dp"
+        android:text=""
+        android:shadowColor="@color/white"
+        android:shadowRadius="2"
+        android:id="@+id/rarity_tv"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+    <FrameLayout
+        android:id="@+id/cardInfoContainer"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_alignBottom="@id/cardName_tv"
+        />
+
+
+</RelativeLayout><!-- From: file:/Users/sonicemerald/AndroidStudioProjects/MTG-deck-L/mobile/src/main/res/layout/card_list_row.xml -->
