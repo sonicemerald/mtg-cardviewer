@@ -1,10 +1,5 @@
 package micahgemmell.com.mtg_deck_l.Card;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
-
 /**
  * Created by MXPS on 12/14/13.
  */

@@ -1,6 +1,15 @@
 package micahgemmell.com.mtg_deck_l;
 
+import micahgemmell.com.mtg_deck_l.Adapter.CardListAdapter;
 import micahgemmell.com.mtg_deck_l.Card.*;
+import micahgemmell.com.mtg_deck_l.Fragments.CardImageFragment;
+import micahgemmell.com.mtg_deck_l.Fragments.DeckFragment;
+import micahgemmell.com.mtg_deck_l.Fragments.DiceRollerFragment;
+import micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment;
+import micahgemmell.com.mtg_deck_l.event.PleaseParseCardsEvent;
+import micahgemmell.com.mtg_deck_l.helpers.BusProvider;
+import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
+
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -36,9 +45,12 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import com.loopj.android.http.BinaryHttpResponseHandler;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 public class MainActivity extends Activity implements ListViewFragment.OnCardView, DiceRollerFragment.OnDiceRoll {
     DiceRollerFragment dice;
+    private Bus mBus;
     public String jsonmtg = "http://mtgjson.com/json/";
     public String json = ".json";
     public String URL = "";
@@ -47,10 +59,11 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     List<Card> cards;
     List<Card> Rarity;
     List<Card> SearchResults;
-    private List<Card> AllCards;
+    private List<Card> allCards;
 
 
-    ArrayAdapter<Card> adapter;
+//    ArrayAdapter<oldCard> adapter;
+    CardListAdapter adapter;
     static JSONArray jArray;
 
     ListViewFragment listView_f;
@@ -109,12 +122,13 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
 
-        // Setup Card Container
-        AllCards = new ArrayList<Card>();
+        // Setup oldCard Container
+        allCards = new ArrayList<Card>();
         cards = new ArrayList<Card>();
         deck = new ArrayList<Card>();
         Rarity = new ArrayList<Card>();
         SearchResults = new ArrayList<Card>();
+
         creatures = new ArrayList<Creature>();
         enchantments = new ArrayList<Enchantment>();
         instants = new ArrayList<Instant>();
@@ -125,8 +139,8 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 
         cardSetCode_array = getResources().getStringArray(R.array.sets);
 
-        adapter = new CardListAdapter(this, R.layout.card_list_row, cards);
-        listView_f = new ListViewFragment(cards);
+        adapter = new CardListAdapter(this, cards);
+        listView_f = listView_f.newInstance(cards);
 
         if (savedInstanceState == null){
             getFragmentManager().beginTransaction()
@@ -135,7 +149,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         }
         dListener = new DrawerItemClickListener();
 
-        //also need to spin up a listView for navDrawer List. Left SIDE
+        //also need to spin up a recyclerView for navDrawer List. Left SIDE
        NavigationDrawer_listView_Left = (ListView) findViewById(R.id.left_drawer); //Find where we want to put the list
        navMenuItems = getResources().getStringArray(R.array.nav_drawer_items); // Get the Array of items.
        adapterforStringArray1 = new ArrayAdapter<String>(this, R.layout.drawer_list_item, navMenuItems); // need to adapt the array of items
@@ -177,14 +191,15 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     protected void onResume(){
         super.onResume();
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
+        getBus().register(this);
+        //getBus().post(new PleaseParseCardsEvent());
     };
 
     protected void onPause(){
         super.onPause();
         sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).commit();
+        getBus().unregister(this);
     };
-
-
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -207,6 +222,12 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         Log.d("restore", "restored");
     }
 
+    @Subscribe
+    public void cardsHaveLoaded(CardsParsedEvent event) {
+        listView_f.adapter.setCards(event.getParsedCards());
+        listView_f.adapter.notifyDataSetChanged();
+    }
+
 
     public void performSearch(String query){
 
@@ -222,7 +243,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 
         for (int i = 0; i < cards.size(); i++)
         {
-            if(cards.get(i).getName().toLowerCase().contains(query) || cards.get(i).getColor().contains(cQuery)){
+            if(cards.get(i).getName().toLowerCase().contains(query) || cards.get(i).getColors().contains(cQuery)){
                 SearchResults.add(cards.get(i));
             }
         }
@@ -231,17 +252,18 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
             error404.setName("Sorry, no cards matched your search.");
             error404.setType("Error 404 - Not Found");
             error404.setImageName("Null");
-            try {
-                error404.setColor(new JSONArray("[Red]"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                error404.setCmc();//.setColors(new List<String>= {"Red"});
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
             SearchResults.add(error404);
         }
 
-        listView_f.adapter.clear();
-        listView_f.adapter.addAll(SearchResults);
-        listView_f.refresh();
+//  need to notify data set changed
+//        listView_f.adapter.clear();
+//        listView_f.adapter.addAll(SearchResults);
+//        listView_f.refresh();
      }
 
     @Override
@@ -253,16 +275,14 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 
                 String set = cardSetCode_array[position];
                 URL = jsonmtg.concat(set).concat(json);
-                //if(spinnerPosition != 999){
 
                 if(set.equals("SET"))
                     break;
                 Log.d("SPINNER", "selected".concat(String.valueOf(spinnerPosition)));
-                //cards.clear();
+                cards.clear();
                 listView_f.adapter.clear();
-                adapter.clear();
-                AllCards.clear();
-                ParseCardsFrom(URL);
+                allCards.clear();
+                getBus().post(new PleaseParseCardsEvent(set));
 
 //                String squery = sharedPrefs.getString("query", "null");
 //                if(!(squery.equals("null"))) {
@@ -274,10 +294,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                 String rarity = null;
                 switch(position){
                     case 0:
-                        List<Card> card = AllCards;
+                        List<Card> cards = allCards;
                         listView_f.adapter.clear();
-                        listView_f.adapter.addAll(card);
-                        listView_f.refresh();
+                        listView_f.adapter.addAll(cards);
                         break;
                     case 1: // common
                         rarity = "Common";
@@ -307,8 +326,8 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         if(Rarity != null){
             Rarity.clear();
         }
-        for (int i = 0, cardsSize = AllCards.size(); i < cardsSize; i++) {
-            Card card = AllCards.get(i);
+        for (int i = 0, cardsSize = allCards.size(); i < cardsSize; i++) {
+            Card card = allCards.get(i);
 
             if (card.getRarity().equals(rarity)){
                     Rarity.add(card);
@@ -316,181 +335,190 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         }
         listView_f.adapter.clear();
         listView_f.adapter.addAll(Rarity);
-        listView_f.refresh();
 
-        Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
+        Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
     }
 
-    public void ParseCardsFrom(String URL){
-        // Setup Listview for cards (now done in fragment)
-     //   listView = (ListView) findViewById(R.id.listView);
-
-        // NOTE: It is OK to use a SimpleObject, with an android.R.layout.simple_list_item_1 because
-        // SimpleObject has a toString method declared, which the adapter calls to generate the
-        // ListView text.
-
-     //   adapter = new ArrayAdapter<Card>(this, android.R.layout.simple_list_item_1, cards);
-     //   listView.setAdapter(adapter);
-
-        // Now that the adapter is setup, if we need to update the listView we will use adapter.add
-        // instead of items.add, the adapter will take care of adding to the host container.
-        // Why did we do it this way? Because the HttpClient is Asynchronous, meaning it is run
-        // on a separate thread from the UI, so the Activity continues to run at the same time
-        // as the HttpClient fetches the Data.
-
-        // Setup the AsyncHttpClient to fetch the JSON String
-        AsyncHttpClient client = new AsyncHttpClient();
-        // Spin up a new thread, and fetch the JSON
-        client.get(URL, new AsyncHttpResponseHandler() {
-
-            // When the JSON has been fetched, we will process it
-            // The JSON is simply a string at this point. Now because the JSON is formated as a
-            // JSON Array, we will parse it as an Array, and then loop over each JSON Object
-            // Fetch that object, and parse out two values from it, and put them into our
-            // Simple Object Class.
-            @Override
-            public void onSuccess(String response) {
-                try {
-                    //aArray = new JSONArray(response);// Parse JSON String to JSON Array
-                    JSONObject object = new JSONObject(response);
-                    jArray = object.getJSONArray("cards");
-                         try{
-
-                                for (int i = 0; i < jArray.length(); ++i) { // Loop over Array
-                                Card card = new Card(); // Create a new Card
-                                card.setSet(object.getString("code"));
-
-                                JSONObject jObject = jArray.getJSONObject(i); // Fetch the ith JSON Object
-                                // from the JSON Array
-                                 //card.setName(jObject.getString("Set")); // Parse Name from the JSON
-                                // Object, and put into our object
-                                    try{ card.setTypes(jObject.getJSONArray("types"));
-                                    } catch (JSONException e){
-                                        card.setTypes(new JSONArray("types"));
-                                    }
-
-
-                                    try{ card.setColor(jObject.getJSONArray("colors")); }
-                                    catch (JSONException e){
-                                        card.setColor(new JSONArray(new String("n")));
-                                    }
-                                    try{ card.setSubtype(jObject.getString("subtypes"));
-                                    } catch (JSONException e) {
-                                        card.setSubtype("null");
-                                    }
-                                    card.setName(jObject.getString("name")); // Parse Name from the JSON
-                                    card.setType(jObject.getString("type")); // Do the same for type
-                                    card.setRarity(jObject.getString("rarity"));
-                                    try{
-                                        card.setManacost(jObject.getInt("cmc"));
-                                    } catch (JSONException e) {
-                                        card.setManacost(0);
-                                    }
-                                    card.setImageName(jObject.getString("imageName"));
-                                    Log.d("c", card.getTypes().toString());
-
-                                        if(card.getTypes().contains("Creature")){
-                                            Creature creature = new Creature();
-                                            card.Clone(creature);
-                                            creature.setPower(jObject.getString("power"));
-                                            creature.setToughness(jObject.getString("toughness"));
-                                            creatures.add(creature);
-                                            listView_f.adapter.add(creature);
-                                            AllCards.add(creature);
-                                    }
-                                    else if(card.getTypes().contains("Enchantment")){
-                                            Enchantment enchantment = new Enchantment();
-                                            card.Clone(enchantment);
-                                            enchantments.add(enchantment);
-                                            listView_f.adapter.add(enchantment);
-                                            AllCards.add(enchantment);
-                                        } else if (card.getTypes().contains("Instant")){
-                                            Instant instant = new Instant();
-                                            card.Clone(instant);
-                                            instants.add(instant);
-                                            listView_f.adapter.add(instant);
-                                            AllCards.add(instant);
-                                        } else if (card.getTypes().contains("Sorcery")){
-
-                                            Sorcery sorcery = new Sorcery();
-                                            card.Clone(sorcery);
-                                            sorcerys.add(sorcery);
-                                            listView_f.adapter.add(sorcery);
-                                            AllCards.add(sorcery);
-                                        } else if (card.getTypes().contains("Artifact")){
-                                            Artifact artifact = new Artifact();
-                                            card.Clone(artifact);
-                                            artifacts.add(artifact);
-                                            listView_f.adapter.add(artifact);
-                                            AllCards.add(artifact);
-                                        } else if (card.getTypes().contains("Land")){
-                                            Land land = new Land();
-                                            card.Clone(land);
-                                            lands.add(land);
-                                            listView_f.adapter.add(land);
-                                            AllCards.add(land);
-                                        } else if (card.getTypes().contains("Planeswalker")){
-                                            Planeswalker planeswalker = new Planeswalker();
-                                            card.Clone(planeswalker);
-                                            planeswalkers.add(planeswalker);
-                                            listView_f.adapter.add(planeswalker);
-                                            AllCards.add(planeswalker);
-                                        } else {
-                                        listView_f.adapter.add(card);
-                                        AllCards.add(card);
-                                    }
-
-                                }
-                             } catch (JSONException e) {
-                                        Log.d("JSON Parse", e.toString());
-                              };
-                    Log.d("List Size", "Size of items: " + Integer.toString(cards.size()));
-                    } catch (JSONException e) {
-                    Log.d("JSON Parse", e.toString());
-                }
-            }
-            @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                //do something to make it happy.
-            }
-        }  );
-    }
+//    public void ParseCardsFrom(String URL){
+//        // Setup Listview for cards (now done in fragment)
+//     //   recyclerView = (ListView) findViewById(R.id.recyclerView);
+//
+//        // NOTE: It is OK to use a SimpleObject, with an android.R.layout.simple_list_item_1 because
+//        // SimpleObject has a toString method declared, which the adapter calls to generate the
+//        // ListView text.
+//
+//     //   adapter = new ArrayAdapter<oldCard>(this, android.R.layout.simple_list_item_1, cards);
+//     //   recyclerView.setAdapter(adapter);
+//
+//        // Now that the adapter is setup, if we need to update the recyclerView we will use adapter.add
+//        // instead of items.add, the adapter will take care of adding to the host container.
+//        // Why did we do it this way? Because the HttpClient is Asynchronous, meaning it is run
+//        // on a separate thread from the UI, so the Activity continues to run at the same time
+//        // as the HttpClient fetches the Data.
+//
+//        // Setup the AsyncHttpClient to fetch the JSON String
+//        AsyncHttpClient client = new AsyncHttpClient();
+//        // Spin up a new thread, and fetch the JSON
+//        client.get(URL, new AsyncHttpResponseHandler() {
+//
+//            // When the JSON has been fetched, we will process it
+//            // The JSON is simply a string at this point. Now because the JSON is formated as a
+//            // JSON Array, we will parse it as an Array, and then loop over each JSON Object
+//            // Fetch that object, and parse out two values from it, and put them into our
+//            // Simple Object Class.
+//            @Override
+//            public void onSuccess(String response) {
+//                try {
+//                    //aArray = new JSONArray(response);// Parse JSON String to JSON Array
+//                    JSONObject object = new JSONObject(response);
+//                    jArray = object.getJSONArray("cards");
+//                         try{
+//
+//                                for (int i = 0; i < jArray.length(); ++i) { // Loop over Array
+//                                oldCard oldCard = new oldCard(); // Create a new oldCard
+//                                oldCard.setSet(object.getString("code"));
+//
+//                                JSONObject jObject = jArray.getJSONObject(i); // Fetch the ith JSON Object
+//                                // from the JSON Array
+//                                 //oldCard.setName(jObject.getString("Set")); // Parse Name from the JSON
+//                                // Object, and put into our object
+//                                    try{ oldCard.setTypes(jObject.getJSONArray("types"));
+//                                    } catch (JSONException e){
+//                                        oldCard.setTypes(new JSONArray("types"));
+//                                    }
+//
+//
+//                                    try{ oldCard.setColor(jObject.getJSONArray("colors")); }
+//                                    catch (JSONException e){
+//                                        oldCard.setColor(new JSONArray());
+//                                    }
+//                                    try{ oldCard.setSubtype(jObject.getString("subtypes"));
+//                                    } catch (JSONException e) {
+//                                        oldCard.setSubtype("null");
+//                                    }
+//                                    oldCard.setName(jObject.getString("name")); // Parse Name from the JSON
+//                                    oldCard.setType(jObject.getString("type")); // Do the same for type
+//                                    oldCard.setRarity(jObject.getString("rarity"));
+//                                    try{
+//                                        oldCard.setManacost(jObject.getInt("cmc"));
+//                                    } catch (JSONException e) {
+//                                        oldCard.setManacost(0);
+//                                    }
+//                                    oldCard.setImageName(jObject.getString("imageName"));
+//                                    Log.d("c", oldCard.getTypes().toString());
+//
+//                                        if(oldCard.getTypes().contains("Creature")){
+//                                            Creature creature = new Creature();
+//                                            oldCard.Clone(creature);
+//                                            creature.setPower(jObject.getString("power"));
+//                                            creature.setToughness(jObject.getString("toughness"));
+//                                            creatures.add(creature);
+//                                            listView_f.adapter.add(creature);
+//                                            allOldCards.add(creature);
+//
+//                                    }
+//                                    else if(oldCard.getTypes().contains("Enchantment")){
+//                                            Enchantment enchantment = new Enchantment();
+//                                            oldCard.Clone(enchantment);
+//                                            enchantments.add(enchantment);
+//                                            listView_f.adapter.add(enchantment);
+//                                            allOldCards.add(enchantment);
+//
+//                                        } else if (oldCard.getTypes().contains("Instant")){
+//                                            Instant instant = new Instant();
+//                                            oldCard.Clone(instant);
+//                                            instants.add(instant);
+//                                            //listView_f.adapter.add(instant);
+//                                            allOldCards.add(instant);
+//
+//                                        } else if (oldCard.getTypes().contains("Sorcery")){
+//
+//                                            Sorcery sorcery = new Sorcery();
+//                                            oldCard.Clone(sorcery);
+//                                            sorcerys.add(sorcery);
+//                                            listView_f.adapter.add(sorcery);
+//                                            allOldCards.add(sorcery);
+//
+//                                        } else if (oldCard.getTypes().contains("Artifact")){
+//                                            Artifact artifact = new Artifact();
+//                                            oldCard.Clone(artifact);
+//                                            artifacts.add(artifact);
+//                                            listView_f.adapter.add(artifact);
+//                                            allOldCards.add(artifact);
+//
+//                                        } else if (oldCard.getTypes().contains("Land")){
+//                                            Land land = new Land();
+//                                            oldCard.Clone(land);
+//                                            lands.add(land);
+//                                            listView_f.adapter.add(land);
+//                                            allOldCards.add(land);
+//
+//
+//                                        } else if (oldCard.getTypes().contains("Planeswalker")){
+//                                            Planeswalker planeswalker = new Planeswalker();
+//                                            oldCard.Clone(planeswalker);
+//                                            planeswalkers.add(planeswalker);
+//                                            listView_f.adapter.add(planeswalker);
+//                                            allOldCards.add(planeswalker);
+//
+//                                        } else {
+//                                        listView_f.adapter.add(oldCard);
+//                                        allOldCards.add(oldCard);
+//
+//                                    }
+//
+//                                }
+//                             } catch (JSONException e) {
+//                                        Log.d("JSON Parse", e.toString());
+//                              };
+//                    Log.d("List Size", "Size of items: " + Integer.toString(cards.size()));
+//                    } catch (JSONException e) {
+//                    Log.d("JSON Parse", e.toString());
+//                }
+//            }
+//            @Override
+//            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+//                //do something to make it happy.
+//            }
+//        }  );
+//    }
     @Override
     public  void addCardToDeck(int position){
         Card card = cards.get(position);
         deck.add(card);
-        Log.d("card", "added ".concat(card.getName().toString()));
+        Log.d("Card", "added ".concat(card.getName().toString()));
         Toast.makeText(this, "added ".concat(cards.get(position).getName()), Toast.LENGTH_SHORT).show();
     }
     private void STARTDealingWithCardImage(){}
     @Override
-    public void onCardImageViewUpdate(int position, String calledBy){
+    public void onCardImageViewUpdate(int position, String calledBy) {
         String image;
         String set;
         String imageURL;
 
-        if(calledBy == "deck")// == "deck")
-            {
-                cardView_f = new CardImageFragment(deck.get(position));
-                image = deck.get(position).getImageName();
-                set = deck.get(position).getSet();
-                imageURL = "http://mtgimage.com/set/".concat(set).concat("/").concat(image).concat(".jpg");
-                Log.d("tag", imageURL);
-                getCardImageFrom(imageURL);
-            } else if (calledBy == "set"){
-            cardView_f = new CardImageFragment(cards.get(position));
-            image = cards.get(position).getImageName();
-            set = cards.get(position).getSet();
-            imageURL = "http://mtgimage.com/set/".concat(set).concat("/").concat(image).concat(".jpg");
-            Log.d("tag", imageURL);
-            getCardImageFrom(imageURL);
-        }
-
-        getFragmentManager().beginTransaction()
-                    .replace(R.id.container, cardView_f)
-                    .addToBackStack("CardView Back")
-                    .commit();
-        }
+//        if(calledBy == "deck")// == "deck")
+//            {
+//                cardView_f = new CardImageFragment(deck.get(position));
+//                image = deck.get(position).getImageName();
+//                set = deck.get(position).getSet();
+//                imageURL = "http://mtgimage.com/set/".concat(set).concat("/").concat(image).concat(".jpg");
+//                Log.d("tag", imageURL);
+//                getCardImageFrom(imageURL);
+//            } else if (calledBy == "set"){
+//            cardView_f = new CardImageFragment(cards.get(position));
+//            image = cards.get(position).getImageName();
+//            set = cards.get(position).getSet();
+//            imageURL = "http://mtgimage.com/set/".concat(set).concat("/").concat(image).concat(".jpg");
+//            Log.d("tag", imageURL);
+//            getCardImageFrom(imageURL);
+//        }
+//
+//        getFragmentManager().beginTransaction()
+//                    .replace(R.id.container, cardView_f)
+//                    .addToBackStack("CardView Back")
+//                    .commit();
+//
+    }
 
     @Override
     public void showCardInfo(int position) {
@@ -572,43 +600,35 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         switch (position){
             case 0: //all
                 listView_f.adapter.clear();
-                listView_f.adapter.addAll(AllCards);
-                listView_f.refresh();
+                listView_f.adapter.addAll(allCards);
                 break;
             case 1: //
                 listView_f.adapter.clear();
                 listView_f.adapter.addAll(planeswalkers);
-                listView_f.refresh();
                 break;
             case 2: //
                 listView_f.adapter.clear();
                 listView_f.adapter.addAll(creatures);
-                listView_f.refresh();
                 break;
             case 3:
                 listView_f.adapter.clear();
                 listView_f.adapter.addAll(artifacts);
-                listView_f.refresh();
                 break;
             case 4:
                 listView_f.adapter.clear();
                 listView_f.adapter.addAll(enchantments);
-                listView_f.refresh();
                 break;
             case 5:
                 listView_f.adapter.clear();
                 listView_f.adapter.addAll(sorcerys);
-                listView_f.refresh();
                 break;
             case 6:
                 listView_f.adapter.clear();
                 listView_f.adapter.addAll(instants);
-                listView_f.refresh();
                 break;
             case 7:
                 listView_f.adapter.clear();
                 listView_f.adapter.addAll(lands);
-                listView_f.refresh();
                 break;
             default:
                 break;
@@ -626,7 +646,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                         .commit();
                 break;
             case 1: //second item - decks
-                deckView_f = new DeckFragment(deck);
+                deckView_f.newInstance(deck);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, deckView_f)
                         .addToBackStack("Your Deck")
@@ -707,6 +727,23 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
         return spinnerPosition; }
+
+
+
+
+    // Use some kind of injection, so that we can swap in a mock for tests.
+    // Here we just use simple getter/setter injection for simplicity.
+    private Bus getBus() {
+        if (mBus == null) {
+            mBus = BusProvider.getInstance();
+        }
+        return mBus;
+    }
+
+    public void setBus(Bus bus) {
+        mBus = bus;
+    }
+
 
 }
 
