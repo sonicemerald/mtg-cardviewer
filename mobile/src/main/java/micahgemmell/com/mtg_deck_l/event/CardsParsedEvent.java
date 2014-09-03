@@ -18,8 +18,4 @@ public class CardsParsedEvent {
     public List<Card> getParsedCards() {
         return parsedCards;
     }
-
-//    public void setParsedCards(List<Card> parsedCards) {
-//        this.parsedCards = parsedCards;
-//    }
 }
