@@ -32,54 +32,65 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import static micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment.newInstance;
+
 public class MainActivity extends Activity implements ListViewFragment.OnCardView, DiceRollerFragment.OnDiceRoll {
-    DiceRollerFragment dice;
+    //region VARIABLES
+    //general
     private Bus mBus;
-    public String jsonmtg = "http://mtgjson.com/json/";
-    public String json = ".json";
-    public String URL = "";
+    private SharedPreferences sharedPrefs;
 
-    List<Card> deck;
-    List<Card> cards;
-    List<Card> Rarity;
-    List<Card> SearchResults;
-    private List<Card> allCards;
-
-
-//    ArrayAdapter<oldCard> adapter;
-    CardListAdapter adapter;
-    static JSONArray jArray;
-
+    //Fragments
+    DiceRollerFragment dice;
     ListViewFragment listView_f;
-    String listview_tag = "listviewFragment";
-
-    //ListViewFragment container_listView;
-    ListView container_listView;
     DeckFragment deckView_f;
     CardImageFragment cardView_f;
 
+    ListView container_listView;
+    String listview_tag = "listviewFragment";
 
-    Spinner addSetSpinner; // dropdown list of magic card sets.
-    public int spinnerPosition;
+//    public String jsonmtg = "http://mtgjson.com/json/";
+//    public String json = ".json";
+//    public String URL = "";
+
+    //Lists
+    private List<Card> allCards; //allCards keeps a copy of the original parsed list.
+    List<Card> cards; //cards is wha
+    List<Card> deck;
+    List<Card> rarity;
+    List<Card> SearchResults;
+    //
+    private ArrayList<Creature> creatures;
+    private ArrayList<Enchantment> enchantments;
+    private ArrayList<Instant> instants;
+    private ArrayList<Sorcery> sorceries;
+    private ArrayList<Land> lands;
+    private ArrayList<Artifact> artifacts;
+    private ArrayList<Planeswalker> planeswalkers;
+
     String[] cardSet_array; // Set Names
     String[] cardSetCode_array; // Set Codes (used in URL)
+
+    //Adapters
+    CardListAdapter adapter;
     ArrayAdapter<String> adapterforStringArray; // currently used for the set list
+    private ArrayAdapter<String> adapterforStringArray1;
+
+    //ListViewFragment container_listView;
+
+    //Spinners
+    Spinner addSetSpinner; // dropdown list of magic card sets.
+    public int spinnerPosition;
 
     //Navigation Drawer
     ListView NavigationDrawer_listView_Left; // used for the "navigation"
@@ -100,19 +111,12 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     //Random number generator
     long randomSeed = System.currentTimeMillis();
     Random generator = new Random(randomSeed);
+
+    //Search
     private String query;
     private String cQuery;
-    private SharedPreferences sharedPrefs;
-    private ArrayList<Creature> creatures;
-    private ArrayList<Enchantment> enchantments;
-    private ArrayList<Instant> instants;
-    private ArrayList<Sorcery> sorcerys;
-    private ArrayList<Land> lands;
-    private ArrayList<Artifact> artifacts;
-    private ArrayList<Planeswalker> planeswalkers;
     private String[] SortingItems;
-    private ArrayAdapter<String> adapterforStringArray1;
-
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,57 +126,58 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
 
-        // Setup oldCard Container
+        // region Arrays
         allCards = new ArrayList<Card>();
         cards = new ArrayList<Card>();
         deck = new ArrayList<Card>();
-        Rarity = new ArrayList<Card>();
+        rarity = new ArrayList<Card>();
         SearchResults = new ArrayList<Card>();
 
         creatures = new ArrayList<Creature>();
         enchantments = new ArrayList<Enchantment>();
         instants = new ArrayList<Instant>();
-        sorcerys = new ArrayList<Sorcery>();
+        sorceries = new ArrayList<Sorcery>();
         lands = new ArrayList<Land>();
         artifacts = new ArrayList<Artifact>();
         planeswalkers = new ArrayList<Planeswalker>();
-
+        //endregion
+        //region Set up main container for the cards.
         cardSetCode_array = getResources().getStringArray(R.array.sets);
 
         adapter = new CardListAdapter(this, cards);
-        listView_f = listView_f.newInstance(cards);
+        listView_f = newInstance(cards);
 
         if (savedInstanceState == null){
             getFragmentManager().beginTransaction()
                     .add(R.id.container, listView_f, listview_tag)
                     .commit();
         }
+        // endregion set up main container for the cards
+        //region NavDrawer
         dListener = new DrawerItemClickListener();
-
-        //also need to spin up a recyclerView for navDrawer List. Left SIDE
+        //also need to spin up a listView for navDrawer. Left SIDE
        NavigationDrawer_listView_Left = (ListView) findViewById(R.id.left_drawer); //Find where we want to put the list
        navMenuItems = getResources().getStringArray(R.array.nav_drawer_items); // Get the Array of items.
        adapterforStringArray1 = new ArrayAdapter<String>(this, R.layout.drawer_list_item, navMenuItems); // need to adapt the array of items
        //Now set the adapter.
        NavigationDrawer_listView_Left.setAdapter(adapterforStringArray1);
        NavigationDrawer_listView_Left.setOnItemClickListener(dListener);
-//   NavigationDrawer_listView_Left.setOnItemLongClickListener(new DrawerItemLongClickListener());
+       //NavigationDrawer_listView_Left.setOnItemLongClickListener(new DrawerItemLongClickListener());
 
-        //Right Side Setup
-        NavigationDrawer_listView_Right = (ListView) findViewById(R.id.right_drawer); //Find where we want to put the list
-        SortingItems = getResources().getStringArray(R.array.nav_drawer_sorting_items); // Get the Array of items.
-        adapterforStringArray = new ArrayAdapter<String>(this, R.layout.drawer_list_item, SortingItems); // need to adapt the array of items
-        //Now set the adapter.
-        NavigationDrawer_listView_Right.setAdapter(adapterforStringArray);
-        NavigationDrawer_listView_Right.setOnItemClickListener(dListener);
+       //Right Side Setup
+       NavigationDrawer_listView_Right = (ListView) findViewById(R.id.right_drawer); //Find where we want to put the list
+       SortingItems = getResources().getStringArray(R.array.nav_drawer_sorting_items); // Get the Array of items.
+       adapterforStringArray = new ArrayAdapter<String>(this, R.layout.drawer_list_item, SortingItems); // need to adapt the array of items
+       //Now set the adapter.
+       NavigationDrawer_listView_Right.setAdapter(adapterforStringArray);
+       NavigationDrawer_listView_Right.setOnItemClickListener(dListener);
 
+       //setting up for open close drawer
+       mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+       mDrawerRelativeLeft = (RelativeLayout) findViewById(R.id.drawer_layout_container_left);
+       mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
 
-        //setting up for open close drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerRelativeLeft = (RelativeLayout) findViewById(R.id.drawer_layout_container_left);
-        mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close){
+       mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close){
 
           public void onDrawerClosed(View view) {
                getActionBar().setTitle(R.string.app_name);
@@ -183,9 +188,16 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
            }
        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+       mDrawerLayout.setDrawerListener(mDrawerToggle);
+       getActionBar().setDisplayHomeAsUpEnabled(true);
+       getActionBar().setHomeButtonEnabled(true);
+       //endregion
+    }
+
+    @Subscribe
+    public void onCardsLoaded(CardsParsedEvent event) {
+        listView_f.adapter.setCards(event.getParsedCards());
+        listView_f.adapter.notifyDataSetChanged();
     }
 
     protected void onResume(){
@@ -193,13 +205,13 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
         getBus().register(this);
         //getBus().post(new PleaseParseCardsEvent());
-    };
+    }
 
     protected void onPause(){
         super.onPause();
-        sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).commit();
+        sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
         getBus().unregister(this);
-    };
+    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -208,7 +220,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
-        sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).commit();
+        sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
     }
 
     @Override
@@ -222,13 +234,6 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         Log.d("restore", "restored");
     }
 
-    @Subscribe
-    public void cardsHaveLoaded(CardsParsedEvent event) {
-        listView_f.adapter.setCards(event.getParsedCards());
-        listView_f.adapter.notifyDataSetChanged();
-    }
-
-
     public void performSearch(String query){
 
         Log.d("enteredSearch", "hi");
@@ -241,10 +246,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         else
             cQuery = cQuery.toUpperCase();
 
-        for (int i = 0; i < cards.size(); i++)
-        {
-            if(cards.get(i).getName().toLowerCase().contains(query) || cards.get(i).getColors().contains(cQuery)){
-                SearchResults.add(cards.get(i));
+        for (Card card : cards) {
+            if (card.getName().toLowerCase().contains(query) || card.getColors().contains(cQuery)) {
+                SearchResults.add(card);
             }
         }
         if(SearchResults.size() == 0){
@@ -266,22 +270,22 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 //        listView_f.refresh();
      }
 
+    //region SPINNERS
     @Override
     public void spinnerItemSelected(int position, int id) {
         switch(id){
-            case R.id.filterSetSpinner: //set
+            case R.id.filterSetSpinner: //sets
                 spinnerPosition = position;
-                sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).commit();
+                sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
 
                 String set = cardSetCode_array[position];
-                URL = jsonmtg.concat(set).concat(json);
 
                 if(set.equals("SET"))
                     break;
                 Log.d("SPINNER", "selected".concat(String.valueOf(spinnerPosition)));
-                cards.clear();
+                cards.clear(); //clear the activities currently displayed cards
                 listView_f.adapter.clear();
-                allCards.clear();
+                allCards.clear(); //clear master list of cards
                 getBus().post(new PleaseParseCardsEvent(set));
 
 //                String squery = sharedPrefs.getString("query", "null");
@@ -290,8 +294,8 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 //
                 break;
             case R.id.sortRaritySpinner: //rarity
-               //  listView_R = new ListViewFragment(Rarity);
-                String rarity = null;
+               //  listView_R = new ListViewFragment(rarity);
+                String rarity;
                 switch(position){
                     case 0:
                         List<Card> cards = allCards;
@@ -323,173 +327,34 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                 }
     private void setRarityAdapter(String rarity){
 
-        if(Rarity != null){
-            Rarity.clear();
+        if(this.rarity != null){
+            this.rarity.clear();
         }
-        for (int i = 0, cardsSize = allCards.size(); i < cardsSize; i++) {
-            Card card = allCards.get(i);
-
-            if (card.getRarity().equals(rarity)){
-                    Rarity.add(card);
+        for (Card card : allCards) {
+            if (card.getRarity().equals(rarity)) {
+                this.rarity.add(card);
             }
         }
         listView_f.adapter.clear();
-        listView_f.adapter.addAll(Rarity);
-
+        listView_f.adapter.addAll(this.rarity);
         Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
     }
+    @Override
+    public int getSpinnerPosition() {
+        sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
+        spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
+        return spinnerPosition; }
+    //endregion
 
-//    public void ParseCardsFrom(String URL){
-//        // Setup Listview for cards (now done in fragment)
-//     //   recyclerView = (ListView) findViewById(R.id.recyclerView);
-//
-//        // NOTE: It is OK to use a SimpleObject, with an android.R.layout.simple_list_item_1 because
-//        // SimpleObject has a toString method declared, which the adapter calls to generate the
-//        // ListView text.
-//
-//     //   adapter = new ArrayAdapter<oldCard>(this, android.R.layout.simple_list_item_1, cards);
-//     //   recyclerView.setAdapter(adapter);
-//
-//        // Now that the adapter is setup, if we need to update the recyclerView we will use adapter.add
-//        // instead of items.add, the adapter will take care of adding to the host container.
-//        // Why did we do it this way? Because the HttpClient is Asynchronous, meaning it is run
-//        // on a separate thread from the UI, so the Activity continues to run at the same time
-//        // as the HttpClient fetches the Data.
-//
-//        // Setup the AsyncHttpClient to fetch the JSON String
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        // Spin up a new thread, and fetch the JSON
-//        client.get(URL, new AsyncHttpResponseHandler() {
-//
-//            // When the JSON has been fetched, we will process it
-//            // The JSON is simply a string at this point. Now because the JSON is formated as a
-//            // JSON Array, we will parse it as an Array, and then loop over each JSON Object
-//            // Fetch that object, and parse out two values from it, and put them into our
-//            // Simple Object Class.
-//            @Override
-//            public void onSuccess(String response) {
-//                try {
-//                    //aArray = new JSONArray(response);// Parse JSON String to JSON Array
-//                    JSONObject object = new JSONObject(response);
-//                    jArray = object.getJSONArray("cards");
-//                         try{
-//
-//                                for (int i = 0; i < jArray.length(); ++i) { // Loop over Array
-//                                oldCard oldCard = new oldCard(); // Create a new oldCard
-//                                oldCard.setSet(object.getString("code"));
-//
-//                                JSONObject jObject = jArray.getJSONObject(i); // Fetch the ith JSON Object
-//                                // from the JSON Array
-//                                 //oldCard.setName(jObject.getString("Set")); // Parse Name from the JSON
-//                                // Object, and put into our object
-//                                    try{ oldCard.setTypes(jObject.getJSONArray("types"));
-//                                    } catch (JSONException e){
-//                                        oldCard.setTypes(new JSONArray("types"));
-//                                    }
-//
-//
-//                                    try{ oldCard.setColor(jObject.getJSONArray("colors")); }
-//                                    catch (JSONException e){
-//                                        oldCard.setColor(new JSONArray());
-//                                    }
-//                                    try{ oldCard.setSubtype(jObject.getString("subtypes"));
-//                                    } catch (JSONException e) {
-//                                        oldCard.setSubtype("null");
-//                                    }
-//                                    oldCard.setName(jObject.getString("name")); // Parse Name from the JSON
-//                                    oldCard.setType(jObject.getString("type")); // Do the same for type
-//                                    oldCard.setRarity(jObject.getString("rarity"));
-//                                    try{
-//                                        oldCard.setManacost(jObject.getInt("cmc"));
-//                                    } catch (JSONException e) {
-//                                        oldCard.setManacost(0);
-//                                    }
-//                                    oldCard.setImageName(jObject.getString("imageName"));
-//                                    Log.d("c", oldCard.getTypes().toString());
-//
-//                                        if(oldCard.getTypes().contains("Creature")){
-//                                            Creature creature = new Creature();
-//                                            oldCard.Clone(creature);
-//                                            creature.setPower(jObject.getString("power"));
-//                                            creature.setToughness(jObject.getString("toughness"));
-//                                            creatures.add(creature);
-//                                            listView_f.adapter.add(creature);
-//                                            allOldCards.add(creature);
-//
-//                                    }
-//                                    else if(oldCard.getTypes().contains("Enchantment")){
-//                                            Enchantment enchantment = new Enchantment();
-//                                            oldCard.Clone(enchantment);
-//                                            enchantments.add(enchantment);
-//                                            listView_f.adapter.add(enchantment);
-//                                            allOldCards.add(enchantment);
-//
-//                                        } else if (oldCard.getTypes().contains("Instant")){
-//                                            Instant instant = new Instant();
-//                                            oldCard.Clone(instant);
-//                                            instants.add(instant);
-//                                            //listView_f.adapter.add(instant);
-//                                            allOldCards.add(instant);
-//
-//                                        } else if (oldCard.getTypes().contains("Sorcery")){
-//
-//                                            Sorcery sorcery = new Sorcery();
-//                                            oldCard.Clone(sorcery);
-//                                            sorcerys.add(sorcery);
-//                                            listView_f.adapter.add(sorcery);
-//                                            allOldCards.add(sorcery);
-//
-//                                        } else if (oldCard.getTypes().contains("Artifact")){
-//                                            Artifact artifact = new Artifact();
-//                                            oldCard.Clone(artifact);
-//                                            artifacts.add(artifact);
-//                                            listView_f.adapter.add(artifact);
-//                                            allOldCards.add(artifact);
-//
-//                                        } else if (oldCard.getTypes().contains("Land")){
-//                                            Land land = new Land();
-//                                            oldCard.Clone(land);
-//                                            lands.add(land);
-//                                            listView_f.adapter.add(land);
-//                                            allOldCards.add(land);
-//
-//
-//                                        } else if (oldCard.getTypes().contains("Planeswalker")){
-//                                            Planeswalker planeswalker = new Planeswalker();
-//                                            oldCard.Clone(planeswalker);
-//                                            planeswalkers.add(planeswalker);
-//                                            listView_f.adapter.add(planeswalker);
-//                                            allOldCards.add(planeswalker);
-//
-//                                        } else {
-//                                        listView_f.adapter.add(oldCard);
-//                                        allOldCards.add(oldCard);
-//
-//                                    }
-//
-//                                }
-//                             } catch (JSONException e) {
-//                                        Log.d("JSON Parse", e.toString());
-//                              };
-//                    Log.d("List Size", "Size of items: " + Integer.toString(cards.size()));
-//                    } catch (JSONException e) {
-//                    Log.d("JSON Parse", e.toString());
-//                }
-//            }
-//            @Override
-//            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-//                //do something to make it happy.
-//            }
-//        }  );
-//    }
     @Override
     public  void addCardToDeck(int position){
         Card card = cards.get(position);
         deck.add(card);
-        Log.d("Card", "added ".concat(card.getName().toString()));
+        Log.d("Card", "added ".concat(card.getName()));
         Toast.makeText(this, "added ".concat(cards.get(position).getName()), Toast.LENGTH_SHORT).show();
     }
-    private void STARTDealingWithCardImage(){}
+
+    //region CARD IMAGES
     @Override
     public void onCardImageViewUpdate(int position, String calledBy) {
         String image;
@@ -517,7 +382,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 //                    .replace(R.id.container, cardView_f)
 //                    .addToBackStack("CardView Back")
 //                    .commit();
-//
+
     }
 
     @Override
@@ -537,8 +402,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
               }
             });
         }
-    private void ENDDealingWithCardImage(){}
+    //endregion
 
+    //region Dice Roller
     @Override
     public void diceRoller(int button) {
         switch(button)
@@ -577,8 +443,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         livesLeft = (TextView) findViewById(R.id.livesLeft);
         livesLeft.setText("Life Total: " + String.valueOf(lives));
     }
+    //endregion
 
-    private void STARTNavigationDrawer(){}
+    //region Navigation Drawer
 
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -620,7 +487,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                 break;
             case 5:
                 listView_f.adapter.clear();
-                listView_f.adapter.addAll(sorcerys);
+                listView_f.adapter.addAll(sorceries);
                 break;
             case 6:
                 listView_f.adapter.clear();
@@ -671,7 +538,6 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         setTitle(mPlanetTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
        */ }
-    private void ENDNavigationDrawer(){}
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
@@ -721,15 +587,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public int getSpinnerPosition() {
-        sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
-        spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
-        return spinnerPosition; }
-
-
-
+    //endregion
 
     // Use some kind of injection, so that we can swap in a mock for tests.
     // Here we just use simple getter/setter injection for simplicity.
@@ -739,11 +597,8 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         }
         return mBus;
     }
-
     public void setBus(Bus bus) {
         mBus = bus;
     }
-
-
 }
 
