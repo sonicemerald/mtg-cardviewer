@@ -50,7 +50,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
             mCardName = (TextView) itemView.findViewById(R.id.cardName_tv);
             mCardType = (TextView) itemView.findViewById(R.id.subtype_tv);
             mCardRarity = (TextView) itemView.findViewById(R.id.rarity_tv);
-            mCardView = itemView.findViewById(R.id.CardListRow);
+            mCardView = itemView.findViewById(R.id.card_view);
             //mCardName.setOnClickListener(this);
             itemView.setOnClickListener(this);
 
@@ -62,7 +62,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         public void onClick(View view){
             if(view instanceof TextView){
                 mListener.onCardName(view);
-            } else if (view instanceof View){
+            } else if (view != null){
                 mListener.onViewClicked(view);
             }
 
@@ -87,7 +87,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
             }
         });
 //        holder.mCardName.setOnClickListener(this);
-//        holder.mCardName.setOnClickListener(oldCard);
+//        holder.mCardName.setOnClickListener(Card);
         return holder;
     }
 
@@ -108,22 +108,22 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
 
         if (cardColor.equals("Blue")) {
             holder.mCardName.setTextColor(Color.WHITE);
-            holder.mCardName.setBackgroundColor(holder.mCardView.getResources().getColor(R.color.blue));
+            holder.mCardView.setBackgroundColor(holder.mCardView.getResources().getColor(R.color.blue));
         } else if (cardColor.equals("Green")){
             holder.mCardName.setTextColor(Color.WHITE);
-            holder.mCardName.setBackgroundColor(holder.mCardView.getResources().getColor(R.color.green));
+            holder.mCardView.setBackgroundColor(holder.mCardView.getResources().getColor(R.color.green));
         } else if (cardColor.equals("White")) {
-            holder.mCardName.setBackgroundColor(Color.WHITE);
             holder.mCardName.setTextColor(Color.BLACK);
+            holder.mCardView.setBackgroundColor(Color.WHITE);
         } else if (cardColor.equals("Black")) {
-            holder.mCardName.setBackgroundColor(Color.BLACK);
             holder.mCardName.setTextColor(Color.WHITE);
+            holder.mCardView.setBackgroundColor(Color.BLACK);
         } else if (cardColor.equals("Red")) {
-            holder.mCardName.setBackgroundColor(holder.mCardView.getResources().getColor(R.color.red));
             holder.mCardName.setTextColor(Color.WHITE);
+            holder.mCardView.setBackgroundColor(holder.mCardView.getResources().getColor(R.color.red));
         } else {
             holder.mCardName.setTextColor(Color.WHITE);
-            holder.mCardName.setBackgroundColor(Color.GRAY);
+            holder.mCardView.setBackgroundColor(Color.GRAY);
         }
 
         holder.mCardType.setText(card.getType());
@@ -161,113 +161,3 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         notifyDataSetChanged();
     }
 }
-
-//adapter.setOnItemClickListener(new OnRecyclerViewItemClickListener<ViewModel>() {
-//@Override public void onItemClick(View view, ViewModel viewModel) {
-//        // Do something
-//        }
-//        });
-//
-//public interface OnRecyclerViewItemClickListener<Model> {
-//    public void onItemClick(View view, Model model);
-//}
-//
-//    public void setOnItemClickListener(OnRecyclerViewItemClickListener<ViewModel> listener) {
-//        this.itemClickListener = listener;
-//    }
-//}
-//public class CardListAdapter extends ArrayAdapter<oldCard> {
-//    //CardListAdapter takes a List of cards, and adapts them to the view that they will be displayed in.
-//    public CardListAdapter(Context context, int textViewResourceId) {
-//        super(context, textViewResourceId);
-//    }
-//    private List<oldCard> cards;
-//
-//    public CardListAdapter(Context context, int resource, List<oldCard> cards) {
-//        super(context, resource, cards);
-//        this.cards = cards;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent){
-//        View view = convertView;
-//       // View view = super.getView(position, convertView, parent);
-//
-//        if (view == null) {
-//
-//            LayoutInflater inflater;
-//            inflater = LayoutInflater.from(getContext());
-//            view = inflater.inflate(R.layout.card_list_row, null);
-//
-//        }
-//
-//        oldCard card = this.getItem(position);
-//
-//
-//        //Dealing with card color
-//        TextView text = (TextView) view.findViewById(R.id.cardName_tv);
-//        String cardColor = new String();
-//        text.setText(card.getName());
-//        if (card.getColor().size()>0) {
-//            cardColor = this.getItem(position).getColor().get(0);
-//        }
-//        else {
-//            cardColor = "Other";
-//        }
-//
-//        if (cardColor.equals("Blue")) {
-//            text.setTextColor(Color.WHITE);
-//            text.setBackgroundColor(parent.getResources().getColor(R.color.blue));
-//        } else if (cardColor.equals("Green")){
-//            text.setTextColor(Color.WHITE);
-//            text.setBackgroundColor(parent.getResources().getColor(R.color.green));
-//        } else if (cardColor.equals("White")) {
-//            text.setBackgroundColor(Color.WHITE);
-//            text.setTextColor(Color.BLACK);
-//        } else if (cardColor.equals("Black")) {
-//            text.setBackgroundColor(Color.BLACK);
-//            text.setTextColor(Color.WHITE);
-//        } else if (cardColor.equals("Red")) {
-//            text.setBackgroundColor(parent.getResources().getColor(R.color.red));
-//            text.setTextColor(Color.WHITE);
-//        } else {
-//            text.setTextColor(Color.WHITE);
-//            text.setBackgroundColor(Color.GRAY);
-//        }
-//
-//        String rarity = card.getRarity();
-//        TextView textRarity = (TextView) view.findViewById(R.id.rarity_tv);
-//
-//        switch(rarity.charAt(0)){
-//            case 'C': //common - black
-//                textRarity.setText("C");
-//                textRarity.setTextColor(parent.getResources().getColor(R.color.gold));
-//                textRarity.setBackgroundColor(parent.getResources().getColor(R.color.black));
-//                break;
-//            case 'U': //uncommon - silver
-//                textRarity.setText("U");
-//                textRarity.setTextColor(parent.getResources().getColor(R.color.black));
-//                textRarity.setBackgroundColor(parent.getResources().getColor(R.color.silver));
-//                break;
-//            case 'R':
-//                textRarity.setText("R");
-//                textRarity.setTextColor(parent.getResources().getColor(R.color.black));
-//                textRarity.setBackgroundColor(parent.getResources().getColor(R.color.gold));
-//                break;
-//            case 'M':
-//                textRarity.setText("MR");
-//                textRarity.setTextColor(parent.getResources().getColor(R.color.silver));
-//                textRarity.setBackgroundColor(parent.getResources().getColor(R.color.orangered));
-//               break;
-//        }
-//
-//        String type = card.getType();
-//
-//
-//            TextView subtypeText = (TextView) view.findViewById(R.id.subtype_tv);
-//            subtypeText.setText(type);
-//
-//        return view;
-//    }
-//
-//};

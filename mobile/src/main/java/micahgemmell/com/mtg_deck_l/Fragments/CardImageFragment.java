@@ -25,7 +25,7 @@ public class CardImageFragment
 
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
     {
-        View localView = paramLayoutInflater.inflate(R.layout.cardview, paramViewGroup, false);
+        View localView = paramLayoutInflater.inflate(R.layout.card_image_view, paramViewGroup, false);
         this.itemImageView = ((ImageView)localView.findViewById(R.id.imageView));
         if (this.itemBitmap != null) {
             this.itemImageView.setImageBitmap(this.itemBitmap);

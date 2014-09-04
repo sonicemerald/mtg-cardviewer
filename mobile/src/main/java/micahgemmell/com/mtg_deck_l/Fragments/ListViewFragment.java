@@ -24,7 +24,7 @@ import java.util.List;
 // In this navigationDrawer implementation, we will not be using this listView_Fragment to load the complete list of magic oldCards.
 public class ListViewFragment
         extends Fragment
-        implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemSelectedListener {
+        implements AdapterView.OnItemSelectedListener {
     //region VARIABLES
     Context context;
     public CardListAdapter adapter; //adapts given set of cards to list
@@ -37,7 +37,6 @@ public class ListViewFragment
 
     public ArrayAdapter<String> adapterforSetArray;
     ArrayAdapter<String> adapterforRarityArray;
-   // public int spinnerposition;
     private AdapterView.OnItemSelectedListener listener;
     //endregion
 
@@ -66,7 +65,6 @@ public class ListViewFragment
         View localView = paramLayoutInflater.inflate(R.layout.fragment_main, paramViewGroup, false);
         this.sortSetSpinner = (Spinner) localView.findViewById(R.id.filterSetSpinner);
         String[] cardSet_array = getResources().getStringArray(R.array.setNames);
-        //cardSetCode_array = getResources().getStringArray(R.array.sets);
         adapterforSetArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, cardSet_array);
         this.sortSetSpinner.setAdapter(adapterforSetArray);
         listener = this;
@@ -91,7 +89,6 @@ public class ListViewFragment
         this.mLayoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(mLayoutManager);
         this.adapter = new CardListAdapter(this.context, cards);
-        //new CardListAdapter(this.context, R.layout.card_list_row, oldCards);
 
         this.recyclerView.setAdapter(this.adapter);
 //        this.recyclerView.setOnItemClickListener(this);
@@ -99,23 +96,23 @@ public class ListViewFragment
         return localView;
     }
 
-    public void onItemClick(AdapterView<?> paramAdapterView, View paramView, int position, long paramLong)
-    {
-//        if(!(oldCards.get(0).getImageName().equals("Null"))){
-//            String calledBy = "set";
-//            this.mListener.onCardImageViewUpdate(position, calledBy);
+//    public void onItemClick(AdapterView<?> paramAdapterView, View paramView, int position, long paramLong)
+//    {
+////        if(!(oldCards.get(0).getImageName().equals("Null"))){
+////            String calledBy = "set";
+////            this.mListener.onCardImageViewUpdate(position, calledBy);
+////        }
+//        //this.mListener.showCardInfo(position);
+//    }
+//
+//    public boolean onItemLongClick(AdapterView<?> paramAdapterView, View paramView, int paramInt, long paramLong)
+//    {
+//        if(!(cards.get(0).getImageName().equals("Null"))){
+//            this.mListener.addCardToDeck(paramInt);
+//        Toast.makeText(this.context, "added ".concat(((Card)this.cards.get(paramInt)).getName()), Toast.LENGTH_SHORT).show();
 //        }
-        //this.mListener.showCardInfo(position);
-    }
-
-    public boolean onItemLongClick(AdapterView<?> paramAdapterView, View paramView, int paramInt, long paramLong)
-    {
-        if(!(cards.get(0).getImageName().equals("Null"))){
-            this.mListener.addCardToDeck(paramInt);
-        Toast.makeText(this.context, "added ".concat(((Card)this.cards.get(paramInt)).getName()), Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
+//        return true;
+//    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -123,11 +120,7 @@ public class ListViewFragment
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-//    public void refresh(){        this.recyclerView;//.invalidateViews();}
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     public static abstract interface OnCardView
     {

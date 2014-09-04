@@ -7,9 +7,9 @@
     <string name="search_hint">Search for name or color</string>
 
     <color name="black">#000</color>
-    <color name="blue">#5CD6FF</color>
-    <color name="red">#ffcc625b</color>
-    <color name="green">#ff85d386</color>
+    <color name="blue">#ff18a2ff</color>
+    <color name="red">#ffc9342f</color>
+    <color name="green">#ff13790d</color>
     <color name="gold">#CC9900</color>
     <color name="orangered">#FF4500</color>
     <color name="silver">#C0C0C0</color>
