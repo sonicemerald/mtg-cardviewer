@@ -35,7 +35,7 @@ public class ListViewFragment
     OnCardView sListener;
     private Spinner sortSetSpinner;
 
-    ArrayAdapter<String> adapterforSetArray;
+    public ArrayAdapter<String> adapterforSetArray;
     ArrayAdapter<String> adapterforRarityArray;
    // public int spinnerposition;
     private AdapterView.OnItemSelectedListener listener;

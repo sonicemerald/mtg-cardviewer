@@ -11,6 +11,7 @@ import micahgemmell.com.mtg_deck_l.helpers.BusProvider;
 import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -49,6 +50,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     //general
     private Bus mBus;
     private SharedPreferences sharedPrefs;
+    private ProgressDialog Dialog;
 
     //Fragments
     DiceRollerFragment dice;
@@ -59,15 +61,13 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     ListView container_listView;
     String listview_tag = "listviewFragment";
 
-//    public String jsonmtg = "http://mtgjson.com/json/";
-//    public String json = ".json";
-//    public String URL = "";
-
     //Lists
     private List<Card> masterCardList; //masterCardList keeps a copy of the original parsed list.
     List<Card> displayedCards;
     List<Card> deck;
     List<Card> SearchResults;
+    List<Card> temp; // used for rarity adapter
+    List<Card> rare;
     //
     private ArrayList<Creature> creatures;
     private ArrayList<Enchantment> enchantments;
@@ -88,7 +88,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     //ListViewFragment container_listView;
 
     //Spinners
-    Spinner addSetSpinner; // dropdown list of magic card sets.
+    //Spinner addSetSpinner; // dropdown list of magic card sets.
     public int spinnerPosition;
 
     //Navigation Drawer
@@ -121,7 +121,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Dialog = new ProgressDialog(MainActivity.this);
         sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
 
@@ -130,6 +130,8 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         displayedCards = new ArrayList<Card>();
         deck = new ArrayList<Card>();
         SearchResults = new ArrayList<Card>();
+        temp = new ArrayList<Card>();
+        rare = new ArrayList<Card>();
 
         creatures = new ArrayList<Creature>();
         enchantments = new ArrayList<Enchantment>();
@@ -196,7 +198,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     public void onCardsLoaded(CardsParsedEvent event) {
         masterCardList.addAll(event.getParsedCards());
         displayedCards.addAll(masterCardList);
+        SearchResults.clear();
         listView_f.adapter.setCards(displayedCards);
+        Dialog.dismiss();
         listView_f.adapter.notifyDataSetChanged();
     }
 
@@ -204,7 +208,6 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         super.onResume();
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
         getBus().register(this);
-        //getBus().post(new PleaseParseCardsEvent());
     }
 
     protected void onPause(){
@@ -275,28 +278,28 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
             case R.id.filterSetSpinner: //sets
                 spinnerPosition = position;
                 sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
-
                 String set = cardSetCode_array[position];
 
                 if(set.equals("SET"))
                     break;
-                Log.d("SPINNER", "selected".concat(String.valueOf(spinnerPosition)));
+                Log.d("SPINNER", "selected ".concat(String.valueOf(spinnerPosition)));
                 displayedCards.clear(); //clear the activities currently displayed displayedCards
-                listView_f.adapter.clear();
                 masterCardList.clear(); //clear master list of displayedCards
+                listView_f.adapter.notifyDataSetChanged();
                 getBus().post(new PleaseParseCardsEvent(set));
-
-//                String squery = sharedPrefs.getString("query", "null");
-//                if(!(squery.equals("null"))) {
-//                performSearch(squery); }
-//
+                Dialog.setMessage("loading " + listView_f.adapterforSetArray.getItem(spinnerPosition) + " cards.");
+                Dialog.show();
                 break;
             case R.id.sortRaritySpinner:
                 String rarity;
                 switch(position){
                     case 0:
                         displayedCards.clear();
-                        displayedCards.addAll(masterCardList);
+                        if(!(SearchResults.isEmpty())){
+                        displayedCards.addAll(SearchResults);
+                        } else {
+                            displayedCards.addAll(masterCardList);
+                        }
                         listView_f.adapter.notifyDataSetChanged();
                         Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
                         break;
@@ -324,17 +327,19 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 
                 }
     private void setRarityAdapter(String rarity){
-
-//        if(this.displayedCards != null){
-//            this.displayedCards.clear();
-//        }
-        List<Card> rare = new ArrayList<Card>();
-        for (Card card : displayedCards) {
+        temp.clear();
+        rare.clear();
+        displayedCards.clear();
+        if(!(SearchResults.isEmpty())){
+            temp.addAll(SearchResults);
+        } else {
+            temp.addAll(masterCardList);
+        }
+        for (Card card : temp) {
             if (card.getRarity().equals(rarity)) {
                 rare.add(card);
             }
         }
-        displayedCards.clear();
         displayedCards.addAll(rare);
         listView_f.adapter.notifyDataSetChanged();
         Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
@@ -347,7 +352,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     //endregion
 
     @Override
-    public  void addCardToDeck(int position){
+    public void addCardToDeck(int position){
         Card card = displayedCards.get(position);
         deck.add(card);
         Log.d("Card", "added ".concat(card.getName()));
