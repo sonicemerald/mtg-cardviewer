@@ -64,10 +64,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 //    public String URL = "";
 
     //Lists
-    private List<Card> allCards; //allCards keeps a copy of the original parsed list.
-    List<Card> cards; //cards is wha
+    private List<Card> masterCardList; //masterCardList keeps a copy of the original parsed list.
+    List<Card> displayedCards;
     List<Card> deck;
-    List<Card> rarity;
     List<Card> SearchResults;
     //
     private ArrayList<Creature> creatures;
@@ -127,10 +126,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
 
         // region Arrays
-        allCards = new ArrayList<Card>();
-        cards = new ArrayList<Card>();
+        masterCardList = new ArrayList<Card>();
+        displayedCards = new ArrayList<Card>();
         deck = new ArrayList<Card>();
-        rarity = new ArrayList<Card>();
         SearchResults = new ArrayList<Card>();
 
         creatures = new ArrayList<Creature>();
@@ -141,18 +139,18 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         artifacts = new ArrayList<Artifact>();
         planeswalkers = new ArrayList<Planeswalker>();
         //endregion
-        //region Set up main container for the cards.
+        //region Set up main container for the displayedCards.
         cardSetCode_array = getResources().getStringArray(R.array.sets);
 
-        adapter = new CardListAdapter(this, cards);
-        listView_f = newInstance(cards);
+        adapter = new CardListAdapter(this, displayedCards);
+        listView_f = newInstance(displayedCards);
 
         if (savedInstanceState == null){
             getFragmentManager().beginTransaction()
                     .add(R.id.container, listView_f, listview_tag)
                     .commit();
         }
-        // endregion set up main container for the cards
+        // endregion set up main container for the displayedCards
         //region NavDrawer
         dListener = new DrawerItemClickListener();
         //also need to spin up a listView for navDrawer. Left SIDE
@@ -196,7 +194,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 
     @Subscribe
     public void onCardsLoaded(CardsParsedEvent event) {
-        listView_f.adapter.setCards(event.getParsedCards());
+        masterCardList.addAll(event.getParsedCards());
+        displayedCards.addAll(masterCardList);
+        listView_f.adapter.setCards(displayedCards);
         listView_f.adapter.notifyDataSetChanged();
     }
 
@@ -246,14 +246,14 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         else
             cQuery = cQuery.toUpperCase();
 
-        for (Card card : cards) {
+        for (Card card : displayedCards) {
             if (card.getName().toLowerCase().contains(query) || card.getColors().contains(cQuery)) {
                 SearchResults.add(card);
             }
         }
         if(SearchResults.size() == 0){
             Card error404 = new Card();
-            error404.setName("Sorry, no cards matched your search.");
+            error404.setName("Sorry, no displayedCards matched your search.");
             error404.setType("Error 404 - Not Found");
             error404.setImageName("Null");
 //            try {
@@ -263,11 +263,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 //            }
             SearchResults.add(error404);
         }
-
-//  need to notify data set changed
-//        listView_f.adapter.clear();
-//        listView_f.adapter.addAll(SearchResults);
-//        listView_f.refresh();
+        displayedCards.clear();
+        displayedCards.addAll(SearchResults);
+        listView_f.adapter.notifyDataSetChanged();
      }
 
     //region SPINNERS
@@ -283,9 +281,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                 if(set.equals("SET"))
                     break;
                 Log.d("SPINNER", "selected".concat(String.valueOf(spinnerPosition)));
-                cards.clear(); //clear the activities currently displayed cards
+                displayedCards.clear(); //clear the activities currently displayed displayedCards
                 listView_f.adapter.clear();
-                allCards.clear(); //clear master list of cards
+                masterCardList.clear(); //clear master list of displayedCards
                 getBus().post(new PleaseParseCardsEvent(set));
 
 //                String squery = sharedPrefs.getString("query", "null");
@@ -293,14 +291,14 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 //                performSearch(squery); }
 //
                 break;
-            case R.id.sortRaritySpinner: //rarity
-               //  listView_R = new ListViewFragment(rarity);
+            case R.id.sortRaritySpinner:
                 String rarity;
                 switch(position){
                     case 0:
-                        List<Card> cards = allCards;
-                        listView_f.adapter.clear();
-                        listView_f.adapter.addAll(cards);
+                        displayedCards.clear();
+                        displayedCards.addAll(masterCardList);
+                        listView_f.adapter.notifyDataSetChanged();
+                        Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
                         break;
                     case 1: // common
                         rarity = "Common";
@@ -327,16 +325,18 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                 }
     private void setRarityAdapter(String rarity){
 
-        if(this.rarity != null){
-            this.rarity.clear();
-        }
-        for (Card card : allCards) {
+//        if(this.displayedCards != null){
+//            this.displayedCards.clear();
+//        }
+        List<Card> rare = new ArrayList<Card>();
+        for (Card card : displayedCards) {
             if (card.getRarity().equals(rarity)) {
-                this.rarity.add(card);
+                rare.add(card);
             }
         }
-        listView_f.adapter.clear();
-        listView_f.adapter.addAll(this.rarity);
+        displayedCards.clear();
+        displayedCards.addAll(rare);
+        listView_f.adapter.notifyDataSetChanged();
         Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
     }
     @Override
@@ -348,10 +348,10 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 
     @Override
     public  void addCardToDeck(int position){
-        Card card = cards.get(position);
+        Card card = displayedCards.get(position);
         deck.add(card);
         Log.d("Card", "added ".concat(card.getName()));
-        Toast.makeText(this, "added ".concat(cards.get(position).getName()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "added ".concat(displayedCards.get(position).getName()), Toast.LENGTH_SHORT).show();
     }
 
     //region CARD IMAGES
@@ -370,9 +370,9 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 //                Log.d("tag", imageURL);
 //                getCardImageFrom(imageURL);
 //            } else if (calledBy == "set"){
-//            cardView_f = new CardImageFragment(cards.get(position));
-//            image = cards.get(position).getImageName();
-//            set = cards.get(position).getSet();
+//            cardView_f = new CardImageFragment(displayedCards.get(position));
+//            image = displayedCards.get(position).getImageName();
+//            set = displayedCards.get(position).getSet();
 //            imageURL = "http://mtgimage.com/set/".concat(set).concat("/").concat(image).concat(".jpg");
 //            Log.d("tag", imageURL);
 //            getCardImageFrom(imageURL);
@@ -387,7 +387,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
 
     @Override
     public void showCardInfo(int position) {
-        // Stub for a later implementation. (Slide down cards.)
+        // Stub for a later implementation. (Slide down displayedCards.)
     }
 
     public void getCardImageFrom(String imageURL){
@@ -467,7 +467,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         switch (position){
             case 0: //all
                 listView_f.adapter.clear();
-                listView_f.adapter.addAll(allCards);
+                listView_f.adapter.addAll(masterCardList);
                 break;
             case 1: //
                 listView_f.adapter.clear();
@@ -506,7 +506,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
     private void selectItem(int position){
         // update the main content by replacing fragments
         switch (position){
-            case 0: // first item - "search cards"
+            case 0: // first item - "search displayedCards"
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, listView_f)
                         .addToBackStack("Search")
@@ -531,13 +531,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         }
 
         mDrawerLayout.closeDrawer(mDrawerRelativeLeft);
-
-
-        /*/ update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
-       */ }
+}
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
