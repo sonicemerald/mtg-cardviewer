@@ -11,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter;
+import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
 
 import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.Adapter.CardListAdapter;
@@ -29,8 +33,7 @@ public class ListViewFragment
     Context context;
     public CardListAdapter adapter; //adapts given set of cards to list
     List<Card> cards;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
+    ListView listView;
     OnCardView mListener;
     OnCardView sListener;
     private Spinner sortSetSpinner;
@@ -38,6 +41,7 @@ public class ListViewFragment
     public ArrayAdapter<String> adapterforSetArray;
     ArrayAdapter<String> adapterforRarityArray;
     private AdapterView.OnItemSelectedListener listener;
+    private AdapterView.OnItemClickListener clickListener;
     //endregion
 
     //"Constructor" for Fragments;
@@ -84,25 +88,31 @@ public class ListViewFragment
         sortRaritySpinner.setAdapter(adapterforRarityArray);
         sortRaritySpinner.setOnItemSelectedListener(this);
 
-        this.recyclerView = ((RecyclerView)localView.findViewById(R.id.my_recyclerView));
-        this.recyclerView.setHasFixedSize(true);
-        this.mLayoutManager = new LinearLayoutManager(getActivity());
-        this.recyclerView.setLayoutManager(mLayoutManager);
+        this.listView = (ListView)localView.findViewById(R.id.listView);
         this.adapter = new CardListAdapter(this.context, cards);
+        AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(adapter);
+        alphaInAnimationAdapter.setAbsListView(this.listView);
+        this.listView.setAdapter(alphaInAnimationAdapter);
+        this.listView.setDivider(null);
 
-        this.recyclerView.setAdapter(this.adapter);
-//        this.recyclerView.setOnItemClickListener(this);
-//        this.recyclerView.setOnItemLongClickListener(this);
+
+//        this.listView.setOnItemClickListener(clickListener);
+//        this.listView.setOnItemClickListener(this);
+//        this.listView.setOnItemLongClickListener(this);
         return localView;
     }
 
+
 //    public void onItemClick(AdapterView<?> paramAdapterView, View paramView, int position, long paramLong)
 //    {
+//        Toast.makeText(context, "tapped", Toast.LENGTH_LONG).show();
+//
+//       // adapter.getContentView(position, paramView, paramAdapterView);
 ////        if(!(oldCards.get(0).getImageName().equals("Null"))){
 ////            String calledBy = "set";
 ////            this.mListener.onCardImageViewUpdate(position, calledBy);
 ////        }
-//        //this.mListener.showCardInfo(position);
+//
 //    }
 //
 //    public boolean onItemLongClick(AdapterView<?> paramAdapterView, View paramView, int paramInt, long paramLong)
@@ -121,6 +131,10 @@ public class ListViewFragment
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {}
+
+    public void refresh(){
+        this.listView.invalidateViews();
+    }
 
     public static abstract interface OnCardView
     {

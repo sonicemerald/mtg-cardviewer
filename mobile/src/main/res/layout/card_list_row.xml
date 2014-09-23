@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A CardView that contains a TextView -->
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
-    android:layout_gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="4dp"
-    android:elevation="2dp"
-    card_view:cardCornerRadius="4dp" >
+ <!--&lt;!&ndash;A CardView that contains a TextView&ndash;&gt;-->
+<!--<android.support.v7.widget.CardView-->
+    <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/card_view"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:elevation="2dp"-->
+    <!--android:background="@color/black"-->
+    <!--card_view:cardCornerRadius="5dp">-->
 
 <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/white"
+    android:id="@+id/card_title" >
 
     <!--Card Name-->
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -32,14 +44,13 @@
 
     <TextView
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceSmall"
     android:id="@+id/subtype_tv"
     android:background="@color/white"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:layout_below="@id/cardName_tv"
-    />
+    android:layout_below="@+id/cardName_tv" />
 
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->
@@ -52,21 +63,33 @@
     <TextView
     android:id="@+id/rarity_tv"
     android:layout_width="wrap_content"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:padding="15dp"
     android:text=""
     android:shadowColor="@color/white"
     android:shadowRadius="2"
     android:layout_alignParentTop="true"
     android:layout_alignParentEnd="true" />
-    <FrameLayout
-    android:id="@+id/cardInfoContainer"
-    android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
-    android:layout_alignBottom="@id/cardName_tv"
-    />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/card_content"
+        android:layout_alignBottom="@+id/subtype_tv">
+
+        <TextView
+            android:id="@+id/cardInfo_tv"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
     </RelativeLayout>
-</android.support.v7.widget.CardView>
+
+    <!--</android.support.v7.widget.CardView>-->
 
 
 <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->

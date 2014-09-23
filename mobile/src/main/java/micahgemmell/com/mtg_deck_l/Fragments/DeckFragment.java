@@ -16,7 +16,7 @@ public class DeckFragment
     List<Card> deck;
 
     ////    ListView listView;
-//    RecyclerView recyclerView;
+//    RecyclerView listView;
 //    ListViewFragment.OnCardView mListener;
 //
     public DeckFragment() {
@@ -44,7 +44,7 @@ public class DeckFragment
 //    public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
 //    {
 //        View localView = paramLayoutInflater.inflate(R.layout.fragment_main, paramViewGroup, false);
-//        this.recyclerView = ((ListView)localView.findViewById(R.id.my_recyclerView));
+//        this.listView = ((ListView)localView.findViewById(R.id.my_recyclerView));
 //        this.adapter = new CardListAdapter(this.context, deck);
 ////        this.adapter = new CardListAdapter(this.context, R.layout.card_list_row, deck);
 //       if(deck.isEmpty()){
@@ -61,9 +61,9 @@ public class DeckFragment
 //
 //        }
 //        //this.adapter = new ArrayAdapter(this.context, android.R.layout.simple_list_item_1, this.deck);
-//        this.recyclerView.setAdapter(this.adapter);
-////        this.recyclerView.setOnItemClickListener(this);
-////        this.recyclerView.setOnItemLongClickListener(this);
+//        this.listView.setAdapter(this.adapter);
+////        this.listView.setOnItemClickListener(this);
+////        this.listView.setOnItemLongClickListener(this);
 //
 //        OnDismissCallback oDC = new OnDismissCallback() {
 //            @Override
@@ -82,8 +82,8 @@ public class DeckFragment
 //        };
 //        // Somewhere in your adapter creation code
 //        sAdapter = new SwipeDismissAdapter(adapter, oDC);
-//        sAdapter.setAbsListView(recyclerView);
-//        recyclerView.setAdapter(sAdapter);
+//        sAdapter.setAbsListView(listView);
+//        listView.setAdapter(sAdapter);
 //        return localView;
 //    }
 //

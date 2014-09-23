@@ -154,7 +154,7 @@ public final class R {
 		public static final int message = 0x7f05000f;
 		public static final int right = 0x7f050002;
 		public static final int text = 0x7f050012;
-		public static final int title = 0x7f050013;
+		public static final int title = 0x7f050015;
 		public static final int top = 0x7f050001;
 	}
 	public static final class layout {

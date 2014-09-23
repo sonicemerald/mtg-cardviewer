@@ -1,7 +1,7 @@
     <!-- Base application theme. -->
     <resources>
 
-        <style name="AppTheme" parent="android:Theme.Material" />
+        <style name="AppTheme" parent="android:Theme.DeviceDefault" />
 
         <style name="nowCardStyle" parent="android:Widget.TextView">
             <!--<item name="android:background">@drawable/search_bg_shadow2</item>-->

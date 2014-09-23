@@ -127,6 +127,7 @@
             <item>Magic 2015 Core Set</item>
             <item>From the Vault: Annihilation (2014)</item>
             <item>Dual Decks: Speed vs. Cunning</item>
+            <item>Khans of Tarkir</item>
             <item>Select a Set</item>
         </string-array>
 
@@ -257,6 +258,7 @@
             <item>M15</item>
             <item>V14</item>
             <item>DDN</item>
+            <item>KTK</item>
             <item>SET</item>
         </string-array>
     </resources>

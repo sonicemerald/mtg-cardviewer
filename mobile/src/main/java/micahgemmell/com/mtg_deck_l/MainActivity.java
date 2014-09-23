@@ -199,9 +199,10 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         masterCardList.addAll(event.getParsedCards());
         displayedCards.addAll(masterCardList);
         SearchResults.clear();
-        listView_f.adapter.setCards(displayedCards);
+        listView_f.adapter.addAll(displayedCards);
         Dialog.dismiss();
-        listView_f.adapter.notifyDataSetChanged();
+        listView_f.refresh();
+//        listView_f.adapter.notifyDataSetChanged();
     }
 
     protected void onResume(){
@@ -301,7 +302,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
                             displayedCards.addAll(masterCardList);
                         }
                         listView_f.adapter.notifyDataSetChanged();
-                        Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
+                        Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
                         break;
                     case 1: // common
                         rarity = "Common";
@@ -342,7 +343,7 @@ public class MainActivity extends Activity implements ListViewFragment.OnCardVie
         }
         displayedCards.addAll(rare);
         listView_f.adapter.notifyDataSetChanged();
-        Log.d("adapter size", String.valueOf(listView_f.adapter.getItemCount()));
+        Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
     }
     @Override
     public int getSpinnerPosition() {
