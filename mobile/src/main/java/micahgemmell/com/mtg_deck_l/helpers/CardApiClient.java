@@ -25,11 +25,11 @@ public class CardApiClient {
     }
 
     @Subscribe
-    public void loadCards(PleaseParseCardsEvent event){
+    public void loadCards(final PleaseParseCardsEvent event){
         mApi.getSet(event.getSet(), new Callback<Set>() {
             @Override
             public void success(Set set, Response response) {
-                mBus.post(new CardsParsedEvent(set.getCards()));
+                mBus.post(new CardsParsedEvent(set.getCards(), set.getCode(), set.getName()));
             }
 
             @Override

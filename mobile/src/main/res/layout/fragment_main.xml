@@ -5,19 +5,16 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:dropDownWidth="wrap_content"
-        android:id="@+id/filterSetSpinner"
-        android:background="#FFF"
-        android:textColor = "#000"/>
+        android:id="@+id/filterSetSpinner"/>
 
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sortRaritySpinner"
-        android:layout_toRightOf="@id/filterSetSpinner"
-        android:background="@color/silver"
+        android:layout_toEndOf="@id/filterSetSpinner"
         android:textAlignment="center"
-        android:layout_alignParentRight="true"
+        android:paddingLeft="10dp"
         android:layout_alignParentEnd="true" />
 
     <!--<android.support.v7.widget.RecyclerView-->

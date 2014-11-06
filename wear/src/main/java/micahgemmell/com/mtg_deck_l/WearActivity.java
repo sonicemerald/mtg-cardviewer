@@ -72,7 +72,6 @@ public class WearActivity extends Activity {
                         return true;
                     }
                 });
-
             }
         });
     }

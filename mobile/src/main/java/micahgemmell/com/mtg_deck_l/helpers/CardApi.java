@@ -11,4 +11,5 @@ import retrofit.http.Path;
 public interface CardApi {
         @GET("/{set}.json")
         void getSet(@Path("set") String set, Callback<Set> response);
+
     }

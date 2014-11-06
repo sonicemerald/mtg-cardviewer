@@ -2,11 +2,11 @@
 <pre-dex-items>
 
     <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-58c69c8d94ae2b1b0078c7683ce1af6a3828a5c4.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/classes.jar"
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-9d9cd0c77a2dc9e3cfdcab8f0d6837bdfa99c249.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.0/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="7ae84435ebc95f67a3f5e511025e96caa8688da2"/>
+        sha1="7d2525cba8ed61fff102977caed964fc22061e34"/>
     <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/gson-2.2.4-a6cc26948fcd9a9c53a31a20925f353347a2a674.jar"
         jar="/Users/sonicemerald/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
@@ -14,29 +14,11 @@
         revision="20.0.0"
         sha1="a60a5e993c98c864010053cb901b7eab25306568"/>
     <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-rc1-9ad58b7cca9ada88ee94b77201bbac86b59bee4d.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/libs/internal_impl-21.0.0-rc1.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="d1a625e8a94bf7c73e0f9d30ad1b483ff6ea64e9"/>
-    <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/android-async-http-1.4.4-91690b6e1e3acee89ac978ebf668f15ebb5364cd.jar"
         jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/libs/android-async-http-1.4.4.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="3bae85a076241828810bf8fbcc12e5891d5fc34c"/>
-    <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-rc1-5634a6911587f76eb41f749c7c795438ec45c6ca.jar"
-        jar="/Volumes/Macintosh HD/Applications/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/21.0.0-rc1/support-annotations-21.0.0-rc1.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="57c343f05b73b923bf2502b05851dbfe12193dcb"/>
-    <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-8238815a7055dbd4521c38166e549806dcf53e45.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/5.0.77/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="80a6f6f2d0dfcfae8c424cf81dcdf7157e7bf4b8"/>
     <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/pre-dexed/debug/classes-4e9948e7ee388a4fbd0ac32b2369bf66a9f3b419.jar"
         jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/exploded-aar/com.google.android.support/wearable/1.0.0/classes.jar"
@@ -44,29 +26,47 @@
         revision="20.0.0"
         sha1="6804efbb78d7facc2e1aa107c7342bee83afae45"/>
     <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/com.haarman.listviewanimations-2.5.2-b9e9250b212a8d048ce9eceb86ce0653942dee6b.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/libs/com.haarman.listviewanimations-2.5.2.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="61b94ed76a675ca3d6aa882e7d0a0fdc56a73cd2"/>
-    <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/pre-dexed/debug/support-annotations-20.0.0-11966559827b58823f5fb6ad5137bd8c517328c7.jar"
         jar="/Volumes/Macintosh HD/Applications/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
     <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/pre-dexed/debug/classes-16d8aea49b63a6335d973671560f30a0ae238b0d.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/5.0.77/classes.jar"
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/com.haarman.listviewanimations-2.5.2-b9e9250b212a8d048ce9eceb86ce0653942dee6b.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/libs/com.haarman.listviewanimations-2.5.2.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="80a6f6f2d0dfcfae8c424cf81dcdf7157e7bf4b8"/>
+        sha1="61b94ed76a675ca3d6aa882e7d0a0fdc56a73cd2"/>
     <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-f7b3b9da95777e855cd24d6be050bba7774637e3.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.0-rc1/classes.jar"
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-b13c2ad6547788c72efbae8460a48f3208ab3058.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.0/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="14d500eeb7128db6c0f9b55f166c42eacf00f3b6"/>
+        sha1="efeda77c808750cb670ee9c48d8a1835d89dbcb2"/>
+    <item
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-1795a9795ba893021bb96b85831c9341dfb7abfa.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="686344a780033e4ba22b926cd225f8d4941247e6"/>
+    <item
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-e0b33056804c595755473647eee2b8717f5768fb.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/6.1.11/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="711351f12980fffdff7f1b0be9303ac6611affd8"/>
+    <item
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/pre-dexed/debug/classes-4de221eaba9ad640f746010542fe20a4b8f3863a.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/6.1.11/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="711351f12980fffdff7f1b0be9303ac6611affd8"/>
+    <item
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-ec094cbbb82e04c13e953a0d65e4e0a743f2c58c.jar"
+        jar="/Volumes/Macintosh HD/Applications/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e"/>
     <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/retrofit-1.6.1-deea879ddf199c79528abd86c71117f96c2499b3.jar"
         jar="/Users/sonicemerald/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.6.1/efb0a36546aa8857ab8df358b106c1817e03cbee/retrofit-1.6.1.jar"
@@ -80,17 +80,17 @@
         revision="20.0.0"
         sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef"/>
     <item
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/picasso-2.3.4-79b6ec98f1ec939862f0c536ba5e4aa83373c2bc.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/libs/picasso-2.3.4.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="3b646ddbdac8a33fc45b64564011da81d23e4635"/>
+    <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/otto-1.3.5-b20e212eb21a7c94597656b555691aeb244d6f8c.jar"
         jar="/Users/sonicemerald/.gradle/caches/modules-2/files-2.1/com.squareup/otto/1.3.5/7941cd2c2c8ec006800d75c35f8a9dacf892ab93/otto-1.3.5.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="7941cd2c2c8ec006800d75c35f8a9dacf892ab93"/>
-    <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/nineoldandroids-2.4.0-4c47f0aa4138721cb70dc03bf9e2c0f2973ec5a7.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/libs/nineoldandroids-2.4.0.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="59f19e43354d32de831379c23ce03bb259a4c2b7"/>
     <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-5eab8f4fb740c847fa6f359f84156c2592d48f51.jar"
         jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
@@ -98,11 +98,17 @@
         revision="20.0.0"
         sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
     <item
-        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/classes-df131a8b4a9c7299948200d9b450e051a943719f.jar"
-        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.0-rc1/classes.jar"
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/nineoldandroids-2.4.0-4c47f0aa4138721cb70dc03bf9e2c0f2973ec5a7.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/libs/nineoldandroids-2.4.0.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="25c58e61f70a3d78e5c5abcfc9db0555fc869b7d"/>
+        sha1="59f19e43354d32de831379c23ce03bb259a4c2b7"/>
+    <item
+        dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-c3ff5b5d61248fc49162a2aec8d8c49512c8f006.jar"
+        jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/mobile/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/libs/internal_impl-21.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0"/>
     <item
         dex="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-5fa1522dd68395e4df271de33c51d92d32e54b97.jar"
         jar="/Users/sonicemerald/Documents/AndroidStudio/MTG-deck-L/wear/build/intermediates/exploded-aar/com.android.support/support-v13/20.0.0/libs/internal_impl-20.0.0.jar"

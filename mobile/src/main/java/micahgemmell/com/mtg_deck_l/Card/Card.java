@@ -41,6 +41,13 @@ public class Card {
     private String number;
     @Expose
     private String imageName;
+    //@Expose
+    private String set;
+    private String setName;
+    private String lowPrice;
+    private String medPrice;
+    private String highPrice;
+    private String foilPrice;
 
     public String getLayout() {
         return layout;
@@ -177,5 +184,48 @@ public class Card {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
+
+    public String getSet() {return set;}
+
+    public void setSet(String set) {
+        this.set = set;
+    }
+
+    public String getSetName() {return setName;}
+
+    public void setSetName(String setName) { this.setName = setName; }
+
+    public String getLowPrice() {
+        return lowPrice;
+    }
+
+    public void setLowPrice(String lowPrice) {
+        this.lowPrice = lowPrice;
+    }
+
+    public String getMedPrice() {
+        return medPrice;
+    }
+
+    public void setMedPrice(String medPrice) {
+        this.medPrice = medPrice;
+    }
+
+    public String getHighPrice() {
+        return highPrice;
+    }
+
+    public void setHighPrice(String highPrice) {
+        this.highPrice = highPrice;
+    }
+
+    public String getFoilPrice() {
+        return foilPrice;
+    }
+
+    public void setFoilPrice(String foilPrice) {
+        this.foilPrice = foilPrice;
+    }
+
 
 }
