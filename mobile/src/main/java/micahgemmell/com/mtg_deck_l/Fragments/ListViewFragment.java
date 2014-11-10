@@ -62,6 +62,8 @@ public class ListViewFragment
 
     public void onDetach(){
         super.onDetach();
+        mListener = null;
+        sListener = null;
         Log.d("3", "detached");
     }
 
@@ -113,15 +115,11 @@ public class ListViewFragment
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if(!(cards.get(0).getImageName().equals("Null"))){
-            String calledBy = "set";
-            mListener.onCardImageViewUpdate(i, calledBy);
-        }
-            }
-        });
+                mListener.onCardClicked(i);}});
         this.listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 return false;
             }
         });
@@ -153,9 +151,9 @@ public class ListViewFragment
     public static abstract interface OnCardView
     {
         public abstract void addCardToDeck(int position);
-        public abstract void onCardImageViewUpdate(int paramInt, String calledBy);
+//        public abstract void onCardImageViewUpdate(int paramInt, String calledBy);
+        public abstract void onCardClicked(int position);
         public abstract void spinnerItemSelected(int position, int id);
         public abstract int getSpinnerPosition();
-        public abstract void showCardInfo(int position);
     }
 }

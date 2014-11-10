@@ -12,27 +12,28 @@ import android.widget.ImageView;
 
 //import com.squareup.picasso.Picasso;
 
+import com.squareup.picasso.Picasso;
+
 import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.R;
 
 public class CardImageFragment extends Fragment
 {
-    Context context;
-    private Card cards;
-    private Bitmap itemBitmap;
+    private Context mContext;
+    private String image;
     private ImageView itemImageView;
 
     //"Constructor" for Fragments;
-    public static CardImageFragment newInstance(Card card){
+    public static CardImageFragment newInstance(String card){
         CardImageFragment f = new CardImageFragment();
-        f.cards = card;
+        f.image = card;
         return f;
     }
 
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        this.context = activity;
+        this.mContext = activity;
     }
 
 
@@ -40,16 +41,7 @@ public class CardImageFragment extends Fragment
     {
         View localView = paramLayoutInflater.inflate(R.layout.card_image_view, paramViewGroup, false);
         this.itemImageView = ((ImageView)localView.findViewById(R.id.imageView));
-
-        if (this.itemBitmap != null) {
-            this.itemImageView.setImageBitmap(this.itemBitmap);
-        }
+        Picasso.with(mContext).load(image.concat(".jpg")).into(this.itemImageView);
         return localView;
-    }
-
-    public void setImageView(Bitmap paramBitmap)
-    {
-        this.itemBitmap = paramBitmap;
-        this.itemImageView.setImageBitmap(paramBitmap);
     }
 }

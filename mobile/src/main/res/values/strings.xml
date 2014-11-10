@@ -24,7 +24,6 @@
         <item>Decks</item>
         <item>Life Counter</item>
     </string-array>
-
     <string-array name="nav_drawer_sorting_items">
         <item>All</item>
         <item>Planeswalkers</item>
@@ -36,16 +35,15 @@
         <item>Land</item>
     </string-array>
 
-
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <!-- Will require CustomListView Adapter -->
-    <array name="nav_drawer_icons"></array>
+    <array name="nav_drawer_icons" />
 
-    <!--Search-->
+    <!-- Search -->
     <string name="title_activity_search_results">SearchResultsActivity</string>
 
-    <!--Rarity Spinner -->
+    <!-- Rarity Spinner -->
     <string-array name="rarity">
         <item>-</item>
         <item>All</item>
@@ -55,5 +53,7 @@
         <item>MR</item>
         <item>TS</item>
     </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

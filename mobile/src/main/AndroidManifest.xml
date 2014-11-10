@@ -6,8 +6,6 @@
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-sdk
     tools:node="replace"
-    android:minSdkVersion="17"
-          android:targetSdkVersion="21"
            />
     />
 

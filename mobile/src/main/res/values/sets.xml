@@ -117,7 +117,7 @@
             <item>From the Vault: Twenty</item>
             <item>Duel Decks: Heroes vs. Monsters</item>
             <item>Theros</item>
-            <item>Commander 2013 Edition</item>
+            <item>Commander 2013</item>
             <item>Born of the Gods</item>
             <item>Duel Decks: Jace vs. Vraska</item>
             <item>Journey into Nyx</item>
@@ -125,9 +125,10 @@
             <item>Conspiracy</item>
             <item>Vintage Masters</item>
             <item>Magic 2015 (M15)</item>
-            <item>From the Vault: Annihilation (2014)</item>
+            <item>From the Vault: Annihilation</item>
             <item>Dual Decks: Speed vs. Cunning</item>
             <item>Khans of Tarkir</item>
+            <item>Commander 2014</item>
             <item>Select a Set</item>
         </string-array>
 
@@ -259,6 +260,7 @@
             <item>V14</item>
             <item>DDN</item>
             <item>KTK</item>
+            <item>C14</item>
             <item>SET</item>
         </string-array>
     </resources>

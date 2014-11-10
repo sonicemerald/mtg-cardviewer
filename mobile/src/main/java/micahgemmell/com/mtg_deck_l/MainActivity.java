@@ -3,6 +3,7 @@
     import micahgemmell.com.mtg_deck_l.Adapter.CardListAdapter;
     import micahgemmell.com.mtg_deck_l.Card.*;
     import micahgemmell.com.mtg_deck_l.Fragments.CardImageFragment;
+    import micahgemmell.com.mtg_deck_l.Fragments.CardViewFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.DeckFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.DiceRollerFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment;
@@ -33,14 +34,12 @@
     import android.widget.ListView;
     import android.widget.RelativeLayout;
     import android.widget.SearchView;
-    import android.widget.Spinner;
     import android.widget.TextView;
     import android.widget.Toast;
 
     import java.util.ArrayList;
     import java.util.List;
     import java.util.Random;
-    import java.util.concurrent.ConcurrentLinkedQueue;
 
     import com.loopj.android.http.AsyncHttpClient;
 
@@ -50,7 +49,7 @@
 
     import static micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment.newInstance;
 
-    public class MainActivity extends Activity implements ListViewFragment.OnCardView, DiceRollerFragment.OnDiceRoll {
+    public class MainActivity extends Activity implements ListViewFragment.OnCardView, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction {
         //region VARIABLES
         //general
         private Bus mBus;
@@ -62,13 +61,14 @@
         DiceRollerFragment dice;
         ListViewFragment listView_f;
         DeckFragment deckView_f;
-        CardImageFragment cardView_f;
+        CardImageFragment cardImageView_f;
+        CardViewFragment cardView_f;
 
         ListView container_listView;
         String listview_tag = "listviewFragment";
 
         //Lists
-        private List<Card> masterCardList; //masterCardList keeps a copy of the original parsed list.
+        private List<Card> masterCardList; //masterCardList keepshttp://www.gamer-heaven.net/sonic-the-hedgehog-official-socks-3-pack/ a copy of the original parsed list.
         List<Card> displayedCards;
         List<Card> displayedTypes;
         List<Card> deck;
@@ -225,7 +225,6 @@
 
                 int i = 0;
                 for (Card a : masterCardList) {
-                    PricesArray.contains(a.getName());
                     a.setHighPrice(PricesArray.get(i).getHigh());
                     a.setMedPrice(PricesArray.get(i).getMed());
                     a.setLowPrice(PricesArray.get(i).getLow());
@@ -327,6 +326,7 @@
                     masterCardList.clear(); //clear master list of displayedCards
                     getBus().post(new PleaseParseCardsEvent(cardSetCode_array[position]));
                     Dialog.setMessage("loading " + listView_f.adapterforSetArray.getItem(spinnerPosition) + " cards.");
+                    Dialog.setCanceledOnTouchOutside(false);
                     Dialog.show();
                     break;
                 case R.id.sortRaritySpinner:
@@ -403,57 +403,58 @@
             Toast.makeText(this, "added ".concat(displayedCards.get(position).getName()), Toast.LENGTH_SHORT).show();
         }
 
-        //region CARD IMAGES
         @Override
-        public void onCardImageViewUpdate(int position, String calledBy) {
-            String image;
-            String imageURL;
-
-            if(calledBy == "deck")// == "deck")
-                {
-    //                cardView_f = new CardImageFragment(deck.get(position));
-    //                image = deck.get(position).getImageName();
-    //                set = deck.get(position).getSet();
-    //                imageURL = "http://mtgimage.com/set/".concat(set).concat("/").concat(image).concat(".jpg");
-    //                Log.d("tag", imageURL);
-    //                getCardImageFrom(imageURL);
-                } else if (calledBy == "set"){
-                Log.d("", "Displayed cards is: "+String.valueOf(displayedCards.size()));
-                cardView_f = CardImageFragment.newInstance(displayedCards.get(position));
-                image = displayedCards.get(position).getImageName();
-                mSet = cardSetCode_array[spinnerPosition];
-                imageURL = "http://mtgimage.com/set/".concat(mSet).concat("/").concat(image).concat(".jpg");
-                Log.d("tag", imageURL);
-                getCardImageFrom(imageURL);
-            }
-
+        public void onCardClicked(int position) {
+            // When card is clicked, display full page
+            cardView_f = CardViewFragment.newInstance(displayedCards.get(position));
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, cardView_f)
-                    .addToBackStack("CardView Back")
+                    .addToBackStack("Main list back")
                     .commit();
-
         }
 
-        @Override
-        public void showCardInfo(int position) {
-            // Stub for a later implementation. (Slide down displayedCards.)
-        }
-//        public String getSet(){
-//            return mSet;
+        //region CARD IMAGES
+//        @Override
+//        public void onCardImageViewUpdate(int position, String calledBy) {
+//            String image;
+//            String imageURL;
+//
+//            Log.d("", "Displayed cards is: "+String.valueOf(displayedCards.size()));
+//            cardImageView_f = CardImageFragment.newInstance(displayedCards.get(position));
+//            image = displayedCards.get(position).getImageName();
+//            mSet = cardSetCode_array[spinnerPosition];
+//            imageURL = "http://mtgimage.com/set/".concat(mSet).concat("/").concat(image).concat(".jpg");
+//            Log.d("tag", imageURL);
+//            getCardImageFrom(imageURL);
+//            getFragmentManager().beginTransaction()
+//                    .replace(R.id.container, cardImageView_f)
+//                    .addToBackStack("CardView Back")
+//                    .commit();
+//
 //        }
 
-        public void getCardImageFrom(String imageURL){
-                AsyncHttpClient client = new AsyncHttpClient();
-                String[] allowedContentTypes = new String[] { "image/jpeg" };
-                 client.get(imageURL, new BinaryHttpResponseHandler(allowedContentTypes) {
-                    @Override
-                    public void onSuccess(byte[] fileData) {
-                        Bitmap imageBitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
-                        if (cardView_f != null)
-                         cardView_f.setImageView(imageBitmap);
-                  }
-                });
-            }
+        //When a user clicks the card image in the CardViewFragment.
+        @Override
+        public void onImageClicked(String image) {
+            cardImageView_f = CardImageFragment.newInstance(image);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, cardImageView_f)
+                    .addToBackStack("card view back")
+                    .commit();
+        }
+
+//        public void getCardImageFrom(String imageURL){
+//                AsyncHttpClient client = new AsyncHttpClient();
+//                String[] allowedContentTypes = new String[] { "image/jpeg" };
+//                 client.get(imageURL, new BinaryHttpResponseHandler(allowedContentTypes) {
+//                    @Override
+//                    public void onSuccess(byte[] fileData) {
+//                        Bitmap imageBitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
+//                        if (cardImageView_f != null)
+//                         cardImageView_f.setImageView(imageBitmap);
+//                  }
+//                });
+//            }
         //endregion
 
         //region Dice Roller

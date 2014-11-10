@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="1_retrofit-1.6.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/mobile/libs/retrofit-1.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
