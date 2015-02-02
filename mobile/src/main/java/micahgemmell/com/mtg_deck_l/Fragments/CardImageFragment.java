@@ -22,6 +22,7 @@ public class CardImageFragment extends Fragment
     private Context mContext;
     private String image;
     private ImageView itemImageView;
+    private OnCardImageClicked mListener;
 
     //"Constructor" for Fragments;
     public static CardImageFragment newInstance(String card){
@@ -34,14 +35,37 @@ public class CardImageFragment extends Fragment
     {
         super.onAttach(activity);
         this.mContext = activity;
+        try {
+            mListener = (OnCardImageClicked) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnCardImageClicked");
+        }
     }
 
+    public void onImageClicked() {
+        if (mListener != null) {
+            mListener.onCardImageClicked();
+        }
+    }
 
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
     {
         View localView = paramLayoutInflater.inflate(R.layout.card_image_view, paramViewGroup, false);
         this.itemImageView = ((ImageView)localView.findViewById(R.id.imageView));
+        this.itemImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCardImageClicked();
+            }
+        });
         Picasso.with(mContext).load(image.concat(".jpg")).into(this.itemImageView);
         return localView;
     }
+
+    public interface OnCardImageClicked {
+        // TODO: Update argument type and name
+        public void onCardImageClicked();
+    }
+
 }

@@ -4,6 +4,7 @@ package micahgemmell.com.mtg_deck_l.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,6 @@ import micahgemmell.com.mtg_deck_l.helpers.symbolGetter;
 public class CardListAdapter extends ArrayAdapter<Card> {
     private List<Card> mCards;
     private Context mContext;
-    private symbolGetter symbolGetter;
     private static String mSet;
     private int SDK_INT = android.os.Build.VERSION.SDK_INT;
 
@@ -43,6 +43,8 @@ public class CardListAdapter extends ArrayAdapter<Card> {
     @Override
     public View getView(int position, View view, ViewGroup parent){
 
+        Html.ImageGetter imgGetter = symbolGetter.GlyphGetter(parent.getResources());
+
         if(view == null) {
             LayoutInflater inflater;
             inflater = LayoutInflater.from(mContext);
@@ -51,21 +53,12 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
         Card card = this.getItem(position);
         mSet = card.getSet().toLowerCase();
-        symbolGetter = new symbolGetter();
 
         //Dealing with card color
         TextView text = (TextView) view.findViewById(R.id.cardName_tv);
-        ImageView cmc = (ImageView) view.findViewById(R.id.cmc_tv);
+        TextView cmc = (TextView) view.findViewById(R.id.cmc_tv);
         text.setText(card.getName());
-
-//        Log.d("cmc", card.getManaCost());
-
-//        cmc.setText(card.getManaCost());
-
-//        if(card.getManaCost().contains("{w}")){
-//            Bitmap mana = symbolGetter.getManaCost("w");
-//            cmc.setImageBitmap(mana);
-//        }
+        cmc.setText(symbolGetter.formatStringWithGlyphs(card.getManaCost(), imgGetter));
 
         String cardColor;
 
@@ -99,8 +92,8 @@ public class CardListAdapter extends ArrayAdapter<Card> {
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.green_ripple));
         } else if (cardColor.equals("White")) {
             text.setTextColor(Color.BLACK);
-            text.setBackgroundColor(Color.WHITE);
-            cmc.setBackgroundColor(Color.WHITE);
+            text.setBackgroundColor(parent.getResources().getColor(R.color.white));
+            cmc.setBackgroundColor(parent.getResources().getColor(R.color.white));
             if(this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.white_ripple));
         } else if (cardColor.equals("Black")) {
@@ -125,7 +118,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
         String rarity = card.getRarity();
         ImageView textRarity = (ImageView) view.findViewById(R.id.rarity_tv);
-        textRarity.setBackgroundColor(parent.getResources().getColor(R.color.white));
+        textRarity.setBackgroundColor(Color.WHITE);
 
         switch(rarity.charAt(0)){
             case 'C': //common - black
@@ -150,7 +143,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         subtypeText.setTextColor(parent.getResources().getColor(R.color.black));
 
         TextView contentText = (TextView) view.findViewById(R.id.content_tv);
-        contentText.setText(card.getText());
+        contentText.setText(symbolGetter.formatStringWithGlyphs(card.getText(), imgGetter));
         contentText.setTextColor(parent.getResources().getColor(R.color.black));
 
         TextView flavorText = (TextView) view.findViewById(R.id.flavor_tv);

@@ -32,7 +32,7 @@
     android:layout_height="wrap_content"
     android:singleLine="true"
     android:textColor="@color/black"
-    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textAppearance="?android:attr/textAppearanceMediumInverse"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:paddingTop="12dp"
@@ -46,7 +46,6 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceSmall"
     android:id="@+id/subtype_tv"
-    android:background="@color/white"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="4dp"
@@ -81,19 +80,18 @@
                android:layout_height="wrap_content"
                android:textAppearance="?android:attr/textAppearanceSmall"
                android:id="@+id/content_tv"
-               android:background="@color/white"
                android:paddingLeft="16dp"
                android:paddingRight="16dp"
                android:paddingTop="4dp"
                android:paddingBottom="4dp"
-               android:layout_below="@+id/subtype_tv" />
+               android:layout_below="@+id/subtype_tv"
+         android:typeface="serif" />
 
            <TextView
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:textAppearance="?android:attr/textAppearanceSmall"
                android:id="@+id/flavor_tv"
-               android:background="@color/white"
                android:paddingLeft="16dp"
                android:paddingRight="16dp"
                android:paddingTop="4dp"
@@ -104,7 +102,7 @@
 
 
 
-    <ImageView
+    <TextView
         android:contentDescription="Mana Costs"
         android:id="@+id/cmc_tv"
         android:layout_width="wrap_content"
@@ -135,7 +133,6 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="price"
             android:textColor="@color/black"
-            android:background="@color/white"
             android:id="@+id/avgCost_tv"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"

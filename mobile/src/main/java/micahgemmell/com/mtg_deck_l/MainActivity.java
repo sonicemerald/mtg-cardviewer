@@ -38,6 +38,8 @@
     import android.widget.Toast;
 
     import java.util.ArrayList;
+    import java.util.Collections;
+    import java.util.Comparator;
     import java.util.List;
     import java.util.Random;
 
@@ -49,7 +51,7 @@
 
     import static micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment.newInstance;
 
-    public class MainActivity extends Activity implements ListViewFragment.OnCardView, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction {
+    public class MainActivity extends Activity implements ListViewFragment.OnCardView, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, CardImageFragment.OnCardImageClicked {
         //region VARIABLES
         //general
         private Bus mBus;
@@ -294,8 +296,9 @@
             }
             if(SearchResults.size() == 0){
                 Card error404 = new Card();
-                error404.setName("Sorry, no displayedCards matched your search.");
+                error404.setName("Sorry, no cards matched your search.");
                 error404.setType("Error 404 - Not Found");
+                error404.setMedPrice("");
                 error404.setImageName("Null");
     //            try {
     //                error404.setCmc();//.setColors(new List<String>= {"Red"});
@@ -305,6 +308,7 @@
                 SearchResults.add(error404);
             }
             displayedCards.clear();
+            listView_f.adapter.clear();
             displayedCards.addAll(SearchResults);
             listView_f.adapter.addAll(displayedCards);
          }
@@ -411,6 +415,12 @@
                     .replace(R.id.container, cardView_f)
                     .addToBackStack("Main list back")
                     .commit();
+        }
+
+        @Override
+        public void onCardImageClicked(){
+            //when card image clicked, return.
+            getFragmentManager().popBackStack();
         }
 
         //region CARD IMAGES
@@ -646,11 +656,34 @@
             // Handle action bar item clicks here. The action bar will
             // automatically handle clicks on the Home/Up button, so long
             // as you specify a parent activity in AndroidManifest.xml.
+
+            switch (item.getItemId()) {
+                case R.id.sortPrice:
+                    sortCardsByPrices();
+            }
+
             if (mDrawerToggle.onOptionsItemSelected(item)) {
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
+
+        void sortCardsByPrices(){
+            List temp = new ArrayList<Card>();
+            Collections.sort(this.displayedCards, new Comparator<Card>() {
+                @Override
+                public int compare(Card lhs, Card rhs) {
+
+                    return 0;
+                }
+            });
+
+            for (Card c : this.displayedCards){
+                c.getMedPrice();
+            }
+
+        }
+
         //endregion
 
         // Use some kind of injection, so that we can swap in a mock for tests.
