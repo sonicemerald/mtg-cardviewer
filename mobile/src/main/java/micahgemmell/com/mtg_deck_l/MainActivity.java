@@ -16,6 +16,8 @@
     import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
 
     import android.app.Activity;
+    import android.app.Fragment;
+    import android.app.FragmentTransaction;
     import android.app.ProgressDialog;
     import android.app.SearchManager;
     import android.content.Context;
@@ -23,8 +25,9 @@
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
     import android.os.Bundle;
-    import android.support.v4.app.ActionBarDrawerToggle;
+    import android.support.v7.app.ActionBarDrawerToggle;
     import android.support.v4.widget.DrawerLayout;
+    import android.support.v7.widget.Toolbar;
     import android.util.Log;
     import android.view.Menu;
     import android.view.MenuItem;
@@ -66,7 +69,7 @@
         CardImageFragment cardImageView_f;
         CardViewFragment cardView_f;
 
-        ListView container_listView;
+       // ListView container_listView;
         String listview_tag = "listviewFragment";
 
         //Lists
@@ -111,6 +114,7 @@
         RelativeLayout mDrawerRelativeRight;
         CharSequence mDrawerTitle = "Menu";
         String[] navMenuItems;
+        Boolean sort = false;
 
         // Constants for diceroller & lifeviewer
         TextView rollResult;
@@ -189,8 +193,7 @@
            mDrawerRelativeLeft = (RelativeLayout) findViewById(R.id.drawer_layout_container_left);
            mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
 
-           mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close){
-
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close){
               public void onDrawerClosed(View view) {
                    getActionBar().setTitle(R.string.app_name);
                    //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
@@ -201,7 +204,7 @@
                }
            };
            mDrawerLayout.setDrawerListener(mDrawerToggle);
-           getActionBar().setDisplayHomeAsUpEnabled(true);
+           mDrawerToggle.setDrawerIndicatorEnabled(false);
            getActionBar().setHomeButtonEnabled(true);
            //endregion
         }
@@ -233,6 +236,7 @@
                     i++;
                 }
             listView_f.adapter.notifyDataSetChanged();
+            Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -669,19 +673,36 @@
         }
 
         void sortCardsByPrices(){
-            List temp = new ArrayList<Card>();
-            Collections.sort(this.displayedCards, new Comparator<Card>() {
-                @Override
-                public int compare(Card lhs, Card rhs) {
-
-                    return 0;
-                }
-            });
-
-            for (Card c : this.displayedCards){
-                c.getMedPrice();
+            if(sort){
+                // low to high
+                Collections.sort(this.displayedCards, new Comparator<Card>() {
+                    @Override
+                    public int compare(Card one, Card two) {
+                        int num = 0;
+                        if (Double.parseDouble(one.getMedPrice().substring(1)) > Double.parseDouble(two.getMedPrice().substring(1))) {
+                            num = 1;
+                            if (sort){ num = num * -1; sort = false; }
+                            return num;
+                        }
+                        if (Double.parseDouble(one.getMedPrice().substring(1)) < Double.parseDouble(two.getMedPrice().substring(1))){
+                            num = -1;
+                        if(sort){ num = num * -1; sort = false;}
+                            return num;}
+                        else // equal
+                            return num;
+                    }
+                });
             }
+            Toast.makeText(this, "finished sorting", Toast.LENGTH_SHORT).show();
+            refreshFragment();
+        }
 
+        private void refreshFragment() {
+            Fragment currentFragment = getFragmentManager().findFragmentByTag(listview_tag);
+            FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
+            fragTransaction.detach(currentFragment);
+            fragTransaction.attach(currentFragment);
+            fragTransaction.commit();
         }
 
         //endregion
