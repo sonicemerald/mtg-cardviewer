@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
+
 import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
 
 import micahgemmell.com.mtg_deck_l.Card.Card;
@@ -79,7 +78,7 @@ public class ListViewFragment
     {
         View localView = paramLayoutInflater.inflate(R.layout.fragment_main, paramViewGroup, false);
         this.listView = (ListView)localView.findViewById(R.id.listView);
-        this.adapter = new CardListAdapter(this.context, R.id.card_title, cards);
+        this.adapter = new CardListAdapter(this.context, R.id.card_list_layout, cards);
         AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(adapter);
         alphaInAnimationAdapter.setAbsListView(this.listView);
         this.listView.setAdapter(alphaInAnimationAdapter);

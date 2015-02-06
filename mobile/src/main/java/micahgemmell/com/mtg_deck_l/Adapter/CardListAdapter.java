@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -48,10 +48,11 @@ public class CardListAdapter extends ArrayAdapter<Card> {
             inflater = LayoutInflater.from(mContext);
             view = inflater.inflate(R.layout.card_list_row, parent, false);
         }
-        CardView cardView = (CardView) view.findViewById(R.id.card_view);
+
+        CardView cardView = (CardView) view.findViewById(R.id.card_list_main);
         Card card = this.getItem(position);
-        TextView text = (TextView) view.findViewById(R.id.cardName_tv);
-        TextView cmc = (TextView) view.findViewById(R.id.cmc_tv);
+        TextView text = (TextView) view.findViewById(R.id.card_list_name);
+        TextView cmc = (TextView) view.findViewById(R.id.card_list_cmc);
         mSet = card.getSet().toLowerCase();
 
         //region cardColor
@@ -116,7 +117,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         cmc.setText(symbolGetter.formatStringWithGlyphs(card.getManaCost(), imgGetter));
 
         String rarity = card.getRarity();
-        ImageView textRarity = (ImageView) view.findViewById(R.id.rarity_tv);
+        ImageView textRarity = (ImageView) view.findViewById(R.id.card_list_rarity);
         textRarity.setBackgroundColor(Color.WHITE);
 
         switch(rarity.charAt(0)){
@@ -135,29 +136,35 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         }
 
         String type = card.getType();
-        TextView subtypeText = (TextView) view.findViewById(R.id.subtype_tv);
+        TextView subtypeText = (TextView) view.findViewById(R.id.card_list_subtype);
         subtypeText.setText(type);
         subtypeText.setTextColor(parent.getResources().getColor(R.color.black));
 
-        TextView contentText = (TextView) view.findViewById(R.id.content_tv);
+        TextView contentText = (TextView) view.findViewById(R.id.card_list_content);
         contentText.setText(symbolGetter.formatStringWithGlyphs(card.getText(), imgGetter));
         contentText.setTextColor(parent.getResources().getColor(R.color.black));
 
-        TextView flavorText = (TextView) view.findViewById(R.id.flavor_tv);
+        TextView flavorText = (TextView) view.findViewById(R.id.card_list_flavortext);
         flavorText.setText(card.getFlavor());
         flavorText.setTextColor(parent.getResources().getColor(R.color.black));
 
-        TextView powertough = (TextView) view.findViewById(R.id.powertoughness_tv);
-        if(card.getType().equals("Enchantment") || card.getType().equals("Instant") || card.getType().equals("Sorcery")){
-            powertough.setVisibility(View.INVISIBLE);
+        TextView powertough = (TextView) view.findViewById(R.id.card_list_powertoughness);
+        powertough.setTextColor(parent.getResources().getColor(R.color.black));
+
+        if(type.equals("Enchantment") || type.equals("Instant") || type.equals("Sorcery") || type.equals("Land")){
+            powertough.setVisibility(View.GONE);
         }
-        if(!(card.getPower()==null)) {
+        if(!(card.getPower() == null)) {
+            powertough.setVisibility(View.VISIBLE);
             powertough.setText(card.getPower() + "/" + card.getToughness());
-            powertough.setTextColor(parent.getResources().getColor(R.color.black));
+        }
+        if(!(card.getLoyalty() == null)){
+            powertough.setVisibility(View.VISIBLE);
+            powertough.setText(card.getLoyalty());
         }
         //endregion
         //region Price
-        TextView avgCost = (TextView) view.findViewById(R.id.avgCost_tv);
+        TextView avgCost = (TextView) view.findViewById(R.id.card_list_avgcost);
         if(card.getMedPrice() == null)
             avgCost.setText("getting card price...");
         else {

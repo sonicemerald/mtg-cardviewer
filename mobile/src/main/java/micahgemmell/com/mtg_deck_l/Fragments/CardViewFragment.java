@@ -3,7 +3,6 @@ package micahgemmell.com.mtg_deck_l.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -165,7 +164,7 @@ public class CardViewFragment extends Fragment {
         //endregion
         //region cardInfo
         String type = card.getType();
-        TextView subtypeText = (TextView) view.findViewById(R.id.card_view_subtype);
+        TextView subtypeText = (TextView) view.findViewById(R.id.card_list_subtype);
         subtypeText.setText(type);
         subtypeText.setTextColor(parent.getResources().getColor(R.color.black));
 
@@ -187,6 +186,9 @@ public class CardViewFragment extends Fragment {
         TextView lowCost = (TextView) view.findViewById(R.id.card_view_lowcost);
         TextView avgCost = (TextView) view.findViewById(R.id.card_view_avgcost);
         TextView highCost = (TextView) view.findViewById(R.id.card_view_highcost);
+        lowCost.setTextColor(Color.WHITE);
+        avgCost.setTextColor(Color.WHITE);
+        highCost.setTextColor(Color.WHITE);
 
         if (card.getMedPrice() == null) {
             lowCost.setVisibility(View.INVISIBLE);

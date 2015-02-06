@@ -2,6 +2,7 @@
  Copyright 2011 Adam Feinstein
 
  This file was part of MTG Familiar, used in this app.
+ (source: https://github.com/AEFeinstein/mtg-familiar/blob/master/MTGFamiliar/src/main/java/com/gelakinetic/mtgfam/helpers/ImageGetterHelper.java)
 
  MTG Familiar is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -55,7 +56,7 @@ public class symbolGetter {
         if (source == null) {
             return new SpannedString("");
         }
-        source = source.replace("{", "<img src=\"").replace("}", "\"/>");
+        source = source.replace("{", "<img src=\"").replace("}", "\"/>").replace("(","<i>(").replace(")",")<\"/i>").replace("\n", "<br />");
         if (Build.VERSION.SDK_INT == 16) {
             source = source.replace("<", " <").replace(">", " >").replace("  ", " ");
         }

@@ -155,7 +155,7 @@
             //region Set up main container for the displayedCards.
             cardSetCode_array = getResources().getStringArray(R.array.sets);
 
-            adapter = new CardListAdapter(this, R.id.card_title, displayedCards);
+            adapter = new CardListAdapter(this, R.id.card_list_layout, displayedCards);
             listView_f = newInstance(displayedCards);
             spinners_f = SpinnerFragment.newInstance();
 
@@ -227,12 +227,17 @@
 
             if(PricesArray.size() > 1) {
                 int i = 0;
+
                 for (Card a : masterCardList) {
                     a.setHighPrice(PricesArray.get(i).getHigh());
                     a.setMedPrice(PricesArray.get(i).getMed());
                     a.setLowPrice(PricesArray.get(i).getLow());
                     i++;
                 }
+                Log.d(PricesArray.get(164).getName(), "");
+                Log.d(PricesArray.get(165).getName(), "");
+                Log.d(masterCardList.get(164).getName(),"");
+                Log.d(masterCardList.get(165).getName(),"");
                 listView_f.adapter.notifyDataSetChanged();
                 Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
             } else {

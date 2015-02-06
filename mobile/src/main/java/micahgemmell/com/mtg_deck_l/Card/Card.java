@@ -32,6 +32,8 @@ public class Card {
     @Expose
     private String toughness;
     @Expose
+    private String loyalty;
+    @Expose
     private String manaCost;
     @Expose
     private String text;
@@ -143,6 +145,14 @@ public class Card {
 
     public void setToughness(String toughness) {
         this.toughness = toughness;
+    }
+
+    public String getLoyalty() {
+        return loyalty;
+    }
+
+    public void setLoyalty(String loyalty) {
+        this.loyalty = loyalty;
     }
 
     public String getManaCost() {

@@ -1,277 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_list_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/card_title"
-    >
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
-        android:layout_gravity="center"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_list_main"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="5dp" >
+        card_view:cardElevation="5dp">
         <!--android:foreground="@drawable/ripple"-->
 
 
-
-       <RelativeLayout
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content">
-
-    <!--Card Name-->
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cardName_tv"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:singleLine="true"
-    android:textColor="@color/black"
-    android:textAppearance="?android:attr/textAppearanceMediumInverse"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/cmc_tv" />
-
-    <TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceSmall"
-    android:id="@+id/subtype_tv"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-        android:layout_below="@+id/cardName_tv"
-        android:layout_toStartOf="@+id/rarity_tv" />
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="fill_parent"-->
-    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-    <!--android:id="@+id/manaCost_tv"-->
-    <!--android:layout_alignTop="@+id/raritytextView"-->
-    <!--android:layout_toStartOf="@+id/raritytextView" />-->
-
-    <ImageView
-    android:id="@+id/rarity_tv"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:shadowColor="@color/white"
-    android:shadowRadius="2"
-    android:layout_below="@+id/cardName_tv"
-    android:layout_alignParentEnd="true"
-    android:layout_alignBottom="@+id/subtype_tv" />
-
-     <TextView
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:textAppearance="?android:attr/textAppearanceSmall"
-               android:id="@+id/content_tv"
-               android:paddingLeft="16dp"
-               android:paddingRight="16dp"
-               android:paddingTop="4dp"
-               android:paddingBottom="4dp"
-               android:layout_below="@+id/subtype_tv"
-         android:typeface="serif" />
-
-           <TextView
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:textAppearance="?android:attr/textAppearanceSmall"
-               android:id="@+id/flavor_tv"
-               android:paddingLeft="16dp"
-               android:paddingRight="16dp"
-               android:paddingTop="4dp"
-               android:paddingBottom="6dp"
-               android:layout_below="@+id/content_tv"
-               android:textStyle="italic"
-               android:layout_toStartOf="@+id/rarity_tv" />
-
-
-
-    <TextView
-        android:contentDescription="Mana Costs"
-        android:id="@+id/cmc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:layout_above="@+id/subtype_tv"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true" />
-
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textAppearance="?android:attr/textAppearanceSmall"
-               android:text=""
-               android:id="@+id/powertoughness_tv"
-               android:paddingStart="0dp"
-               android:paddingEnd="16dp"
-               android:paddingBottom="6dp"
-               android:layout_above="@+id/avgCost_tv"
-               android:layout_alignParentEnd="true" />
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="price"
-            android:textColor="@color/black"
-            android:id="@+id/avgCost_tv"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="6dp"
-            android:textAlignment="center"
-            android:layout_below="@+id/flavor_tv"
-            android:layout_alignParentStart="true" />
-       </RelativeLayout>
+            android:layout_height="wrap_content">
+
+            <!--Card Name-->
+            <TextView
+                android:id="@+id/card_list_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/card_list_cmc"
+                android:paddingBottom="12dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="12dp"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                android:textColor="@color/black" />
+
+            <!--Card Subtype-->
+            <TextView
+                android:id="@+id/card_list_subtype"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_list_name"
+                android:layout_toStartOf="@+id/card_list_rarity"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <!--Card Rarity-->
+            <ImageView
+                android:id="@+id/card_list_rarity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/card_list_subtype"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/card_list_name"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:shadowColor="@color/white"
+                android:shadowRadius="2" />
+
+            <!--Card Content-->
+            <TextView
+                android:id="@+id/card_list_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_list_subtype"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:typeface="serif" />
+
+            <!--Card Flavor-->
+            <TextView
+                android:id="@+id/card_list_flavortext"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_list_content"
+                android:layout_toStartOf="@+id/card_list_rarity"
+                android:paddingBottom="6dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="italic"
+                android:layout_alignParentEnd="true" />
+
+            <!--Card ManaCost-->
+            <TextView
+                android:id="@+id/card_list_cmc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/card_list_subtype"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:contentDescription="Mana Costs"
+                android:paddingBottom="12dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="12dp"
+                android:text="" />
+
+            <!--Card Power / Toughness-->
+            <TextView
+                android:id="@+id/card_list_powertoughness"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingBottom="6dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="0dp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_alignEnd="@+id/card_list_rarity"
+                android:layout_below="@+id/card_list_flavortext" />
+
+            <!--Card Price-->
+            <TextView
+                android:id="@+id/card_list_avgcost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/card_list_powertoughness"
+                android:paddingBottom="6dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/black" />
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
-
-    <!--<TextView-->
-        <!--android:id="@+id/color1"-->
-        <!--android:text="1"-->
-        <!--android:paddingStart="16dp"-->
-        <!--android:paddingEnd="16dp"-->
-        <!--android:paddingTop="12dp"-->
-        <!--android:paddingBottom="12dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/color2"-->
-        <!--android:text="2"-->
-        <!--android:paddingStart="16dp"-->
-        <!--android:paddingEnd="16dp"-->
-        <!--android:paddingTop="12dp"-->
-        <!--android:paddingBottom="12dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_toRightOf="@+id/color1"-->
-        <!--android:layout_alignParentTop="true" />-->
-    <!--<TextView-->
-        <!--android:id="@+id/color3"-->
-        <!--android:text="3"-->
-        <!--android:paddingStart="16dp"-->
-        <!--android:paddingEnd="16dp"-->
-        <!--android:paddingTop="12dp"-->
-        <!--android:paddingBottom="12dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_toRightOf="@+id/color2"/>-->
-    <!--<TextView-->
-        <!--android:id="@+id/color4"-->
-        <!--android:text="4"-->
-        <!--android:paddingStart="16dp"-->
-        <!--android:paddingEnd="16dp"-->
-        <!--android:paddingTop="12dp"-->
-        <!--android:paddingBottom="12dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_toRightOf="@+id/color3"/>-->
-    <!--<TextView-->
-        <!--android:id="@+id/color5"-->
-        <!--android:text="5"-->
-        <!--android:paddingStart="16dp"-->
-        <!--android:paddingEnd="16dp"-->
-        <!--android:paddingTop="12dp"-->
-        <!--android:paddingBottom="12dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_toRightOf="@+id/color4"-->
-        <!--android:layout_alignParentTop="true" />-->
-
-
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:layout_marginTop="0dp"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:id="@+id/card_content"-->
-        <!--android:layout_alignBottom="@+id/subtype_tv">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/cardInfo_tv"-->
-            <!--android:padding="16dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"/>-->
-    <!--</LinearLayout>-->
 </LinearLayout>
-    <!--</android.support.v7.widget.CardView>-->
-
-
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent" android:layout_height="match_parent"-->
-    <!--android:id="@+id/CardListRow"-->
-    <!--style="@style/nowCardStyle">-->
-
-
-<!--Card Name-->
-    <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/cardName_tv"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:singleLine="true"-->
-        <!--android:textColor="@color/black"-->
-        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:paddingLeft="15dp"-->
-        <!--android:paddingTop="15dp"-->
-        <!--android:paddingRight="15dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentLeft="true" />-->
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-        <!--android:id="@+id/subtype_tv"-->
-        <!--android:paddingLeft="16dp"-->
-        <!--android:layout_below="@id/cardName_tv"-->
-        <!--/>-->
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-        <!--android:id="@+id/manaCost_tv"-->
-        <!--android:layout_alignTop="@+id/raritytextView"-->
-        <!--android:layout_toLeftOf="@+id/raritytextView" />-->
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:padding="15dp"-->
-        <!--android:text=""-->
-        <!--android:shadowColor="@color/white"-->
-        <!--android:shadowRadius="2"-->
-        <!--android:id="@+id/rarity_tv"-->
-
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentRight="true" />-->
-    <!--<FrameLayout-->
-        <!--android:id="@+id/cardInfoContainer"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_alignBottom="@id/cardName_tv"-->
-        <!--/>-->
-
-
-<!--</RelativeLayout>-->

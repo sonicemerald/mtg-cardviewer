@@ -81,7 +81,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:id="@+id/card_view_subtype"
+                        android:id="@+id/card_list_subtype"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingTop="4dp"
@@ -101,7 +101,7 @@
                         android:shadowColor="@color/white"
                         android:shadowRadius="2"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignBottom="@+id/card_view_subtype" />
+                        android:layout_alignBottom="@+id/card_list_subtype" />
                     <!--Card Text-->
                     <TextView
                         android:layout_width="fill_parent"
@@ -112,7 +112,7 @@
                         android:paddingRight="16dp"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
-                        android:layout_below="@id/card_view_subtype"/>
+                        android:layout_below="@id/card_list_subtype"/>
                     <!--  android:layout_below="@+id/card_view_subtype" -->
 
                     <!--Card Flavor Text-->
@@ -139,13 +139,14 @@
                         android:paddingStart="0dp"
                         android:paddingEnd="16dp"
                         android:paddingBottom="6dp"
-                        android:layout_alignParentEnd="true" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/card_view_flavortext"/>
                     </RelativeLayout>
                     <RelativeLayout
                         android:layout_below="@id/relative1"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/gold">
+                        android:background="@color/primary_dark_material_light">
                         <!--Prices-->
                         <TextView
                             android:layout_width="wrap_content"
