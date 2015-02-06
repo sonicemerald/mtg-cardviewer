@@ -43,23 +43,18 @@ public class CardListAdapter extends ArrayAdapter<Card> {
     @Override
     public View getView(int position, View view, ViewGroup parent){
 
-        Html.ImageGetter imgGetter = symbolGetter.GlyphGetter(parent.getResources());
-
         if(view == null) {
             LayoutInflater inflater;
             inflater = LayoutInflater.from(mContext);
             view = inflater.inflate(R.layout.card_list_row, parent, false);
         }
-
+        CardView cardView = (CardView) view.findViewById(R.id.card_view);
         Card card = this.getItem(position);
-        mSet = card.getSet().toLowerCase();
-
-        //Dealing with card color
         TextView text = (TextView) view.findViewById(R.id.cardName_tv);
         TextView cmc = (TextView) view.findViewById(R.id.cmc_tv);
-        text.setText(card.getName());
-        cmc.setText(symbolGetter.formatStringWithGlyphs(card.getManaCost(), imgGetter));
+        mSet = card.getSet().toLowerCase();
 
+        //region cardColor
         String cardColor;
 
         if (card.getColors().size()>1) {
@@ -69,8 +64,6 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         } else {
             cardColor = "Other";
         }
-
-        CardView cardView = (CardView) view.findViewById(R.id.card_view);
 
         if(cardColor.equals("Gold")) {
             text.setTextColor(Color.BLACK);
@@ -115,6 +108,12 @@ public class CardListAdapter extends ArrayAdapter<Card> {
             if(this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.gray_ripple));
         }
+        //endregion
+        //region CardInfo
+        text.setText(card.getName());
+
+        Html.ImageGetter imgGetter = symbolGetter.GlyphGetter(parent.getResources());
+        cmc.setText(symbolGetter.formatStringWithGlyphs(card.getManaCost(), imgGetter));
 
         String rarity = card.getRarity();
         ImageView textRarity = (ImageView) view.findViewById(R.id.rarity_tv);
@@ -136,8 +135,6 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         }
 
         String type = card.getType();
-
-
         TextView subtypeText = (TextView) view.findViewById(R.id.subtype_tv);
         subtypeText.setText(type);
         subtypeText.setTextColor(parent.getResources().getColor(R.color.black));
@@ -151,27 +148,30 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         flavorText.setTextColor(parent.getResources().getColor(R.color.black));
 
         TextView powertough = (TextView) view.findViewById(R.id.powertoughness_tv);
+        if(card.getType().equals("Enchantment") || card.getType().equals("Instant") || card.getType().equals("Sorcery")){
+            powertough.setVisibility(View.INVISIBLE);
+        }
         if(!(card.getPower()==null)) {
             powertough.setText(card.getPower() + "/" + card.getToughness());
             powertough.setTextColor(parent.getResources().getColor(R.color.black));
         }
-
-
-        if(view.isInEditMode())
-        {
-            text.setText("Name of Card");
-            text.setBackgroundColor(parent.getResources().getColor(R.color.gold));
-            textRarity.setVisibility(View.INVISIBLE);
-        }
-
+        //endregion
+        //region Price
         TextView avgCost = (TextView) view.findViewById(R.id.avgCost_tv);
         if(card.getMedPrice() == null)
             avgCost.setText("getting card price...");
         else {
             avgCost.setText("Average Price: " + card.getMedPrice());
         }
-
-
+        //endregion
+        //region debug
+        if(view.isInEditMode())
+        {
+            text.setText("Name of Card");
+            text.setBackgroundColor(parent.getResources().getColor(R.color.gold));
+            textRarity.setVisibility(View.INVISIBLE);
+        }
+        //endregion
         return view;
     }
 

@@ -69,11 +69,9 @@ public class CardViewFragment extends Fragment {
         Html.ImageGetter imgGetter = symbolGetter.GlyphGetter(parent.getResources());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_card_view, parent, false);
-
-
         mSet = card.getSet().toLowerCase();
 
-        //Dealing with card color
+        //region Colors
         TextView text = (TextView) view.findViewById(R.id.card_view_cardname);
         TextView cmc = (TextView) view.findViewById(R.id.card_view_cmc);
         final ImageView cardImage = (ImageView) view.findViewById(R.id.card_view_image);
@@ -83,9 +81,9 @@ public class CardViewFragment extends Fragment {
 
         String cardColor;
 
-        if (card.getColors().size()>1) {
+        if (card.getColors().size() > 1) {
             cardColor = "Gold";
-        } else if (card.getColors().size() == 1){
+        } else if (card.getColors().size() == 1) {
             cardColor = card.getColors().get(0);
         } else {
             cardColor = "Other";
@@ -93,50 +91,51 @@ public class CardViewFragment extends Fragment {
 
         CardView cardView = (CardView) view.findViewById(R.id.card_view_container);
 
-        if(cardColor.equals("Gold")) {
+        if (cardColor.equals("Gold")) {
             text.setTextColor(Color.BLACK);
             text.setBackgroundColor(parent.getResources().getColor(R.color.gold));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.gold));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.gold_ripple));
         } else if (cardColor.equals("Blue")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.blue));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.blue));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.blue_ripple));
-        } else if (cardColor.equals("Green")){
+        } else if (cardColor.equals("Green")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.green));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.green));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.green_ripple));
         } else if (cardColor.equals("White")) {
             text.setTextColor(Color.BLACK);
             text.setBackgroundColor(parent.getResources().getColor(R.color.white));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.white));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.white_ripple));
         } else if (cardColor.equals("Black")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(Color.BLACK);
             cmc.setBackgroundColor(Color.BLACK);
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.black_ripple));
         } else if (cardColor.equals("Red")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.red));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.red));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.red_ripple));
         } else {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(Color.GRAY);
             cmc.setBackgroundColor(Color.GRAY);
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.gray_ripple));
         }
-
+        //endregion
+        //region images
         final String imageURL = "http://mtgimage.com/set/".concat(mSet).concat("/").concat(card.getImageName());
         Picasso.with(mContext).load(imageURL.concat("-crop.jpg")).into(cardImage);
         cardImage.setOnClickListener(new View.OnClickListener() {
@@ -149,23 +148,23 @@ public class CardViewFragment extends Fragment {
         ImageView textRarity = (ImageView) view.findViewById(R.id.card_view_rarity);
         textRarity.setBackgroundColor(Color.WHITE);
 
-        switch(rarity.charAt(0)){
+        switch (rarity.charAt(0)) {
             case 'C': //common - black
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
                 break;
             case 'U': //uncommon - silver
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
                 break;
             case 'R':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
                 break;
             case 'M':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
                 break;
         }
-
+        //endregion
+        //region cardInfo
         String type = card.getType();
-
         TextView subtypeText = (TextView) view.findViewById(R.id.card_view_subtype);
         subtypeText.setText(type);
         subtypeText.setTextColor(parent.getResources().getColor(R.color.black));
@@ -179,31 +178,33 @@ public class CardViewFragment extends Fragment {
         flavorText.setTextColor(parent.getResources().getColor(R.color.black));
 
         TextView powertough = (TextView) view.findViewById(R.id.card_view_powertoughness);
-        if(!(card.getPower()==null)) {
+        if (!(card.getPower() == null)) {
             powertough.setText(card.getPower() + "/" + card.getToughness());
             powertough.setTextColor(parent.getResources().getColor(R.color.black));
         }
-
-
-        if(view.isInEditMode())
-        {
-            text.setText("Name of Card");
-            text.setBackgroundColor(parent.getResources().getColor(R.color.gold));
-            textRarity.setVisibility(View.INVISIBLE);
-        }
-
+        //endregion
+        //region prices
         TextView lowCost = (TextView) view.findViewById(R.id.card_view_lowcost);
         TextView avgCost = (TextView) view.findViewById(R.id.card_view_avgcost);
         TextView highCost = (TextView) view.findViewById(R.id.card_view_highcost);
 
-        if(card.getMedPrice() == null)
+        if (card.getMedPrice() == null) {
+            lowCost.setVisibility(View.INVISIBLE);
             avgCost.setText("price not available");
-        else {
-            lowCost.setText("Low Price: " + card.getLowPrice());
-            avgCost.setText("Average Price: " + card.getMedPrice());
-            highCost.setText("High Price: " + card.getHighPrice());
+            highCost.setVisibility(View.INVISIBLE);
+        } else {
+            lowCost.setText("Low: " + card.getLowPrice());
+            avgCost.setText("Average: " + card.getMedPrice());
+            highCost.setText("High: " + card.getHighPrice());
         }
-
+        //endregion
+        //region debug
+        if (view.isInEditMode()) {
+            text.setText("Name of Card");
+            text.setBackgroundColor(parent.getResources().getColor(R.color.gold));
+            textRarity.setVisibility(View.INVISIBLE);
+        }
+        //endregion
         return view;
     }
 

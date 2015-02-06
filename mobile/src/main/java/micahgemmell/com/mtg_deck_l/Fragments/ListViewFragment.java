@@ -23,21 +23,14 @@ import java.util.List;
 // The ListViewFragment is a fragment which holds a list. In the application, we used to load the full set of magic oldCards into it, as well as the deck.
 // In this navigationDrawer implementation, we will not be using this listView_Fragment to load the complete list of magic oldCards.
 public class ListViewFragment
-        extends Fragment
-        implements AdapterView.OnItemSelectedListener {
+        extends Fragment {
     //region VARIABLES
     Context context;
     public CardListAdapter adapter; //adapts given set of cards to list
     List<Card> cards;
     ListView listView;
-    OnCardView mListener;
-    OnCardView sListener;
-    private Spinner sortSetSpinner;
-
-    public ArrayAdapter<String> adapterforSetArray;
-    ArrayAdapter<String> adapterforRarityArray;
-    private AdapterView.OnItemSelectedListener listener;
-    private AdapterView.OnItemClickListener clickListener;
+    CardListViewInterface mListener;
+    CardListViewInterface sListener;
     //endregion
 
     //"Constructor" for Fragments;
@@ -51,10 +44,10 @@ public class ListViewFragment
     {
         super.onAttach(activity);
         this.context = activity;
-        if ((activity instanceof OnCardView))
+        if ((activity instanceof CardListViewInterface))
         {
-            this.mListener = ((OnCardView)activity);
-            this.sListener = ((OnCardView)activity);
+            this.mListener = ((CardListViewInterface)activity);
+            this.sListener = ((CardListViewInterface)activity);
             return;
         }
         throw new ClassCastException(activity.toString() + " is lame!");
@@ -85,27 +78,6 @@ public class ListViewFragment
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
     {
         View localView = paramLayoutInflater.inflate(R.layout.fragment_main, paramViewGroup, false);
-        this.sortSetSpinner = (Spinner) localView.findViewById(R.id.filterSetSpinner);
-        String[] cardSet_array = getResources().getStringArray(R.array.setNames);
-        adapterforSetArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, cardSet_array);
-        this.sortSetSpinner.setAdapter(adapterforSetArray);
-        listener = this;
-        this.sortSetSpinner.post(new Runnable() {
-            public void run() {
-                sortSetSpinner.setOnItemSelectedListener(listener);
-                int initialposition = (adapterforSetArray.getCount()-1);
-                int spinnerposition = mListener.getSpinnerPosition();
-                //if(mListener.getSpinnerPosition() = initialposition) { spinnerposition = initialposition; }
-                sortSetSpinner.setSelection(spinnerposition);
-            }
-        });
-
-        Spinner sortRaritySpinner = (Spinner) localView.findViewById(R.id.sortRaritySpinner);
-        String[] rarity_array = getResources().getStringArray(R.array.rarity);
-        adapterforRarityArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, rarity_array);
-        sortRaritySpinner.setAdapter(adapterforRarityArray);
-        sortRaritySpinner.setOnItemSelectedListener(this);
-
         this.listView = (ListView)localView.findViewById(R.id.listView);
         this.adapter = new CardListAdapter(this.context, R.id.card_title, cards);
         AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(adapter);
@@ -136,24 +108,14 @@ public class ListViewFragment
 //        return true;
 //    }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            this.sListener.spinnerItemSelected(position, parent.getId());
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
-
     public void refresh(){
         this.listView.invalidateViews();
     }
 
-    public static abstract interface OnCardView
+    public static abstract interface CardListViewInterface
     {
         public abstract void addCardToDeck(int position);
 //        public abstract void onCardImageViewUpdate(int paramInt, String calledBy);
         public abstract void onCardClicked(int position);
-        public abstract void spinnerItemSelected(int position, int id);
-        public abstract int getSpinnerPosition();
     }
 }

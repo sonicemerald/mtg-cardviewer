@@ -17,7 +17,7 @@ public class DeckFragment
 
     ////    ListView listView;
 //    RecyclerView listView;
-//    ListViewFragment.OnCardView mListener;
+//    ListViewFragment.CardListViewInterface mListener;
 //
     public DeckFragment() {
     }
@@ -33,9 +33,9 @@ public class DeckFragment
 //    {
 //        super.onAttach(paramActivity);
 //        this.context = paramActivity;
-//        if ((paramActivity instanceof ListViewFragment.OnCardView))
+//        if ((paramActivity instanceof ListViewFragment.CardListViewInterface))
 //        {
-//            this.mListener = ((ListViewFragment.OnCardView)paramActivity);
+//            this.mListener = ((ListViewFragment.CardListViewInterface)paramActivity);
 //            return;
 //        }
 //        throw new ClassCastException(paramActivity.toString() + " is lame!");
@@ -104,7 +104,7 @@ public class DeckFragment
 ////        return true;
 ////    }
 //
-//    public static abstract interface OnCardView
+//    public static abstract interface CardListViewInterface
 //    {
 //        public abstract void addCardToDeck(int paramInt, String calledBy);
 //

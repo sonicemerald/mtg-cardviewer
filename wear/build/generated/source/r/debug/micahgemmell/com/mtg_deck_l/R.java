@@ -9,46 +9,14 @@ package micahgemmell.com.mtg_deck_l;
 
 public final class R {
     public static final class attr {
-        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int cameraBearing=0x7f01000a;
-        /** <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int cameraTargetLat=0x7f01000b;
-        /** <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int cameraTargetLng=0x7f01000c;
-        /** <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int cameraTilt=0x7f01000d;
-        /** <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int cameraZoom=0x7f01000e;
+        public static final int circleCrop=0x7f010018;
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
 <p>This may also be a reference to a resource (in the form
@@ -113,6 +81,171 @@ containing a value of this type.
 <colgroup align="left" />
 <colgroup align="left" />
 <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>left</code></td><td>0x03</td><td></td></tr>
+<tr><td><code>top</code></td><td>0x30</td><td></td></tr>
+<tr><td><code>right</code></td><td>0x05</td><td></td></tr>
+<tr><td><code>bottom</code></td><td>0x50</td><td></td></tr>
+<tr><td><code>center_vertical</code></td><td>0x10</td><td></td></tr>
+<tr><td><code>center_horizontal</code></td><td>0x01</td><td></td></tr>
+<tr><td><code>center</code></td><td>0x11</td><td></td></tr>
+</table>
+         */
+        public static final int circular_layout_gravity=0x7f01001b;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int circular_text_size=0x7f01001c;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotColor=0x7f01000c;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotColorSelected=0x7f01000d;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotFadeInDuration=0x7f010011;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotFadeOutDelay=0x7f01000f;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotFadeOutDuration=0x7f010010;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotFadeWhenIdle=0x7f01000e;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotRadius=0x7f01000a;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotRadiusSelected=0x7f01000b;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotShadowColor=0x7f010012;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotShadowDx=0x7f010014;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotShadowDy=0x7f010015;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotShadowRadius=0x7f010013;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int dotSpacing=0x7f010009;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int imageAspectRatio=0x7f010017;
+        /** <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>adjust_width</code></td><td>1</td><td></td></tr>
+<tr><td><code>adjust_height</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int imageAspectRatioAdjust=0x7f010016;
+        /** <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
 <tr><td><code>left</code></td><td>0x01</td><td></td></tr>
 <tr><td><code>top</code></td><td>0x02</td><td></td></tr>
 <tr><td><code>right</code></td><td>0x04</td><td></td></tr>
@@ -121,30 +254,14 @@ containing a value of this type.
 </table>
          */
         public static final int layout_box=0x7f010000;
-        /** <p>Must be one of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>none</code></td><td>0</td><td></td></tr>
-<tr><td><code>normal</code></td><td>1</td><td></td></tr>
-<tr><td><code>satellite</code></td><td>2</td><td></td></tr>
-<tr><td><code>terrain</code></td><td>3</td><td></td></tr>
-<tr><td><code>hybrid</code></td><td>4</td><td></td></tr>
-</table>
-         */
-        public static final int mapType=0x7f010009;
-        /**  Resource id of a layout to use in rectangular containers 
-         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int rectLayout=0x7f010017;
-        /**  Resource id of a layout to use in round containers 
-         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+        public static final int rectLayout=0x7f010019;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int roundLayout=0x7f010018;
+        public static final int roundLayout=0x7f01001a;
         /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
 in (inches), mm (millimeters).
@@ -155,54 +272,6 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int shadow_width=0x7f010007;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int uiCompass=0x7f01000f;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int uiRotateGestures=0x7f010010;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int uiScrollGestures=0x7f010011;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int uiTiltGestures=0x7f010012;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int uiZoomControls=0x7f010013;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int uiZoomGestures=0x7f010014;
         /** <p>Must be an integer value, such as "<code>100</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -211,60 +280,44 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int update_interval=0x7f010008;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int useViewLifecycle=0x7f010015;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int zOrderOnTop=0x7f010016;
     }
     public static final class color {
-        public static final int black=0x7f040000;
-        public static final int blue=0x7f040001;
-        public static final int common_action_bar_splitter=0x7f040002;
-        public static final int common_signin_btn_dark_text_default=0x7f040003;
-        public static final int common_signin_btn_dark_text_disabled=0x7f040004;
-        public static final int common_signin_btn_dark_text_focused=0x7f040005;
-        public static final int common_signin_btn_dark_text_pressed=0x7f040006;
-        public static final int common_signin_btn_default_background=0x7f040007;
-        public static final int common_signin_btn_light_text_default=0x7f040008;
-        public static final int common_signin_btn_light_text_disabled=0x7f040009;
-        public static final int common_signin_btn_light_text_focused=0x7f04000a;
-        public static final int common_signin_btn_light_text_pressed=0x7f04000b;
-        public static final int common_signin_btn_text_dark=0x7f04001b;
-        public static final int common_signin_btn_text_light=0x7f04001c;
-        public static final int dark_blue=0x7f04000c;
-        public static final int disabled_text_light=0x7f04000d;
-        public static final int dismiss_close=0x7f04000e;
-        public static final int dismiss_close_pressed=0x7f04000f;
-        public static final int dismiss_overlay_bg=0x7f040010;
-        public static final int green=0x7f040011;
-        public static final int grey=0x7f040012;
-        public static final int light_grey=0x7f040013;
-        public static final int orange=0x7f040014;
-        public static final int primary_text_dark=0x7f040015;
-        public static final int primary_text_light=0x7f040016;
-        public static final int red=0x7f040017;
-        public static final int secondary_text_light=0x7f040018;
-        public static final int semitransparent_grey=0x7f040019;
-        public static final int white=0x7f04001a;
+        public static final int black=0x7f050000;
+        public static final int blue=0x7f050001;
+        public static final int card_default_background=0x7f050002;
+        public static final int common_action_bar_splitter=0x7f050003;
+        public static final int common_signin_btn_dark_text_default=0x7f050004;
+        public static final int common_signin_btn_dark_text_disabled=0x7f050005;
+        public static final int common_signin_btn_dark_text_focused=0x7f050006;
+        public static final int common_signin_btn_dark_text_pressed=0x7f050007;
+        public static final int common_signin_btn_default_background=0x7f050008;
+        public static final int common_signin_btn_light_text_default=0x7f050009;
+        public static final int common_signin_btn_light_text_disabled=0x7f05000a;
+        public static final int common_signin_btn_light_text_focused=0x7f05000b;
+        public static final int common_signin_btn_light_text_pressed=0x7f05000c;
+        public static final int common_signin_btn_text_dark=0x7f05001d;
+        public static final int common_signin_btn_text_light=0x7f05001e;
+        public static final int dark_blue=0x7f05000d;
+        public static final int dark_grey=0x7f05000e;
+        public static final int disabled_text_light=0x7f05000f;
+        public static final int dismiss_close=0x7f050010;
+        public static final int dismiss_close_pressed=0x7f050011;
+        public static final int dismiss_overlay_bg=0x7f050012;
+        public static final int green=0x7f050013;
+        public static final int grey=0x7f050014;
+        public static final int light_grey=0x7f050015;
+        public static final int orange=0x7f050016;
+        public static final int primary_text_dark=0x7f050017;
+        public static final int primary_text_light=0x7f050018;
+        public static final int red=0x7f050019;
+        public static final int secondary_text_light=0x7f05001a;
+        public static final int semitransparent_grey=0x7f05001b;
+        public static final int white=0x7f05001c;
     }
     public static final class dimen {
-        public static final int card_content_padding_rect_left=0x7f060000;
-        public static final int card_content_padding_rect_right=0x7f060001;
-        public static final int card_content_padding_rect_top=0x7f060002;
-        public static final int close_button_diameter=0x7f060003;
-        public static final int dismiss_padding=0x7f060004;
+        public static final int card_content_padding_rect_top=0x7f070000;
+        public static final int close_button_diameter=0x7f070001;
+        public static final int dismiss_padding=0x7f070002;
     }
     public static final class drawable {
         public static final int card_background=0x7f020000;
@@ -311,115 +364,105 @@ containing a value of this type.
         public static final int generic_confirmation_00173=0x7f020029;
         public static final int generic_confirmation_00174=0x7f02002a;
         public static final int generic_confirmation_00175=0x7f02002b;
-        public static final int generic_confirmation_00176=0x7f02002c;
-        public static final int generic_confirmation_00177=0x7f02002d;
-        public static final int generic_confirmation_00178=0x7f02002e;
-        public static final int generic_confirmation_00179=0x7f02002f;
-        public static final int generic_confirmation_00180=0x7f020030;
-        public static final int generic_confirmation_00181=0x7f020031;
-        public static final int generic_confirmation_00182=0x7f020032;
-        public static final int generic_confirmation_00183=0x7f020033;
-        public static final int generic_confirmation_00184=0x7f020034;
-        public static final int generic_confirmation_00185=0x7f020035;
-        public static final int generic_confirmation_00186=0x7f020036;
-        public static final int generic_confirmation_00187=0x7f020037;
-        public static final int generic_confirmation_00188=0x7f020038;
-        public static final int generic_confirmation_00189=0x7f020039;
-        public static final int generic_confirmation_00190=0x7f02003a;
-        public static final int generic_confirmation_00191=0x7f02003b;
-        public static final int generic_confirmation_00192=0x7f02003c;
-        public static final int generic_confirmation_00193=0x7f02003d;
-        public static final int go_to_phone_00156=0x7f02003e;
-        public static final int go_to_phone_00157=0x7f02003f;
-        public static final int go_to_phone_00158=0x7f020040;
-        public static final int go_to_phone_00159=0x7f020041;
-        public static final int go_to_phone_00160=0x7f020042;
-        public static final int go_to_phone_00161=0x7f020043;
-        public static final int go_to_phone_00162=0x7f020044;
-        public static final int go_to_phone_00163=0x7f020045;
-        public static final int go_to_phone_00164=0x7f020046;
-        public static final int go_to_phone_00165=0x7f020047;
-        public static final int go_to_phone_00166=0x7f020048;
-        public static final int go_to_phone_00167=0x7f020049;
-        public static final int go_to_phone_00168=0x7f02004a;
-        public static final int go_to_phone_00169=0x7f02004b;
-        public static final int go_to_phone_00170=0x7f02004c;
-        public static final int go_to_phone_00171=0x7f02004d;
-        public static final int go_to_phone_00172=0x7f02004e;
-        public static final int go_to_phone_00173=0x7f02004f;
-        public static final int go_to_phone_00174=0x7f020050;
-        public static final int go_to_phone_00175=0x7f020051;
-        public static final int go_to_phone_00176=0x7f020052;
-        public static final int go_to_phone_00177=0x7f020053;
-        public static final int go_to_phone_00178=0x7f020054;
-        public static final int go_to_phone_00185=0x7f020055;
-        public static final int go_to_phone_00186=0x7f020056;
-        public static final int go_to_phone_00187=0x7f020057;
-        public static final int go_to_phone_00188=0x7f020058;
-        public static final int go_to_phone_00189=0x7f020059;
-        public static final int go_to_phone_00190=0x7f02005a;
-        public static final int go_to_phone_00191=0x7f02005b;
-        public static final int go_to_phone_00192=0x7f02005c;
-        public static final int go_to_phone_00193=0x7f02005d;
-        public static final int go_to_phone_00194=0x7f02005e;
-        public static final int go_to_phone_00195=0x7f02005f;
-        public static final int go_to_phone_00196=0x7f020060;
-        public static final int go_to_phone_00197=0x7f020061;
-        public static final int go_to_phone_00198=0x7f020062;
-        public static final int go_to_phone_00199=0x7f020063;
-        public static final int go_to_phone_00200=0x7f020064;
-        public static final int go_to_phone_00210=0x7f020065;
-        public static final int go_to_phone_00211=0x7f020066;
-        public static final int go_to_phone_00212=0x7f020067;
-        public static final int go_to_phone_00213=0x7f020068;
-        public static final int go_to_phone_00214=0x7f020069;
-        public static final int go_to_phone_00215=0x7f02006a;
-        public static final int go_to_phone_00216=0x7f02006b;
-        public static final int go_to_phone_00217=0x7f02006c;
-        public static final int go_to_phone_00218=0x7f02006d;
-        public static final int go_to_phone_00219=0x7f02006e;
-        public static final int go_to_phone_00220=0x7f02006f;
-        public static final int go_to_phone_00221=0x7f020070;
-        public static final int go_to_phone_00222=0x7f020071;
-        public static final int go_to_phone_00223=0x7f020072;
-        public static final int go_to_phone_00224=0x7f020073;
-        public static final int go_to_phone_animation=0x7f020074;
-        public static final int ic_full_cancel=0x7f020075;
-        public static final int ic_full_sad=0x7f020076;
-        public static final int ic_launcher=0x7f020077;
-        public static final int ic_plusone_medium_off_client=0x7f020078;
-        public static final int ic_plusone_small_off_client=0x7f020079;
-        public static final int ic_plusone_standard_off_client=0x7f02007a;
-        public static final int ic_plusone_tall_off_client=0x7f02007b;
-        public static final int powered_by_google_dark=0x7f02007c;
-        public static final int powered_by_google_light=0x7f02007d;
+        public static final int generic_confirmation_00185=0x7f02002c;
+        public static final int generic_confirmation_00186=0x7f02002d;
+        public static final int generic_confirmation_00187=0x7f02002e;
+        public static final int generic_confirmation_00188=0x7f02002f;
+        public static final int generic_confirmation_00189=0x7f020030;
+        public static final int generic_confirmation_00190=0x7f020031;
+        public static final int generic_confirmation_00191=0x7f020032;
+        public static final int generic_confirmation_00192=0x7f020033;
+        public static final int generic_confirmation_00193=0x7f020034;
+        public static final int go_to_phone_00156=0x7f020035;
+        public static final int go_to_phone_00157=0x7f020036;
+        public static final int go_to_phone_00158=0x7f020037;
+        public static final int go_to_phone_00159=0x7f020038;
+        public static final int go_to_phone_00160=0x7f020039;
+        public static final int go_to_phone_00161=0x7f02003a;
+        public static final int go_to_phone_00162=0x7f02003b;
+        public static final int go_to_phone_00163=0x7f02003c;
+        public static final int go_to_phone_00164=0x7f02003d;
+        public static final int go_to_phone_00165=0x7f02003e;
+        public static final int go_to_phone_00166=0x7f02003f;
+        public static final int go_to_phone_00167=0x7f020040;
+        public static final int go_to_phone_00168=0x7f020041;
+        public static final int go_to_phone_00169=0x7f020042;
+        public static final int go_to_phone_00170=0x7f020043;
+        public static final int go_to_phone_00171=0x7f020044;
+        public static final int go_to_phone_00172=0x7f020045;
+        public static final int go_to_phone_00173=0x7f020046;
+        public static final int go_to_phone_00174=0x7f020047;
+        public static final int go_to_phone_00175=0x7f020048;
+        public static final int go_to_phone_00176=0x7f020049;
+        public static final int go_to_phone_00177=0x7f02004a;
+        public static final int go_to_phone_00178=0x7f02004b;
+        public static final int go_to_phone_00185=0x7f02004c;
+        public static final int go_to_phone_00186=0x7f02004d;
+        public static final int go_to_phone_00187=0x7f02004e;
+        public static final int go_to_phone_00188=0x7f02004f;
+        public static final int go_to_phone_00189=0x7f020050;
+        public static final int go_to_phone_00190=0x7f020051;
+        public static final int go_to_phone_00191=0x7f020052;
+        public static final int go_to_phone_00192=0x7f020053;
+        public static final int go_to_phone_00193=0x7f020054;
+        public static final int go_to_phone_00194=0x7f020055;
+        public static final int go_to_phone_00195=0x7f020056;
+        public static final int go_to_phone_00196=0x7f020057;
+        public static final int go_to_phone_00197=0x7f020058;
+        public static final int go_to_phone_00198=0x7f020059;
+        public static final int go_to_phone_00199=0x7f02005a;
+        public static final int go_to_phone_00200=0x7f02005b;
+        public static final int go_to_phone_00210=0x7f02005c;
+        public static final int go_to_phone_00211=0x7f02005d;
+        public static final int go_to_phone_00212=0x7f02005e;
+        public static final int go_to_phone_00213=0x7f02005f;
+        public static final int go_to_phone_00214=0x7f020060;
+        public static final int go_to_phone_00215=0x7f020061;
+        public static final int go_to_phone_00216=0x7f020062;
+        public static final int go_to_phone_00217=0x7f020063;
+        public static final int go_to_phone_00218=0x7f020064;
+        public static final int go_to_phone_00219=0x7f020065;
+        public static final int go_to_phone_00220=0x7f020066;
+        public static final int go_to_phone_00221=0x7f020067;
+        public static final int go_to_phone_00222=0x7f020068;
+        public static final int go_to_phone_00223=0x7f020069;
+        public static final int go_to_phone_00224=0x7f02006a;
+        public static final int go_to_phone_animation=0x7f02006b;
+        public static final int ic_full_cancel=0x7f02006c;
+        public static final int ic_full_sad=0x7f02006d;
+        public static final int ic_launcher=0x7f02006e;
+        public static final int ic_plusone_medium_off_client=0x7f02006f;
+        public static final int ic_plusone_small_off_client=0x7f020070;
+        public static final int ic_plusone_standard_off_client=0x7f020071;
+        public static final int ic_plusone_tall_off_client=0x7f020072;
     }
     public static final class id {
-        public static final int action_error=0x7f05000b;
-        public static final int action_success=0x7f05000d;
-        public static final int addLifeButton=0x7f050013;
-        public static final int all=0x7f050004;
-        public static final int animation=0x7f05000e;
-        public static final int bottom=0x7f050003;
-        public static final int dismiss_overlay_button=0x7f050011;
-        public static final int dismiss_overlay_explain=0x7f050010;
-        public static final int error_message=0x7f05000c;
-        public static final int hybrid=0x7f050009;
-        public static final int left=0x7f050000;
-        public static final int message=0x7f05000f;
-        public static final int none=0x7f050005;
-        public static final int normal=0x7f050006;
-        public static final int right=0x7f050002;
-        public static final int satellite=0x7f050007;
-        public static final int subtractLifeButton=0x7f050014;
-        public static final int terrain=0x7f050008;
-        public static final int text=0x7f050012;
-        public static final int title=0x7f050015;
-        public static final int top=0x7f050001;
-        public static final int watch_view_stub=0x7f05000a;
+        public static final int action_error=0x7f06000c;
+        public static final int action_success=0x7f06000e;
+        public static final int addLifeButton=0x7f060014;
+        public static final int adjust_height=0x7f060007;
+        public static final int adjust_width=0x7f060006;
+        public static final int all=0x7f060004;
+        public static final int animation=0x7f06000f;
+        public static final int bottom=0x7f060003;
+        public static final int center=0x7f06000a;
+        public static final int center_horizontal=0x7f060009;
+        public static final int center_vertical=0x7f060008;
+        public static final int dismiss_overlay_button=0x7f060012;
+        public static final int dismiss_overlay_explain=0x7f060011;
+        public static final int error_message=0x7f06000d;
+        public static final int left=0x7f060000;
+        public static final int message=0x7f060010;
+        public static final int none=0x7f060005;
+        public static final int right=0x7f060002;
+        public static final int subtractLifeButton=0x7f060015;
+        public static final int text=0x7f060013;
+        public static final int title=0x7f060016;
+        public static final int top=0x7f060001;
+        public static final int watch_view_stub=0x7f06000b;
     }
     public static final class integer {
-        public static final int google_play_services_version=0x7f070000;
+        public static final int google_play_services_version=0x7f080000;
     }
     public static final class layout {
         public static final int activity_wear=0x7f030000;
@@ -429,73 +472,76 @@ containing a value of this type.
         public static final int round_activity_wear=0x7f030004;
         public static final int watch_card_content=0x7f030005;
     }
+    public static final class raw {
+        public static final int gtm_analytics=0x7f040000;
+    }
     public static final class string {
-        public static final int app_name=0x7f080000;
-        public static final int common_android_wear_notification_needs_update_text=0x7f080001;
-        public static final int common_android_wear_update_text=0x7f080002;
-        public static final int common_android_wear_update_title=0x7f080003;
-        public static final int common_google_play_services_enable_button=0x7f080004;
-        public static final int common_google_play_services_enable_text=0x7f080005;
-        public static final int common_google_play_services_enable_title=0x7f080006;
-        public static final int common_google_play_services_error_notification_requested_by_msg=0x7f080007;
-        public static final int common_google_play_services_install_button=0x7f080008;
-        public static final int common_google_play_services_install_text_phone=0x7f080009;
-        public static final int common_google_play_services_install_text_tablet=0x7f08000a;
-        public static final int common_google_play_services_install_title=0x7f08000b;
-        public static final int common_google_play_services_invalid_account_text=0x7f08000c;
-        public static final int common_google_play_services_invalid_account_title=0x7f08000d;
-        public static final int common_google_play_services_needs_enabling_title=0x7f08000e;
-        public static final int common_google_play_services_network_error_text=0x7f08000f;
-        public static final int common_google_play_services_network_error_title=0x7f080010;
-        public static final int common_google_play_services_notification_needs_installation_title=0x7f080011;
-        public static final int common_google_play_services_notification_needs_update_title=0x7f080012;
-        public static final int common_google_play_services_notification_ticker=0x7f080013;
-        public static final int common_google_play_services_unknown_issue=0x7f080014;
-        public static final int common_google_play_services_unsupported_text=0x7f080015;
-        public static final int common_google_play_services_unsupported_title=0x7f080016;
-        public static final int common_google_play_services_update_button=0x7f080017;
-        public static final int common_google_play_services_update_text=0x7f080018;
-        public static final int common_google_play_services_update_title=0x7f080019;
-        public static final int common_open_on_phone=0x7f08001a;
-        public static final int common_signin_button_text=0x7f08001b;
-        public static final int common_signin_button_text_long=0x7f08001c;
-        public static final int hello_round=0x7f08001d;
-        public static final int hello_square=0x7f08001e;
+        public static final int app_name=0x7f090000;
+        public static final int common_android_wear_notification_needs_update_text=0x7f090001;
+        public static final int common_android_wear_update_text=0x7f090002;
+        public static final int common_android_wear_update_title=0x7f090003;
+        public static final int common_google_play_services_enable_button=0x7f090004;
+        public static final int common_google_play_services_enable_text=0x7f090005;
+        public static final int common_google_play_services_enable_title=0x7f090006;
+        public static final int common_google_play_services_error_notification_requested_by_msg=0x7f090007;
+        public static final int common_google_play_services_install_button=0x7f090008;
+        public static final int common_google_play_services_install_text_phone=0x7f090009;
+        public static final int common_google_play_services_install_text_tablet=0x7f09000a;
+        public static final int common_google_play_services_install_title=0x7f09000b;
+        public static final int common_google_play_services_invalid_account_text=0x7f09000c;
+        public static final int common_google_play_services_invalid_account_title=0x7f09000d;
+        public static final int common_google_play_services_needs_enabling_title=0x7f09000e;
+        public static final int common_google_play_services_network_error_text=0x7f09000f;
+        public static final int common_google_play_services_network_error_title=0x7f090010;
+        public static final int common_google_play_services_notification_needs_installation_title=0x7f090011;
+        public static final int common_google_play_services_notification_needs_update_title=0x7f090012;
+        public static final int common_google_play_services_notification_ticker=0x7f090013;
+        public static final int common_google_play_services_unknown_issue=0x7f090014;
+        public static final int common_google_play_services_unsupported_text=0x7f090015;
+        public static final int common_google_play_services_unsupported_title=0x7f090016;
+        public static final int common_google_play_services_update_button=0x7f090017;
+        public static final int common_google_play_services_update_text=0x7f090018;
+        public static final int common_google_play_services_update_title=0x7f090019;
+        public static final int common_open_on_phone=0x7f09001a;
+        public static final int common_signin_button_text=0x7f09001b;
+        public static final int common_signin_button_text_long=0x7f09001c;
+        public static final int hello_round=0x7f09001d;
+        public static final int hello_square=0x7f09001e;
     }
     public static final class style {
-        public static final int CardContent=0x7f090000;
-        public static final int CardText=0x7f090001;
-        public static final int CardTitle=0x7f090002;
-        public static final int DismissOverlayText=0x7f090003;
-        public static final int TextAppearance_Wearable_Large=0x7f090004;
-        public static final int TextAppearance_Wearable_Medium=0x7f090005;
-        public static final int TextAppearance_Wearable_Small=0x7f090006;
-        public static final int TextView_Large=0x7f090007;
-        public static final int TextView_Large_Light=0x7f090008;
-        public static final int TextView_Medium=0x7f090009;
-        public static final int TextView_Medium_Light=0x7f09000a;
-        public static final int TextView_Small=0x7f09000b;
-        public static final int TextView_Small_Light=0x7f09000c;
-        public static final int Theme_Wearable=0x7f09000d;
-        public static final int Theme_Wearable_Modal=0x7f09000e;
+        public static final int CardText=0x7f0a0000;
+        public static final int CardTitle=0x7f0a0001;
+        public static final int DismissOverlayText=0x7f0a0002;
+        public static final int DotsPageIndicatorStyle=0x7f0a0003;
+        public static final int TextAppearance_Wearable_Large=0x7f0a0004;
+        public static final int TextAppearance_Wearable_Medium=0x7f0a0005;
+        public static final int TextAppearance_Wearable_Small=0x7f0a0006;
+        public static final int TextView_Large=0x7f0a0007;
+        public static final int TextView_Large_Light=0x7f0a0008;
+        public static final int TextView_Medium=0x7f0a0009;
+        public static final int TextView_Medium_Light=0x7f0a000a;
+        public static final int TextView_Small=0x7f0a000b;
+        public static final int TextView_Small_Light=0x7f0a000c;
+        public static final int Theme_Wearable=0x7f0a000d;
+        public static final int Theme_Wearable_Modal=0x7f0a000e;
     }
     public static final class styleable {
-        /** Attributes that can be used with a BoxInsetLayout.
+        /** Attributes that can be used with a BoxInsetLayout_Layout.
            <p>Includes the following attributes:</p>
            <table>
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #BoxInsetLayout_layout_box micahgemmell.com.mtg_deck_l:layout_box}</code></td><td></td></tr>
+           <tr><td><code>{@link #BoxInsetLayout_Layout_layout_box micahgemmell.com.mtg_deck_l:layout_box}</code></td><td></td></tr>
            </table>
-           @see #BoxInsetLayout_layout_box
+           @see #BoxInsetLayout_Layout_layout_box
          */
-        public static final int[] BoxInsetLayout = {
+        public static final int[] BoxInsetLayout_Layout = {
             0x7f010000
         };
         /**
           <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#layout_box}
-          attribute's value can be found in the {@link #BoxInsetLayout} array.
+          attribute's value can be found in the {@link #BoxInsetLayout_Layout} array.
 
 
           <p>Must be one or more (separated by '|') of the following constant values.</p>
@@ -512,7 +558,7 @@ containing a value of this type.
 </table>
           @attr name micahgemmell.com.mtg_deck_l:layout_box
         */
-        public static final int BoxInsetLayout_layout_box = 0;
+        public static final int BoxInsetLayout_Layout_layout_box = 0;
         /** Attributes that can be used with a CircledImageView.
            <p>Includes the following attributes:</p>
            <table>
@@ -684,51 +730,277 @@ containing a value of this type.
           @attr name micahgemmell.com.mtg_deck_l:update_interval
         */
         public static final int DelayedConfirmationView_update_interval = 0;
-        /** Attributes that can be used with a MapAttrs.
+        /** Attributes that can be used with a DotsPageIndicator.
            <p>Includes the following attributes:</p>
            <table>
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #MapAttrs_cameraBearing micahgemmell.com.mtg_deck_l:cameraBearing}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_cameraTargetLat micahgemmell.com.mtg_deck_l:cameraTargetLat}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_cameraTargetLng micahgemmell.com.mtg_deck_l:cameraTargetLng}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_cameraTilt micahgemmell.com.mtg_deck_l:cameraTilt}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_cameraZoom micahgemmell.com.mtg_deck_l:cameraZoom}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_mapType micahgemmell.com.mtg_deck_l:mapType}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_uiCompass micahgemmell.com.mtg_deck_l:uiCompass}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_uiRotateGestures micahgemmell.com.mtg_deck_l:uiRotateGestures}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_uiScrollGestures micahgemmell.com.mtg_deck_l:uiScrollGestures}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_uiTiltGestures micahgemmell.com.mtg_deck_l:uiTiltGestures}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_uiZoomControls micahgemmell.com.mtg_deck_l:uiZoomControls}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_uiZoomGestures micahgemmell.com.mtg_deck_l:uiZoomGestures}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_useViewLifecycle micahgemmell.com.mtg_deck_l:useViewLifecycle}</code></td><td></td></tr>
-           <tr><td><code>{@link #MapAttrs_zOrderOnTop micahgemmell.com.mtg_deck_l:zOrderOnTop}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotColor micahgemmell.com.mtg_deck_l:dotColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotColorSelected micahgemmell.com.mtg_deck_l:dotColorSelected}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotFadeInDuration micahgemmell.com.mtg_deck_l:dotFadeInDuration}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotFadeOutDelay micahgemmell.com.mtg_deck_l:dotFadeOutDelay}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotFadeOutDuration micahgemmell.com.mtg_deck_l:dotFadeOutDuration}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotFadeWhenIdle micahgemmell.com.mtg_deck_l:dotFadeWhenIdle}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotRadius micahgemmell.com.mtg_deck_l:dotRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotRadiusSelected micahgemmell.com.mtg_deck_l:dotRadiusSelected}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotShadowColor micahgemmell.com.mtg_deck_l:dotShadowColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotShadowDx micahgemmell.com.mtg_deck_l:dotShadowDx}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotShadowDy micahgemmell.com.mtg_deck_l:dotShadowDy}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotShadowRadius micahgemmell.com.mtg_deck_l:dotShadowRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #DotsPageIndicator_dotSpacing micahgemmell.com.mtg_deck_l:dotSpacing}</code></td><td></td></tr>
            </table>
-           @see #MapAttrs_cameraBearing
-           @see #MapAttrs_cameraTargetLat
-           @see #MapAttrs_cameraTargetLng
-           @see #MapAttrs_cameraTilt
-           @see #MapAttrs_cameraZoom
-           @see #MapAttrs_mapType
-           @see #MapAttrs_uiCompass
-           @see #MapAttrs_uiRotateGestures
-           @see #MapAttrs_uiScrollGestures
-           @see #MapAttrs_uiTiltGestures
-           @see #MapAttrs_uiZoomControls
-           @see #MapAttrs_uiZoomGestures
-           @see #MapAttrs_useViewLifecycle
-           @see #MapAttrs_zOrderOnTop
+           @see #DotsPageIndicator_dotColor
+           @see #DotsPageIndicator_dotColorSelected
+           @see #DotsPageIndicator_dotFadeInDuration
+           @see #DotsPageIndicator_dotFadeOutDelay
+           @see #DotsPageIndicator_dotFadeOutDuration
+           @see #DotsPageIndicator_dotFadeWhenIdle
+           @see #DotsPageIndicator_dotRadius
+           @see #DotsPageIndicator_dotRadiusSelected
+           @see #DotsPageIndicator_dotShadowColor
+           @see #DotsPageIndicator_dotShadowDx
+           @see #DotsPageIndicator_dotShadowDy
+           @see #DotsPageIndicator_dotShadowRadius
+           @see #DotsPageIndicator_dotSpacing
          */
-        public static final int[] MapAttrs = {
+        public static final int[] DotsPageIndicator = {
             0x7f010009, 0x7f01000a, 0x7f01000b, 0x7f01000c,
             0x7f01000d, 0x7f01000e, 0x7f01000f, 0x7f010010,
             0x7f010011, 0x7f010012, 0x7f010013, 0x7f010014,
-            0x7f010015, 0x7f010016
+            0x7f010015
         };
         /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#cameraBearing}
-          attribute's value can be found in the {@link #MapAttrs} array.
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotColor}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotColor
+        */
+        public static final int DotsPageIndicator_dotColor = 3;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotColorSelected}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotColorSelected
+        */
+        public static final int DotsPageIndicator_dotColorSelected = 4;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotFadeInDuration}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotFadeInDuration
+        */
+        public static final int DotsPageIndicator_dotFadeInDuration = 8;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotFadeOutDelay}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotFadeOutDelay
+        */
+        public static final int DotsPageIndicator_dotFadeOutDelay = 6;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotFadeOutDuration}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotFadeOutDuration
+        */
+        public static final int DotsPageIndicator_dotFadeOutDuration = 7;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotFadeWhenIdle}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotFadeWhenIdle
+        */
+        public static final int DotsPageIndicator_dotFadeWhenIdle = 5;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotRadius}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotRadius
+        */
+        public static final int DotsPageIndicator_dotRadius = 1;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotRadiusSelected}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotRadiusSelected
+        */
+        public static final int DotsPageIndicator_dotRadiusSelected = 2;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotShadowColor}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotShadowColor
+        */
+        public static final int DotsPageIndicator_dotShadowColor = 9;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotShadowDx}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotShadowDx
+        */
+        public static final int DotsPageIndicator_dotShadowDx = 11;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotShadowDy}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotShadowDy
+        */
+        public static final int DotsPageIndicator_dotShadowDy = 12;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotShadowRadius}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotShadowRadius
+        */
+        public static final int DotsPageIndicator_dotShadowRadius = 10;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#dotSpacing}
+          attribute's value can be found in the {@link #DotsPageIndicator} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:dotSpacing
+        */
+        public static final int DotsPageIndicator_dotSpacing = 0;
+        /** Attributes that can be used with a LoadingImageView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #LoadingImageView_circleCrop micahgemmell.com.mtg_deck_l:circleCrop}</code></td><td></td></tr>
+           <tr><td><code>{@link #LoadingImageView_imageAspectRatio micahgemmell.com.mtg_deck_l:imageAspectRatio}</code></td><td></td></tr>
+           <tr><td><code>{@link #LoadingImageView_imageAspectRatioAdjust micahgemmell.com.mtg_deck_l:imageAspectRatioAdjust}</code></td><td></td></tr>
+           </table>
+           @see #LoadingImageView_circleCrop
+           @see #LoadingImageView_imageAspectRatio
+           @see #LoadingImageView_imageAspectRatioAdjust
+         */
+        public static final int[] LoadingImageView = {
+            0x7f010016, 0x7f010017, 0x7f010018
+        };
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#circleCrop}
+          attribute's value can be found in the {@link #LoadingImageView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:circleCrop
+        */
+        public static final int LoadingImageView_circleCrop = 2;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#imageAspectRatio}
+          attribute's value can be found in the {@link #LoadingImageView} array.
 
 
           <p>Must be a floating point value, such as "<code>1.2</code>".
@@ -737,68 +1009,12 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:cameraBearing
+          @attr name micahgemmell.com.mtg_deck_l:imageAspectRatio
         */
-        public static final int MapAttrs_cameraBearing = 1;
+        public static final int LoadingImageView_imageAspectRatio = 1;
         /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#cameraTargetLat}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:cameraTargetLat
-        */
-        public static final int MapAttrs_cameraTargetLat = 2;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#cameraTargetLng}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:cameraTargetLng
-        */
-        public static final int MapAttrs_cameraTargetLng = 3;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#cameraTilt}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:cameraTilt
-        */
-        public static final int MapAttrs_cameraTilt = 4;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#cameraZoom}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a floating point value, such as "<code>1.2</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:cameraZoom
-        */
-        public static final int MapAttrs_cameraZoom = 5;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#mapType}
-          attribute's value can be found in the {@link #MapAttrs} array.
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#imageAspectRatioAdjust}
+          attribute's value can be found in the {@link #LoadingImageView} array.
 
 
           <p>Must be one of the following constant values.</p>
@@ -808,164 +1024,99 @@ containing a value of this type.
 <colgroup align="left" />
 <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
 <tr><td><code>none</code></td><td>0</td><td></td></tr>
-<tr><td><code>normal</code></td><td>1</td><td></td></tr>
-<tr><td><code>satellite</code></td><td>2</td><td></td></tr>
-<tr><td><code>terrain</code></td><td>3</td><td></td></tr>
-<tr><td><code>hybrid</code></td><td>4</td><td></td></tr>
+<tr><td><code>adjust_width</code></td><td>1</td><td></td></tr>
+<tr><td><code>adjust_height</code></td><td>2</td><td></td></tr>
 </table>
-          @attr name micahgemmell.com.mtg_deck_l:mapType
+          @attr name micahgemmell.com.mtg_deck_l:imageAspectRatioAdjust
         */
-        public static final int MapAttrs_mapType = 0;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#uiCompass}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:uiCompass
-        */
-        public static final int MapAttrs_uiCompass = 6;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#uiRotateGestures}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:uiRotateGestures
-        */
-        public static final int MapAttrs_uiRotateGestures = 7;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#uiScrollGestures}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:uiScrollGestures
-        */
-        public static final int MapAttrs_uiScrollGestures = 8;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#uiTiltGestures}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:uiTiltGestures
-        */
-        public static final int MapAttrs_uiTiltGestures = 9;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#uiZoomControls}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:uiZoomControls
-        */
-        public static final int MapAttrs_uiZoomControls = 10;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#uiZoomGestures}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:uiZoomGestures
-        */
-        public static final int MapAttrs_uiZoomGestures = 11;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#useViewLifecycle}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:useViewLifecycle
-        */
-        public static final int MapAttrs_useViewLifecycle = 12;
-        /**
-          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#zOrderOnTop}
-          attribute's value can be found in the {@link #MapAttrs} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name micahgemmell.com.mtg_deck_l:zOrderOnTop
-        */
-        public static final int MapAttrs_zOrderOnTop = 13;
+        public static final int LoadingImageView_imageAspectRatioAdjust = 0;
         /** Attributes that can be used with a WatchViewStub.
            <p>Includes the following attributes:</p>
            <table>
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #WatchViewStub_rectLayout micahgemmell.com.mtg_deck_l:rectLayout}</code></td><td> Resource id of a layout to use in rectangular containers </td></tr>
-           <tr><td><code>{@link #WatchViewStub_roundLayout micahgemmell.com.mtg_deck_l:roundLayout}</code></td><td> Resource id of a layout to use in round containers </td></tr>
+           <tr><td><code>{@link #WatchViewStub_rectLayout micahgemmell.com.mtg_deck_l:rectLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #WatchViewStub_roundLayout micahgemmell.com.mtg_deck_l:roundLayout}</code></td><td></td></tr>
            </table>
            @see #WatchViewStub_rectLayout
            @see #WatchViewStub_roundLayout
          */
         public static final int[] WatchViewStub = {
-            0x7f010017, 0x7f010018
+            0x7f010019, 0x7f01001a
         };
         /**
-          <p>
-          @attr description
-           Resource id of a layout to use in rectangular containers 
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#rectLayout}
+          attribute's value can be found in the {@link #WatchViewStub} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          <p>This is a private symbol.
           @attr name micahgemmell.com.mtg_deck_l:rectLayout
         */
         public static final int WatchViewStub_rectLayout = 0;
         /**
-          <p>
-          @attr description
-           Resource id of a layout to use in round containers 
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#roundLayout}
+          attribute's value can be found in the {@link #WatchViewStub} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          <p>This is a private symbol.
           @attr name micahgemmell.com.mtg_deck_l:roundLayout
         */
         public static final int WatchViewStub_roundLayout = 1;
+        /** Attributes that can be used with a WearableHeaderTextView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #WearableHeaderTextView_circular_layout_gravity micahgemmell.com.mtg_deck_l:circular_layout_gravity}</code></td><td></td></tr>
+           <tr><td><code>{@link #WearableHeaderTextView_circular_text_size micahgemmell.com.mtg_deck_l:circular_text_size}</code></td><td></td></tr>
+           </table>
+           @see #WearableHeaderTextView_circular_layout_gravity
+           @see #WearableHeaderTextView_circular_text_size
+         */
+        public static final int[] WearableHeaderTextView = {
+            0x7f01001b, 0x7f01001c
+        };
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#circular_layout_gravity}
+          attribute's value can be found in the {@link #WearableHeaderTextView} array.
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>left</code></td><td>0x03</td><td></td></tr>
+<tr><td><code>top</code></td><td>0x30</td><td></td></tr>
+<tr><td><code>right</code></td><td>0x05</td><td></td></tr>
+<tr><td><code>bottom</code></td><td>0x50</td><td></td></tr>
+<tr><td><code>center_vertical</code></td><td>0x10</td><td></td></tr>
+<tr><td><code>center_horizontal</code></td><td>0x01</td><td></td></tr>
+<tr><td><code>center</code></td><td>0x11</td><td></td></tr>
+</table>
+          @attr name micahgemmell.com.mtg_deck_l:circular_layout_gravity
+        */
+        public static final int WearableHeaderTextView_circular_layout_gravity = 0;
+        /**
+          <p>This symbol is the offset where the {@link micahgemmell.com.mtg_deck_l.R.attr#circular_text_size}
+          attribute's value can be found in the {@link #WearableHeaderTextView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name micahgemmell.com.mtg_deck_l:circular_text_size
+        */
+        public static final int WearableHeaderTextView_circular_text_size = 1;
     };
 }

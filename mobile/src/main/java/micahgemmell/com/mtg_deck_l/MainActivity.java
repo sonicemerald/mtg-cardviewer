@@ -9,6 +9,7 @@
     import micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment;
 //    import micahgemmell.com.mtg_deck_l.event.CardPricedEvent;
 //    import micahgemmell.com.mtg_deck_l.event.PleaseGetCardPriceEvent;
+    import micahgemmell.com.mtg_deck_l.Fragments.SpinnerFragment;
     import micahgemmell.com.mtg_deck_l.event.PleaseGetSetPriceEvent;
     import micahgemmell.com.mtg_deck_l.event.PleaseParseCardsEvent;
     import micahgemmell.com.mtg_deck_l.event.SetPricedEvent;
@@ -22,12 +23,9 @@
     import android.app.SearchManager;
     import android.content.Context;
     import android.content.SharedPreferences;
-    import android.graphics.Bitmap;
-    import android.graphics.BitmapFactory;
     import android.os.Bundle;
     import android.support.v7.app.ActionBarDrawerToggle;
     import android.support.v4.widget.DrawerLayout;
-    import android.support.v7.widget.Toolbar;
     import android.util.Log;
     import android.view.Menu;
     import android.view.MenuItem;
@@ -46,15 +44,12 @@
     import java.util.List;
     import java.util.Random;
 
-    import com.loopj.android.http.AsyncHttpClient;
-
-    import com.loopj.android.http.BinaryHttpResponseHandler;
     import com.squareup.otto.Bus;
     import com.squareup.otto.Subscribe;
 
     import static micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment.newInstance;
 
-    public class MainActivity extends Activity implements ListViewFragment.OnCardView, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, CardImageFragment.OnCardImageClicked {
+    public class MainActivity extends Activity implements ListViewFragment.CardListViewInterface, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, SpinnerFragment.SpinnerInterface, CardImageFragment.OnCardImageClicked {
         //region VARIABLES
         //general
         private Bus mBus;
@@ -65,6 +60,7 @@
         //Fragments
         DiceRollerFragment dice;
         ListViewFragment listView_f;
+        SpinnerFragment spinners_f;
         DeckFragment deckView_f;
         CardImageFragment cardImageView_f;
         CardViewFragment cardView_f;
@@ -114,7 +110,6 @@
         RelativeLayout mDrawerRelativeRight;
         CharSequence mDrawerTitle = "Menu";
         String[] navMenuItems;
-        Boolean sort = false;
 
         // Constants for diceroller & lifeviewer
         TextView rollResult;
@@ -162,10 +157,12 @@
 
             adapter = new CardListAdapter(this, R.id.card_title, displayedCards);
             listView_f = newInstance(displayedCards);
+            spinners_f = SpinnerFragment.newInstance();
 
-            if (savedInstanceState == null){
+                if (savedInstanceState == null){
                 getFragmentManager().beginTransaction()
-                        .add(R.id.container, listView_f, listview_tag)
+                        .add(R.id.spinnerContainer, spinners_f)
+                        .add(R.id.listviewContainer, listView_f, listview_tag)
                         .commit();
             }
             // endregion set up main container for the displayedCards
@@ -228,6 +225,7 @@
         public void onCardsPriced(SetPricedEvent event){
             List<CardPrice> PricesArray = event.getPricesArray();
 
+            if(PricesArray.size() > 1) {
                 int i = 0;
                 for (Card a : masterCardList) {
                     a.setHighPrice(PricesArray.get(i).getHigh());
@@ -235,8 +233,11 @@
                     a.setLowPrice(PricesArray.get(i).getLow());
                     i++;
                 }
-            listView_f.adapter.notifyDataSetChanged();
-            Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
+                listView_f.adapter.notifyDataSetChanged();
+                Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("priceError","can't parse " + mSet);
+            }
         }
 
 
@@ -324,7 +325,7 @@
                 case R.id.filterSetSpinner: //sets
                     spinnerPosition = position;
                     sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
-                    mSet = listView_f.adapterforSetArray.getItem(spinnerPosition);
+                    mSet = spinners_f.adapterforSetArray.getItem(spinnerPosition);
 
                     if(mSet.equals("SET"))
                         break;
@@ -333,7 +334,7 @@
                     listView_f.adapter.clear(); //clear the adapters list.
                     masterCardList.clear(); //clear master list of displayedCards
                     getBus().post(new PleaseParseCardsEvent(cardSetCode_array[position]));
-                    Dialog.setMessage("loading " + listView_f.adapterforSetArray.getItem(spinnerPosition) + " cards.");
+                    Dialog.setMessage("loading " + spinners_f.adapterforSetArray.getItem(spinnerPosition) + " cards.");
                     Dialog.setCanceledOnTouchOutside(false);
                     Dialog.show();
                     break;
@@ -416,6 +417,7 @@
             // When card is clicked, display full page
             cardView_f = CardViewFragment.newInstance(displayedCards.get(position));
             getFragmentManager().beginTransaction()
+                    .detach(spinners_f).detach(listView_f)
                     .replace(R.id.container, cardView_f)
                     .addToBackStack("Main list back")
                     .commit();
@@ -664,6 +666,10 @@
             switch (item.getItemId()) {
                 case R.id.sortPrice:
                     sortCardsByPrices();
+                case R.id.resetCardview:
+                    listView_f.adapter.clear();
+                    listView_f.adapter.addAll(masterCardList);
+                    refreshFragment();
             }
 
             if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -673,27 +679,25 @@
         }
 
         void sortCardsByPrices(){
-            if(sort){
                 // low to high
                 Collections.sort(this.displayedCards, new Comparator<Card>() {
                     @Override
                     public int compare(Card one, Card two) {
-                        int num = 0;
-                        if (Double.parseDouble(one.getMedPrice().substring(1)) > Double.parseDouble(two.getMedPrice().substring(1))) {
-                            num = 1;
-                            if (sort){ num = num * -1; sort = false; }
-                            return num;
+                        if (Double.parseDouble(one.getMedPrice().substring(1)) > Double.parseDouble(two.getMedPrice().substring(1))){
+                            Log.d(one.getMedPrice() + " > " + two.getMedPrice(), "sorting");
+                            return -1;
                         }
-                        if (Double.parseDouble(one.getMedPrice().substring(1)) < Double.parseDouble(two.getMedPrice().substring(1))){
-                            num = -1;
-                        if(sort){ num = num * -1; sort = false;}
-                            return num;}
+                        if (Double.parseDouble(one.getMedPrice().substring(1)) < Double.parseDouble(two.getMedPrice().substring(1))) {
+                            Log.d(one.getMedPrice() + " < " + two.getMedPrice(), "sorting");
+                            return 1;
+                        }
                         else // equal
-                            return num;
+                            Log.d(one.getMedPrice() + " = " + two.getMedPrice(), "sorting");
+                            return 0;
                     }
                 });
-            }
-            Toast.makeText(this, "finished sorting", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "sort complete", Toast.LENGTH_SHORT).show();
+            listView_f.adapter.notifyDataSetChanged();
             refreshFragment();
         }
 

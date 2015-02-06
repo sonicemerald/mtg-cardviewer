@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/card_view_title">
+    android:id="@+id/card_view_title"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -18,8 +20,10 @@
         card_view:cardElevation="5dp" >
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="true"
+            >
 
             <!--Card Name-->
             <TextView
@@ -38,69 +42,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/card_view_cmc" />
 
-            <!--Card SubType-->
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/card_view_subtype"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:layout_below="@+id/card_view_image"
-                android:layout_toStartOf="@+id/card_view_rarity" />
-
-            <!--Card Rarity-->
-            <ImageView
-                android:id="@+id/card_view_rarity"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:shadowColor="@color/white"
-                android:shadowRadius="2"
-                android:layout_below="@+id/card_view_image"
-                android:layout_alignParentEnd="true"
-                android:layout_alignBottom="@+id/card_view_subtype" />
-
-            <!--Card Image-->
-            <ImageView
-                android:id="@+id/card_view_image"
-                android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:layout_below="@id/card_view_cardname"
-                android:elevation="8dp"
-                />
-
-            <!--Card Text-->
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/card_view_text"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:layout_below="@+id/card_view_subtype" />
-
-            <!--Card Flavor Text-->
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/card_view_flavortext"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="6dp"
-                android:layout_below="@+id/card_view_text"
-                android:textStyle="italic"
-                android:layout_toStartOf="@+id/card_view_rarity" />
-
             <!--Mana Cost-->
             <TextView
                 android:id="@+id/card_view_cmc"
@@ -115,60 +56,134 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true" />
 
-            <!--Power/Toughness-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text=""
-                android:id="@+id/card_view_powertoughness"
-                android:paddingStart="0dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="6dp"
-                android:layout_above="@+id/card_view_avgcost"
-                android:layout_alignParentEnd="true" />
+            <!--Card Image-->
+            <ImageView
+                android:id="@+id/card_view_image"
+                android:layout_width="fill_parent"
+                android:layout_height="250dp"
+                android:layout_below="@id/card_view_cardname" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <ScrollView
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="low price"
-                android:textColor="@color/black"
-                android:id="@+id/card_view_lowcost"
-                android:paddingStart="16dp"
-                android:paddingBottom="6dp"
-                android:textAlignment="center"
-                android:layout_toStartOf="@+id/card_view_avgcost"
-                android:layout_toEndOf="@+id/card_view_avgcost"
-                android:layout_alignTop="@+id/card_view_highcost"
-                android:layout_alignParentStart="true" />
+                android:layout_below="@id/card_view_image">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relative1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="average price"
-                android:textColor="@color/black"
-                android:id="@+id/card_view_avgcost"
-                android:paddingBottom="6dp"
-                android:textAlignment="center"
-                android:layout_alignTop="@+id/card_view_lowcost"
-                android:layout_centerHorizontal="true"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="high price"
-                android:textColor="@color/black"
-                android:id="@+id/card_view_highcost"
-                android:paddingEnd="16dp"
-                android:paddingBottom="6dp"
-                android:textAlignment="center"
-                android:layout_toEndOf="@+id/card_view_avgcost"
-                android:layout_below="@+id/card_view_flavortext"
-                android:layout_alignEnd="@+id/card_view_rarity" />
+
+                    <!--Card SubType-->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/card_view_subtype"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/card_view_rarity" />
+
+                    <!--Card Rarity-->
+                    <ImageView
+                        android:id="@+id/card_view_rarity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:shadowColor="@color/white"
+                        android:shadowRadius="2"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBottom="@+id/card_view_subtype" />
+                    <!--Card Text-->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/card_view_text"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:layout_below="@id/card_view_subtype"/>
+                    <!--  android:layout_below="@+id/card_view_subtype" -->
+
+                    <!--Card Flavor Text-->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/card_view_flavortext"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="6dp"
+                        android:layout_below="@+id/card_view_text"
+                        android:textStyle="italic" />
+                    <!--android:layout_toStartOf="@+id/card_view_rarity" />-->
+
+                    <!--Power/Toughness-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text=""
+                        android:id="@+id/card_view_powertoughness"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="6dp"
+                        android:layout_alignParentEnd="true" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_below="@id/relative1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gold">
+                        <!--Prices-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="lowcost"
+                            android:textColor="@color/black"
+                            android:id="@+id/card_view_lowcost"
+                            android:padding="6dp"
+                            android:textAlignment="center"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignStart="@id/card_view_avgcost"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:id="@+id/card_view_avgcost"
+                            android:padding="6dp"
+                            android:textAlignment="center"
+                            android:layout_centerInParent="true"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:id="@+id/card_view_highcost"
+                            android:padding="6dp"
+                            android:textAlignment="center"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignEnd="@id/card_view_avgcost"/>
+                        </RelativeLayout>
+                </RelativeLayout>
+            </ScrollView>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
