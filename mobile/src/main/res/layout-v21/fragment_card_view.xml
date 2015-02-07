@@ -98,8 +98,6 @@
                         android:paddingRight="16dp"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
-                        android:shadowColor="@color/white"
-                        android:shadowRadius="2"
                         android:layout_alignParentEnd="true"
                         android:layout_alignBottom="@+id/card_list_subtype" />
                     <!--Card Text-->

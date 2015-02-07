@@ -190,7 +190,7 @@
            mDrawerRelativeLeft = (RelativeLayout) findViewById(R.id.drawer_layout_container_left);
            mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
 
-            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close){
+           mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close){
               public void onDrawerClosed(View view) {
                    getActionBar().setTitle(R.string.app_name);
                    //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
@@ -201,7 +201,7 @@
                }
            };
            mDrawerLayout.setDrawerListener(mDrawerToggle);
-           mDrawerToggle.setDrawerIndicatorEnabled(false);
+           mDrawerToggle.setDrawerIndicatorEnabled(true);
            getActionBar().setHomeButtonEnabled(true);
            //endregion
         }
@@ -245,7 +245,7 @@
             }
         }
 
-
+        //region LIFECYCLE
         protected void onResume(){
             super.onResume();
             //this gets called?
@@ -286,6 +286,7 @@
             spinnerPosition = sharedPrefs.getInt("spinnerPos", spinnerPosition);
             Log.d("restore", "restored");
         }
+        //endregion
 
         public void performSearch(String query){
 

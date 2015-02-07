@@ -13,8 +13,10 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="5dp">
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="0dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardPreventCornerOverlap="true">
         <!--android:foreground="@drawable/ripple"-->
 
 
@@ -62,9 +64,7 @@
                 android:paddingBottom="4dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingTop="4dp"
-                android:shadowColor="@color/white"
-                android:shadowRadius="2" />
+                android:paddingTop="4dp" />
 
             <!--Card Content-->
             <TextView

@@ -94,42 +94,49 @@ public class CardViewFragment extends Fragment {
             text.setTextColor(Color.BLACK);
             text.setBackgroundColor(parent.getResources().getColor(R.color.gold));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.gold));
+            cardImage.setBackgroundColor(parent.getResources().getColor(R.color.gold));
             if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.gold_ripple));
         } else if (cardColor.equals("Blue")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.blue));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.blue));
+            cardImage.setBackgroundColor(parent.getResources().getColor(R.color.blue));
             if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.blue_ripple));
         } else if (cardColor.equals("Green")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.green));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.green));
+            cardImage.setBackgroundColor(parent.getResources().getColor(R.color.green));
             if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.green_ripple));
         } else if (cardColor.equals("White")) {
             text.setTextColor(Color.BLACK);
             text.setBackgroundColor(parent.getResources().getColor(R.color.white));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.white));
+            cardImage.setBackgroundColor(parent.getResources().getColor(R.color.white));
             if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.white_ripple));
         } else if (cardColor.equals("Black")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(Color.BLACK);
             cmc.setBackgroundColor(Color.BLACK);
+            cardImage.setBackgroundColor(Color.BLACK);
             if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.black_ripple));
         } else if (cardColor.equals("Red")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.red));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.red));
+            cardImage.setBackgroundColor(parent.getResources().getColor(R.color.red));
             if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.red_ripple));
         } else {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(Color.GRAY);
             cmc.setBackgroundColor(Color.GRAY);
+            cardImage.setBackgroundColor(Color.GRAY);
             if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.gray_ripple));
         }
@@ -145,20 +152,19 @@ public class CardViewFragment extends Fragment {
         });
         String rarity = card.getRarity();
         ImageView textRarity = (ImageView) view.findViewById(R.id.card_view_rarity);
-        textRarity.setBackgroundColor(Color.WHITE);
 
         switch (rarity.charAt(0)) {
             case 'C': //common - black
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
             case 'U': //uncommon - silver
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
             case 'R':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
             case 'M':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
         }
         //endregion
@@ -167,6 +173,7 @@ public class CardViewFragment extends Fragment {
         TextView subtypeText = (TextView) view.findViewById(R.id.card_list_subtype);
         subtypeText.setText(type);
         subtypeText.setTextColor(parent.getResources().getColor(R.color.black));
+        subtypeText.setMaxLines(1);
 
         TextView contentText = (TextView) view.findViewById(R.id.card_view_text);
         contentText.setText(symbolGetter.formatStringWithGlyphs(card.getText(), imgGetter));

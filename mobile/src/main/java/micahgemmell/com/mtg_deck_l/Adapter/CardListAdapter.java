@@ -118,20 +118,20 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
         String rarity = card.getRarity();
         ImageView textRarity = (ImageView) view.findViewById(R.id.card_list_rarity);
-        textRarity.setBackgroundColor(Color.WHITE);
+        //textRarity.setBackgroundColor();
 
         switch(rarity.charAt(0)){
             case 'C': //common - black
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
                 break;
             case 'U': //uncommon - silver
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
                 break;
             case 'R':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
                 break;
             case 'M':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/64.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
                 break;
         }
 
@@ -139,6 +139,8 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         TextView subtypeText = (TextView) view.findViewById(R.id.card_list_subtype);
         subtypeText.setText(type);
         subtypeText.setTextColor(parent.getResources().getColor(R.color.black));
+        subtypeText.setMaxLines(1);
+
 
         TextView contentText = (TextView) view.findViewById(R.id.card_list_content);
         contentText.setText(symbolGetter.formatStringWithGlyphs(card.getText(), imgGetter));
