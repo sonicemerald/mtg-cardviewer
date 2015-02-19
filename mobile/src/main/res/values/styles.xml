@@ -1,11 +1,12 @@
     <!-- Base application theme. -->
     <resources>
-
-        <style name="AppTheme" parent="android:Theme.DeviceDefault" />
-
-        <style name="nowCardStyle" parent="android:Widget.TextView">
-            <!--<item name="android:background">@drawable/search_bg_shadow2</item>-->
-            <item name="android:gravity">center</item>
-            <item name="android:padding">16dp</item>
+        <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+            <item name="windowActionBar">false</item>
+            <item name="android:windowNoTitle">true</item>
+            <item name="colorPrimaryDark">@color/primaryColorDark</item>
+            <item name="colorPrimary">@color/primaryColor</item>
+            <item name="android:textColorPrimary">@color/textPrimaryColor</item>
+            <item name="android:windowBackground">@color/windowBackground</item>
         </style>
+    <style name="AppTheme" parent="AppTheme.Base" />
     </resources>

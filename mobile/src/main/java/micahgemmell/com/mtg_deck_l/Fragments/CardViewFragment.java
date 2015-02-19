@@ -143,11 +143,18 @@ public class CardViewFragment extends Fragment {
         //endregion
         //region images
         final String imageURL = "http://mtgimage.com/set/".concat(mSet).concat("/").concat(card.getImageName());
-        Picasso.with(mContext).load(imageURL.concat("-crop.jpg")).into(cardImage);
+        Picasso.with(mContext).load(imageURL.concat("-crop.jpg")).fit().centerCrop().into(cardImage);
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onImageClicked(imageURL);
+            }
+        });
+        cardImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mListener.onImageLongClicked(imageURL.concat("-crop.jpg"));
+                return true;
             }
         });
         String rarity = card.getRarity();
@@ -217,12 +224,19 @@ public class CardViewFragment extends Fragment {
         return view;
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
     public void onImageClicked(String image) {
         if (mListener != null) {
             mListener.onImageClicked(image);
         }
     }
+
+    public void onImageLongClicked(String image){
+        if(mListener != null){
+            mListener.onImageLongClicked(image);
+        }
+    }
+
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -258,6 +272,7 @@ public class CardViewFragment extends Fragment {
     public interface OnCardViewFragmentInteraction {
         // TODO: Update argument type and name
         public void onImageClicked(String image);
+        public void onImageLongClicked(String image);
     }
 
 }

@@ -10,13 +10,13 @@
 //    import micahgemmell.com.mtg_deck_l.event.CardPricedEvent;
 //    import micahgemmell.com.mtg_deck_l.event.PleaseGetCardPriceEvent;
     import micahgemmell.com.mtg_deck_l.Fragments.SpinnerFragment;
+    import micahgemmell.com.mtg_deck_l.event.ApiErrorEvent;
     import micahgemmell.com.mtg_deck_l.event.PleaseGetSetPriceEvent;
     import micahgemmell.com.mtg_deck_l.event.PleaseParseCardsEvent;
     import micahgemmell.com.mtg_deck_l.event.SetPricedEvent;
     import micahgemmell.com.mtg_deck_l.helpers.BusProvider;
     import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
 
-    import android.app.Activity;
     import android.app.Fragment;
     import android.app.FragmentTransaction;
     import android.app.ProgressDialog;
@@ -24,17 +24,22 @@
     import android.content.Context;
     import android.content.SharedPreferences;
     import android.os.Bundle;
+    import android.support.v4.view.MenuItemCompat;
+    import android.support.v7.app.ActionBarActivity;
     import android.support.v7.app.ActionBarDrawerToggle;
     import android.support.v4.widget.DrawerLayout;
+    import android.support.v7.widget.Toolbar;
+    import android.support.v7.widget.SearchView;
     import android.util.Log;
+    import android.view.Gravity;
     import android.view.Menu;
     import android.view.MenuItem;
     import android.view.View;
     import android.widget.AdapterView;
     import android.widget.ArrayAdapter;
+    import android.widget.ImageView;
     import android.widget.ListView;
     import android.widget.RelativeLayout;
-    import android.widget.SearchView;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -43,19 +48,24 @@
     import java.util.Comparator;
     import java.util.List;
     import java.util.Random;
+    import java.util.Timer;
 
     import com.squareup.otto.Bus;
     import com.squareup.otto.Subscribe;
+    import com.squareup.picasso.Picasso;
 
     import static micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment.newInstance;
 
-    public class MainActivity extends Activity implements ListViewFragment.CardListViewInterface, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, SpinnerFragment.SpinnerInterface, CardImageFragment.OnCardImageClicked {
+    public class MainActivity extends ActionBarActivity implements ListViewFragment.CardListViewInterface, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, SpinnerFragment.SpinnerInterface, CardImageFragment.OnCardImageClicked {
         //region VARIABLES
         //general
         private Bus mBus;
         private SharedPreferences sharedPrefs;
         private ProgressDialog Dialog;
+        private Boolean gettingPrices = false;
         public String mSet;
+        private Toolbar mToolbar;
+        String favImage;
 
         //Fragments
         DiceRollerFragment dice;
@@ -105,6 +115,7 @@
         ListView NavigationDrawer_listView_Right; // used for sort
         ActionBarDrawerToggle mDrawerToggle;
         DrawerLayout mDrawerLayout;
+        ImageView mDrawerImage;
         DrawerItemClickListener dListener;
         RelativeLayout mDrawerRelativeLeft;
         RelativeLayout mDrawerRelativeRight;
@@ -130,6 +141,15 @@
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            //region Toolbar
+            mToolbar = (Toolbar) findViewById(R.id.toolbarinclude);
+            if(mToolbar != null) {
+                setSupportActionBar(mToolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setHomeButtonEnabled(true);
+                mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+            }
+            //endregion
             Dialog = new ProgressDialog(MainActivity.this);
             sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
             spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
@@ -190,22 +210,33 @@
            mDrawerRelativeLeft = (RelativeLayout) findViewById(R.id.drawer_layout_container_left);
            mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
 
-           mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close){
+           mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close){
               public void onDrawerClosed(View view) {
-                   getActionBar().setTitle(R.string.app_name);
+                  getSupportActionBar().setTitle(R.string.app_name);
                    //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                }
               public void onDrawerOpened(View drawerView) {
-                   getActionBar().setTitle(mDrawerTitle);
+                   getSupportActionBar().setTitle(mDrawerTitle);
                    //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                }
            };
-           mDrawerLayout.setDrawerListener(mDrawerToggle);
            mDrawerToggle.setDrawerIndicatorEnabled(true);
-           getActionBar().setHomeButtonEnabled(true);
+           mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+           //set up drawer image
+           mDrawerImage = (ImageView) findViewById(R.id.drawerImageView);
+           favImage = sharedPrefs.getString("favImage", favImage);
+            if(favImage == null){
+                favImage = "http://mtgimage.com/actual/cardback.hq.jpg";
+            }
+            Picasso.with(this).load(favImage).fit().centerCrop().into(mDrawerImage);
+            mDrawerImage.setClickable(true);
            //endregion
         }
 
+        protected void setActionBarIcon(int iconRes) {
+            mToolbar.setNavigationIcon(iconRes);
+        }
         @Subscribe
         public void onCardsLoaded(CardsParsedEvent event) {
             masterCardList.clear();
@@ -217,6 +248,7 @@
             SearchResults.clear();
             listView_f.adapter.addAll(displayedCards);
             getBus().post(new PleaseGetSetPriceEvent(mSet));
+            gettingPrices = true;
             Dialog.dismiss();
             listView_f.refresh();
         }
@@ -224,24 +256,32 @@
         @Subscribe
         public void onCardsPriced(SetPricedEvent event){
             List<CardPrice> PricesArray = event.getPricesArray();
+            //todo figure out how price sets like innistrad, dragonsmaze.
+            try {
+                if (PricesArray.size() > 1) {
+                    int i = 0;
+                    for (Card a : masterCardList) {
+                        a.setHighPrice(PricesArray.get(i).getHigh());
+                        a.setMedPrice(PricesArray.get(i).getMed());
+                        a.setLowPrice(PricesArray.get(i).getLow());
+                        if (!a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4)))
+                            Log.d("", a.getName() + "does not match" + PricesArray.get(i).getName());
+                        i++;
+                    }
+//                        a.setHighPrice("$0.00");
+//                        a.setMedPrice("$0.00");
+//                        a.setLowPrice("$0.00");
+//                    }
 
-            if(PricesArray.size() > 1) {
-                int i = 0;
-
-                for (Card a : masterCardList) {
-                    a.setHighPrice(PricesArray.get(i).getHigh());
-                    a.setMedPrice(PricesArray.get(i).getMed());
-                    a.setLowPrice(PricesArray.get(i).getLow());
-                    i++;
+                    listView_f.adapter.notifyDataSetChanged();
+                    gettingPrices = false;
+                    Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
                 }
-                Log.d(PricesArray.get(164).getName(), "");
-                Log.d(PricesArray.get(165).getName(), "");
-                Log.d(masterCardList.get(164).getName(),"");
-                Log.d(masterCardList.get(165).getName(),"");
-                listView_f.adapter.notifyDataSetChanged();
-                Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
-            } else {
+            } catch (RuntimeException e) {
                 Log.d("priceError","can't parse " + mSet);
+                if(mSet.equals("Innistrad") || mSet.equals("Dragon's Maze")){
+                    Toast.makeText(this, "Sorry, this set's price has trouble, i'm working on it", Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
@@ -251,6 +291,7 @@
             //this gets called?
             Log.d("", "MainActivity onResume called, " + displayedCards.toString());
             spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
+            favImage = sharedPrefs.getString("favImage", favImage);
             getBus().register(this);
         }
 
@@ -258,6 +299,7 @@
             super.onPause();
             Log.d("", "MainActivity onPause");
             sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
+            sharedPrefs.edit().putString("favImage", favImage).apply();
             getBus().unregister(this);
         }
 
@@ -285,6 +327,15 @@
           //spinnerPosition = savedInstanceState.getInt("spinnerPos");
             spinnerPosition = sharedPrefs.getInt("spinnerPos", spinnerPosition);
             Log.d("restore", "restored");
+        }
+
+        @Override
+        public void onBackPressed() {
+            if(mDrawerLayout.isDrawerOpen(Gravity.START)){
+                mDrawerLayout.closeDrawers();
+                return;
+            }
+            super.onBackPressed();
         }
         //endregion
 
@@ -335,13 +386,13 @@
 
                     if(mSet.equals("SET"))
                         break;
-                    Log.d("SPINNER", "selected ".concat(String.valueOf(spinnerPosition)));
                     displayedCards.clear(); //clear the activities currently displayed displayedCards
                     listView_f.adapter.clear(); //clear the adapters list.
                     masterCardList.clear(); //clear master list of displayedCards
                     getBus().post(new PleaseParseCardsEvent(cardSetCode_array[position]));
                     Dialog.setMessage("loading " + spinners_f.adapterforSetArray.getItem(spinnerPosition) + " cards.");
-                    Dialog.setCanceledOnTouchOutside(false);
+//                    Dialog.setCanceledOnTouchOutside(false);
+                    Dialog.setCancelable(false);
                     Dialog.show();
                     break;
                 case R.id.sortRaritySpinner:
@@ -424,8 +475,8 @@
             cardView_f = CardViewFragment.newInstance(displayedCards.get(position));
             getFragmentManager().beginTransaction()
                     .detach(spinners_f).detach(listView_f)
-                    .replace(R.id.container, cardView_f)
-                    .addToBackStack("Main list back")
+                    .replace(R.id.listviewContainer, cardView_f)
+                    //.addToBackStack("Main list back")
                     .commit();
         }
 
@@ -436,26 +487,7 @@
         }
 
         //region CARD IMAGES
-//        @Override
-//        public void onCardImageViewUpdate(int position, String calledBy) {
-//            String image;
-//            String imageURL;
-//
-//            Log.d("", "Displayed cards is: "+String.valueOf(displayedCards.size()));
-//            cardImageView_f = CardImageFragment.newInstance(displayedCards.get(position));
-//            image = displayedCards.get(position).getImageName();
-//            mSet = cardSetCode_array[spinnerPosition];
-//            imageURL = "http://mtgimage.com/set/".concat(mSet).concat("/").concat(image).concat(".jpg");
-//            Log.d("tag", imageURL);
-//            getCardImageFrom(imageURL);
-//            getFragmentManager().beginTransaction()
-//                    .replace(R.id.container, cardImageView_f)
-//                    .addToBackStack("CardView Back")
-//                    .commit();
-//
-//        }
-
-        //When a user clicks the card image in the CardViewFragment.
+        //Triggers a user clicks the card image in the CardViewFragment.
         @Override
         public void onImageClicked(String image) {
             cardImageView_f = CardImageFragment.newInstance(image);
@@ -465,18 +497,13 @@
                     .commit();
         }
 
-//        public void getCardImageFrom(String imageURL){
-//                AsyncHttpClient client = new AsyncHttpClient();
-//                String[] allowedContentTypes = new String[] { "image/jpeg" };
-//                 client.get(imageURL, new BinaryHttpResponseHandler(allowedContentTypes) {
-//                    @Override
-//                    public void onSuccess(byte[] fileData) {
-//                        Bitmap imageBitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
-//                        if (cardImageView_f != null)
-//                         cardImageView_f.setImageView(imageBitmap);
-//                  }
-//                });
-//            }
+        //When cardImage is long-pressed, set the image as the favorite image
+        @Override
+        public void onImageLongClicked(String image){
+            favImage = image;
+            Toast.makeText(this, "Favorite image replaced", Toast.LENGTH_SHORT).show();
+            Picasso.with(this).load(favImage).fit().centerCrop().into(mDrawerImage);
+        }
         //endregion
 
         //region Dice Roller
@@ -624,19 +651,20 @@
 
             mDrawerLayout.closeDrawer(mDrawerRelativeLeft);
     }
+        //endregion
 
+        //region optionsMenu
         @Override
         public boolean onCreateOptionsMenu(final Menu menu) {
 
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.main, menu);
 
-            final MenuItem mensu = (MenuItem) menu.findItem(R.id.search);
+            final MenuItem searchItem = menu.findItem(R.id.action_search);
             // Associate searchable configuration with the SearchView
             SearchManager searchManager =
                     (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            final SearchView searchView =
-                    (SearchView) menu.findItem(R.id.search).getActionView();
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             SearchView.OnQueryTextListener q = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -644,8 +672,8 @@
                     String searchquery = String.valueOf(searchView.getQuery());
                     Log.d("Search", searchquery);
                     performSearch(searchquery);
-                    sharedPrefs.edit().putString("query", searchquery).commit();
-                    mensu.collapseActionView();
+                    sharedPrefs.edit().putString("query", searchquery).apply();
+                    searchItem.collapseActionView();
                     searchView.setIconified(true);
                     return false;
                 }
@@ -659,7 +687,6 @@
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
 
-
             return true;
         }
 
@@ -671,11 +698,16 @@
 
             switch (item.getItemId()) {
                 case R.id.sortPrice:
-                    sortCardsByPrices();
+                    if(gettingPrices){
+                        Toast.makeText(this, "Please wait", Toast.LENGTH_LONG).show();
+                    } else {
+                    sortCardsByPrice(); }
+                    break;
                 case R.id.resetCardview:
                     listView_f.adapter.clear();
                     listView_f.adapter.addAll(masterCardList);
                     refreshFragment();
+                    break;
             }
 
             if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -683,8 +715,9 @@
             }
             return super.onOptionsItemSelected(item);
         }
+        //endregion
 
-        void sortCardsByPrices(){
+        void sortCardsByPrice(){
                 // low to high
                 Collections.sort(this.displayedCards, new Comparator<Card>() {
                     @Override
@@ -715,8 +748,6 @@
             fragTransaction.commit();
         }
 
-        //endregion
-
         // Use some kind of injection, so that we can swap in a mock for tests.
         // Here we just use simple getter/setter injection for simplicity.
         private Bus getBus() {
@@ -727,6 +758,12 @@
         }
         public void setBus(Bus bus) {
             mBus = bus;
+        }
+
+        @Subscribe
+        public void getError(ApiErrorEvent event) {
+            Toast.makeText(this, "There was an error, check your network", Toast.LENGTH_LONG).show();
+            Dialog.dismiss();
         }
     }
 
