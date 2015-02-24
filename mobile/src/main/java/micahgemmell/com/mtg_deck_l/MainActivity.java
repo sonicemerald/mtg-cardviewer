@@ -307,7 +307,7 @@
         public void enableActionBarAutoHide(final ListView listView) {
             initActionBarAutoHide();
             listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                final static int ITEMS_THRESHOLD = 3;
+                final static int ITEMS_THRESHOLD = 1;
                 int lastFvi = 0;
 
                 @Override
