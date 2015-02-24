@@ -7,8 +7,6 @@
     import micahgemmell.com.mtg_deck_l.Fragments.DeckFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.DiceRollerFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment;
-//    import micahgemmell.com.mtg_deck_l.event.CardPricedEvent;
-//    import micahgemmell.com.mtg_deck_l.event.PleaseGetCardPriceEvent;
     import micahgemmell.com.mtg_deck_l.Fragments.SpinnerFragment;
     import micahgemmell.com.mtg_deck_l.event.ApiErrorEvent;
     import micahgemmell.com.mtg_deck_l.event.PleaseGetSetPriceEvent;
@@ -35,6 +33,8 @@
     import android.view.Menu;
     import android.view.MenuItem;
     import android.view.View;
+    import android.view.animation.DecelerateInterpolator;
+    import android.widget.AbsListView;
     import android.widget.AdapterView;
     import android.widget.ArrayAdapter;
     import android.widget.ImageView;
@@ -48,7 +48,6 @@
     import java.util.Comparator;
     import java.util.List;
     import java.util.Random;
-    import java.util.Timer;
 
     import com.squareup.otto.Bus;
     import com.squareup.otto.Subscribe;
@@ -64,7 +63,7 @@
         private ProgressDialog Dialog;
         private Boolean gettingPrices = false;
         public String mSet;
-        private Toolbar mToolbar;
+        private Toolbar mActionBarToolbar;
         String favImage;
 
         //Fragments
@@ -75,7 +74,7 @@
         CardImageFragment cardImageView_f;
         CardViewFragment cardView_f;
 
-       // ListView container_listView;
+        //ListView container_listView;
         String listview_tag = "listviewFragment";
 
         //Lists
@@ -87,14 +86,6 @@
         List<Card> temp; // used for rarity adapter
         List<Card> rare;
         List<Card> type;
-        //
-    //    private ArrayList<Creature> creatures;
-    //    private ArrayList<Enchantment> enchantments;
-    //    private ArrayList<Instant> instants;
-    //    private ArrayList<Sorcery> sorceries;
-    //    private ArrayList<Land> lands;
-    //    private ArrayList<Artifact> artifacts;
-    //    private ArrayList<Planeswalker> planeswalkers;
 
         String[] cardSet_array; // Set Names
         String[] cardSetCode_array; // Set Codes (used in URL)
@@ -122,6 +113,23 @@
         CharSequence mDrawerTitle = "Menu";
         String[] navMenuItems;
 
+        //Search Overlay
+
+        // variables that control the Action Bar auto hide behavior (aka "quick recall")
+        private boolean mActionBarAutoHideEnabled = false;
+        private int mActionBarAutoHideSensivity = 0;
+        private int mActionBarAutoHideMinY = 0;
+        private int mActionBarAutoHideSignal = 0;
+        private boolean mActionBarShown = true;
+
+        // Durations for certain animations we use:
+        private static final int HEADER_HIDE_ANIM_DURATION = 300;
+
+        // When set, these components will be shown/hidden in sync with the action bar
+        // to implement the "quick recall" effect (the Action Bar and the header views disappear
+        // when you scroll down a list, and reappear quickly when you scroll up).
+        private ArrayList<View> mHideableHeaderViews = new ArrayList<View>();
+
         // Constants for diceroller & lifeviewer
         TextView rollResult;
         TextView livesLeft;
@@ -142,13 +150,7 @@
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             //region Toolbar
-            mToolbar = (Toolbar) findViewById(R.id.toolbarinclude);
-            if(mToolbar != null) {
-                setSupportActionBar(mToolbar);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setHomeButtonEnabled(true);
-                mToolbar.setNavigationIcon(R.drawable.ic_drawer);
-            }
+            mActionBarToolbar = getActionBarToolbar();
             //endregion
             Dialog = new ProgressDialog(MainActivity.this);
             sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
@@ -210,7 +212,7 @@
            mDrawerRelativeLeft = (RelativeLayout) findViewById(R.id.drawer_layout_container_left);
            mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
 
-           mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close){
+           mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mActionBarToolbar, R.string.drawer_open, R.string.drawer_close){
               public void onDrawerClosed(View view) {
                   getSupportActionBar().setTitle(R.string.app_name);
                    //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
@@ -232,11 +234,119 @@
             Picasso.with(this).load(favImage).fit().centerCrop().into(mDrawerImage);
             mDrawerImage.setClickable(true);
            //endregion
+            //region searchOverlay
+            //endregion
         }
 
+        //region actionbar
         protected void setActionBarIcon(int iconRes) {
-            mToolbar.setNavigationIcon(iconRes);
+            mActionBarToolbar.setNavigationIcon(iconRes);
         }
+
+        /**
+         * Initializes the Action Bar auto-hide (aka Quick Recall) effect.
+         */
+        private void initActionBarAutoHide() {
+            mActionBarAutoHideEnabled = true;
+            mActionBarAutoHideMinY = getResources().getDimensionPixelSize(
+                    R.dimen.action_bar_auto_hide_min_y);
+            mActionBarAutoHideSensivity = getResources().getDimensionPixelSize(
+                    R.dimen.action_bar_auto_hide_sensivity);
+        }
+
+        /**
+         * Indicates that the main content has scrolled (for the purposes of showing/hiding
+         * the action bar for the "action bar auto hide" effect). currentY and deltaY may be exact
+         * (if the underlying view supports it) or may be approximate indications:
+         * deltaY may be INT_MAX to mean "scrolled forward indeterminately" and INT_MIN to mean
+         * "scrolled backward indeterminately".  currentY may be 0 to mean "somewhere close to the
+         * start of the list" and INT_MAX to mean "we don't know, but not at the start of the list"
+         */
+        private void onMainContentScrolled(int currentY, int deltaY) {
+            if (deltaY > mActionBarAutoHideSensivity) {
+                deltaY = mActionBarAutoHideSensivity;
+            } else if (deltaY < -mActionBarAutoHideSensivity) {
+                deltaY = -mActionBarAutoHideSensivity;
+            }
+
+            if (Math.signum(deltaY) * Math.signum(mActionBarAutoHideSignal) < 0) {
+                // deltaY is a motion opposite to the accumulated signal, so reset signal
+                mActionBarAutoHideSignal = deltaY;
+            } else {
+                // add to accumulated signal
+                mActionBarAutoHideSignal += deltaY;
+            }
+
+            boolean shouldShow = currentY < mActionBarAutoHideMinY ||
+                    (mActionBarAutoHideSignal <= -mActionBarAutoHideSensivity);
+            autoShowOrHideActionBar(shouldShow);
+        }
+
+        protected Toolbar getActionBarToolbar() {
+            if (mActionBarToolbar == null) {
+                mActionBarToolbar = (Toolbar) findViewById(R.id.toolbarinclude);
+                if (mActionBarToolbar != null) {
+                    setSupportActionBar(mActionBarToolbar);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    getSupportActionBar().setHomeButtonEnabled(true);
+                    mActionBarToolbar.setNavigationIcon(R.drawable.ic_drawer);
+                }
+            }
+            return mActionBarToolbar;
+        }
+
+        protected void autoShowOrHideActionBar(boolean show) {
+            if (show == mActionBarShown) {
+                return;
+            }
+
+            mActionBarShown = show;
+            onActionBarAutoShowOrHide(show);
+        }
+
+        public void enableActionBarAutoHide(final ListView listView) {
+            initActionBarAutoHide();
+            listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                final static int ITEMS_THRESHOLD = 3;
+                int lastFvi = 0;
+
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    onMainContentScrolled(firstVisibleItem <= ITEMS_THRESHOLD ? 0 : Integer.MAX_VALUE,
+                            lastFvi - firstVisibleItem > 0 ? Integer.MIN_VALUE :
+                                    lastFvi == firstVisibleItem ? 0 : Integer.MAX_VALUE
+                    );
+                    lastFvi = firstVisibleItem;
+                }
+            });
+        }
+
+        protected void onActionBarAutoShowOrHide(boolean shown) {
+
+            mHideableHeaderViews.add(findViewById(R.id.toolbarinclude));
+            mHideableHeaderViews.add(findViewById(R.id.spinnerContainer));
+
+            for (View view : mHideableHeaderViews) {
+                if (shown) {
+                    view.animate()
+                            .translationY(0)
+                            .alpha(1)
+                            .setDuration(HEADER_HIDE_ANIM_DURATION)
+                            .setInterpolator(new DecelerateInterpolator());
+                } else {
+                    view.animate()
+                            .translationY(-view.getBottom())
+                            .alpha(0)
+                            .setDuration(HEADER_HIDE_ANIM_DURATION)
+                            .setInterpolator(new DecelerateInterpolator());
+                }
+            }
+        }
+        //endregion
         @Subscribe
         public void onCardsLoaded(CardsParsedEvent event) {
             masterCardList.clear();
@@ -256,23 +366,22 @@
         @Subscribe
         public void onCardsPriced(SetPricedEvent event){
             List<CardPrice> PricesArray = event.getPricesArray();
-            //todo figure out how price sets like innistrad, dragonsmaze.
             try {
                 if (PricesArray.size() > 1) {
                     int i = 0;
                     for (Card a : masterCardList) {
-                        a.setHighPrice(PricesArray.get(i).getHigh());
-                        a.setMedPrice(PricesArray.get(i).getMed());
-                        a.setLowPrice(PricesArray.get(i).getLow());
-                        if (!a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4)))
+                        if (a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))) {
+                            a.setHighPrice(PricesArray.get(i).getHigh());
+                            a.setMedPrice(PricesArray.get(i).getMed());
+                            a.setLowPrice(PricesArray.get(i).getLow());
+                            a.setPriceHidden(false);
+                            i++;
+                        } else if (!a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))){
                             Log.d("", a.getName() + "does not match" + PricesArray.get(i).getName());
-                        i++;
+                            a.setMedPrice("$0.0");
+                            a.setPriceHidden(true);
+                        }
                     }
-//                        a.setHighPrice("$0.00");
-//                        a.setMedPrice("$0.00");
-//                        a.setLowPrice("$0.00");
-//                    }
-
                     listView_f.adapter.notifyDataSetChanged();
                     gettingPrices = false;
                     Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
@@ -280,7 +389,7 @@
             } catch (RuntimeException e) {
                 Log.d("priceError","can't parse " + mSet);
                 if(mSet.equals("Innistrad") || mSet.equals("Dragon's Maze")){
-                    Toast.makeText(this, "Sorry, this set's price has trouble, i'm working on it", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Sorry, this sets price has trouble, i'm working on it", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -331,11 +440,12 @@
 
         @Override
         public void onBackPressed() {
-            if(mDrawerLayout.isDrawerOpen(Gravity.START)){
+            if(mDrawerLayout.isDrawerOpen(Gravity.START))
                 mDrawerLayout.closeDrawers();
-                return;
-            }
-            super.onBackPressed();
+            else if(getFragmentManager().getBackStackEntryCount() > 0)
+                getFragmentManager().popBackStack();
+            else
+                super.onBackPressed();
         }
         //endregion
 
@@ -476,7 +586,7 @@
             getFragmentManager().beginTransaction()
                     .detach(spinners_f).detach(listView_f)
                     .replace(R.id.listviewContainer, cardView_f)
-                    //.addToBackStack("Main list back")
+                    .addToBackStack("back to the mainlist")
                     .commit();
         }
 
@@ -493,7 +603,7 @@
             cardImageView_f = CardImageFragment.newInstance(image);
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, cardImageView_f)
-                    .addToBackStack("card view back")
+                    .addToBackStack("back to cardview")
                     .commit();
         }
 
@@ -505,6 +615,18 @@
             Picasso.with(this).load(favImage).fit().centerCrop().into(mDrawerImage);
         }
         //endregion
+
+        @Override
+        public void onTransform(String card){
+                for (Card a : displayedCards) {
+                    if (a.getName().contains(card)) {
+                        cardView_f = CardViewFragment.newInstance(a);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.listviewContainer, cardView_f)
+                                .commit();
+                    }
+                }
+        }
 
         //region Dice Roller
         @Override
@@ -625,26 +747,26 @@
         private void selectItem(int position){
             // update the main content by replacing fragments
             switch (position){
-                case 0: // first item - "search displayedCards"
+                case 0: // first item - "main"
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.container, listView_f)
-                            .addToBackStack("Search")
+                            .attach(spinners_f).attach(listView_f)
+                            .replace(R.id.listviewContainer, listView_f)
                             .commit();
                     break;
-                case 1: //second item - decks
-                    deckView_f.newInstance(deck);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.container, deckView_f)
-                            .addToBackStack("Your Deck")
-                            .commit();
-                    break;
-                case 2: // third item - life/dice counter
-                    dice = new DiceRollerFragment();
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.container, dice)
-                            .addToBackStack("Dice")
-                            .commit();
-                    break;
+//                case 1: //second item - decks
+//                    deckView_f.newInstance(deck);
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.container, deckView_f)
+//                            .addToBackStack("Your Deck")
+//                            .commit();
+//                    break;
+//                case 2: // third item - life/dice counter
+//                    dice = new DiceRollerFragment();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.container, dice)
+//                            .addToBackStack("Dice")
+//                            .commit();
+//                    break;
                 default:
                     break;
             }
@@ -722,16 +844,15 @@
                 Collections.sort(this.displayedCards, new Comparator<Card>() {
                     @Override
                     public int compare(Card one, Card two) {
-                        if (Double.parseDouble(one.getMedPrice().substring(1)) > Double.parseDouble(two.getMedPrice().substring(1))){
-                            Log.d(one.getMedPrice() + " > " + two.getMedPrice(), "sorting");
-                            return -1;
-                        }
-                        if (Double.parseDouble(one.getMedPrice().substring(1)) < Double.parseDouble(two.getMedPrice().substring(1))) {
-                            Log.d(one.getMedPrice() + " < " + two.getMedPrice(), "sorting");
-                            return 1;
-                        }
-                        else // equal
-                            Log.d(one.getMedPrice() + " = " + two.getMedPrice(), "sorting");
+                            if (Double.parseDouble(one.getMedPrice().substring(1)) > Double.parseDouble(two.getMedPrice().substring(1))) {
+                                Log.d(one.getMedPrice() + " > " + two.getMedPrice(), "sorting");
+                                return -1;
+                            }
+                            if (Double.parseDouble(one.getMedPrice().substring(1)) < Double.parseDouble(two.getMedPrice().substring(1))) {
+                                Log.d(one.getMedPrice() + " < " + two.getMedPrice(), "sorting");
+                                return 1;
+                            } else // equal
+                                Log.d(one.getMedPrice() + " = " + two.getMedPrice(), "sorting");
                             return 0;
                     }
                 });
@@ -765,5 +886,6 @@
             Toast.makeText(this, "There was an error, check your network", Toast.LENGTH_LONG).show();
             Dialog.dismiss();
         }
+
     }
 

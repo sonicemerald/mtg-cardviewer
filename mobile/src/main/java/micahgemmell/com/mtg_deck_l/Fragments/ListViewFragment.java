@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -15,6 +16,7 @@ import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationA
 
 import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.Adapter.CardListAdapter;
+import micahgemmell.com.mtg_deck_l.MainActivity;
 import micahgemmell.com.mtg_deck_l.R;
 
 import java.util.List;
@@ -94,7 +96,7 @@ public class ListViewFragment
                 return false;
             }
         });
-
+        ((MainActivity) getActivity()).enableActionBarAutoHide(listView);
         return localView;
     }
 //

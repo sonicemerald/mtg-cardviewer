@@ -26,9 +26,10 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>Browse Cards</item>
-        <item>Decks</item>
-        <item>Life Counter</item>
+        <item>Browse</item>
+        <!--<item>Top 8 Decks</item>-->
+        <!--<item>Your List</item>-->
+        <!--<item>Life Counter</item>-->
     </string-array>
     <string-array name="nav_drawer_sorting_items">
         <item>All</item>

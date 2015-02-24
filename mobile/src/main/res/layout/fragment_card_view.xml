@@ -22,11 +22,13 @@
         card_view:cardPreventCornerOverlap="true" >
 
 
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:isScrollContainer="true"
-            >
+            android:isScrollContainer="true">
 
             <!--Card Name-->
             <TextView
@@ -66,19 +68,14 @@
                 android:layout_height="232dp"
                 android:layout_below="@id/card_view_cardname" />
 
-            <ScrollView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/card_view_image">
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/card_view_image">
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/relative1">
-
-
                         <!--Card SubType-->
                         <TextView
                             android:layout_width="fill_parent"
@@ -142,6 +139,13 @@
                             android:paddingBottom="6dp"
                             android:layout_alignParentEnd="true"
                             android:layout_below="@id/card_view_flavortext"/>
+                        <Button
+                            android:id="@+id/transform"
+                            android:text="Transform"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/card_view_powertoughness"
+                            android:visibility="gone"/>
                     </RelativeLayout>
                     <RelativeLayout
                         android:layout_below="@id/relative1"
@@ -185,7 +189,7 @@
                             android:layout_alignEnd="@id/card_view_avgcost"/>
                     </RelativeLayout>
                 </RelativeLayout>
-            </ScrollView>
         </RelativeLayout>
+            </ScrollView>
     </android.support.v7.widget.CardView>
 </LinearLayout>

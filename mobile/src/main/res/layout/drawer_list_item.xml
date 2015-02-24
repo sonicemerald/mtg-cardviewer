@@ -2,15 +2,9 @@
     android:id="@+id/drawer_item_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="@color/white"
+    android:padding="20dp"
+    android:background="@color/textPrimaryColor"
+    android:textColor="@color/blue"
     android:textAppearance="?android:attr/textAppearanceLarge"
-    android:gravity="center_horizontal"
+    android:gravity="start"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
-
-<!--
-    android:background="?android:attr/activatedBackgroundIndicator"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:gravity="center_vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:textColor="#fff" -->

@@ -41,9 +41,9 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
 
     @Override
-    public View getView(int position, View view, ViewGroup parent){
+    public View getView(int position, View view, ViewGroup parent) {
 
-        if(view == null) {
+        if (view == null) {
             LayoutInflater inflater;
             inflater = LayoutInflater.from(mContext);
             view = inflater.inflate(R.layout.card_list_row, parent, false);
@@ -58,55 +58,55 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         //region cardColor
         String cardColor;
 
-        if (card.getColors().size()>1) {
+        if (card.getColors().size() > 1) {
             cardColor = "Gold";
-        } else if (card.getColors().size() == 1){
+        } else if (card.getColors().size() == 1) {
             cardColor = this.getItem(position).getColors().get(0);
         } else {
             cardColor = "Other";
         }
 
-        if(cardColor.equals("Gold")) {
+        if (cardColor.equals("Gold")) {
             text.setTextColor(Color.BLACK);
             text.setBackgroundColor(parent.getResources().getColor(R.color.gold));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.gold));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.gold_ripple));
         } else if (cardColor.equals("Blue")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.blue));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.blue));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.blue_ripple));
-        } else if (cardColor.equals("Green")){
+        } else if (cardColor.equals("Green")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.green));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.green));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.green_ripple));
         } else if (cardColor.equals("White")) {
             text.setTextColor(Color.BLACK);
             text.setBackgroundColor(parent.getResources().getColor(R.color.white));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.white));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.white_ripple));
         } else if (cardColor.equals("Black")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(Color.BLACK);
             cmc.setBackgroundColor(Color.BLACK);
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.black_ripple));
         } else if (cardColor.equals("Red")) {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(parent.getResources().getColor(R.color.red));
             cmc.setBackgroundColor(parent.getResources().getColor(R.color.red));
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.red_ripple));
         } else {
             text.setTextColor(Color.WHITE);
             text.setBackgroundColor(Color.GRAY);
             cmc.setBackgroundColor(Color.GRAY);
-            if(this.SDK_INT >= 21)
+            if (this.SDK_INT >= 21)
                 cardView.setForeground(parent.getResources().getDrawable(R.drawable.gray_ripple));
         }
         //endregion
@@ -120,18 +120,18 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         ImageView textRarity = (ImageView) view.findViewById(R.id.card_list_rarity);
         //textRarity.setBackgroundColor();
 
-        switch(rarity.charAt(0)){
+        switch (rarity.charAt(0)) {
             case 'C': //common - black
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
             case 'U': //uncommon - silver
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
             case 'R':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
             case 'M':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/"+mSet+"/"+Character.toLowerCase(rarity.charAt(0))+"/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
                 break;
         }
 
@@ -153,23 +153,27 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         TextView powertough = (TextView) view.findViewById(R.id.card_list_powertoughness);
         powertough.setTextColor(parent.getResources().getColor(R.color.black));
 
-        if(type.equals("Enchantment") || type.equals("Instant") || type.equals("Sorcery") || type.equals("Land")){
+        if (type.equals("Enchantment") || type.equals("Instant") || type.equals("Sorcery") || type.equals("Land")) {
             powertough.setVisibility(View.GONE);
         }
-        if(!(card.getPower() == null)) {
+        if (!(card.getPower() == null)) {
             powertough.setVisibility(View.VISIBLE);
             powertough.setText(card.getPower() + "/" + card.getToughness());
         }
-        if(!(card.getLoyalty() == null)){
+        if (!(card.getLoyalty() == null)) {
             powertough.setVisibility(View.VISIBLE);
             powertough.setText(card.getLoyalty());
         }
         //endregion
         //region Price
         TextView avgCost = (TextView) view.findViewById(R.id.card_list_avgcost);
-        if(card.getMedPrice() == null)
+        if (card.isPriceHidden()) {
+            avgCost.setVisibility(View.INVISIBLE);
+        }
+        if (card.getMedPrice() == null){
+            avgCost.setVisibility(View.VISIBLE);
             avgCost.setText("getting card price...");
-        else {
+        } else {
             avgCost.setText("Average Price: " + card.getMedPrice());
         }
         //endregion

@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -143,7 +144,7 @@ public class CardViewFragment extends Fragment {
         //endregion
         //region images
         final String imageURL = "http://mtgimage.com/set/".concat(mSet).concat("/").concat(card.getImageName());
-        Picasso.with(mContext).load(imageURL.concat("-crop.jpg")).fit().centerCrop().into(cardImage);
+        Picasso.with(mContext).load(imageURL.concat("-crop.hq.jpg")).fit().centerCrop().into(cardImage);
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,7 +154,7 @@ public class CardViewFragment extends Fragment {
         cardImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mListener.onImageLongClicked(imageURL.concat("-crop.jpg"));
+                mListener.onImageLongClicked(imageURL.concat("-crop.hq.jpg"));
                 return true;
             }
         });
@@ -196,6 +197,20 @@ public class CardViewFragment extends Fragment {
             powertough.setTextColor(parent.getResources().getColor(R.color.black));
         }
         //endregion
+        if(card.getLayout().equals("double-faced")){
+            Button button = (Button)view.findViewById(R.id.transform);
+            button.setVisibility(View.VISIBLE);
+            int size = card.getNames().size();
+            int idx = card.getNames().indexOf(card.getName());
+            int newidx = (idx+size+1)%size;
+            final String transform = card.getNames().get(newidx);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onTransform(transform);
+                }
+            });
+        }
         //region prices
         TextView lowCost = (TextView) view.findViewById(R.id.card_view_lowcost);
         TextView avgCost = (TextView) view.findViewById(R.id.card_view_avgcost);
@@ -236,6 +251,12 @@ public class CardViewFragment extends Fragment {
         }
     }
 
+    public void onTransform(String card){
+        if(mListener != null){
+            mListener.onTransform(card);
+        }
+    }
+
 
 
     @Override
@@ -273,6 +294,7 @@ public class CardViewFragment extends Fragment {
         // TODO: Update argument type and name
         public void onImageClicked(String image);
         public void onImageLongClicked(String image);
+        public void onTransform(String card);
     }
 
 }

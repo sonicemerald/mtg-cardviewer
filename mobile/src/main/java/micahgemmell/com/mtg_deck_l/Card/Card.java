@@ -20,6 +20,8 @@ public class Card {
     @Expose
     private String name;
     @Expose
+    private List<String> names = new ArrayList<String>();
+    @Expose
     private List<String> subtypes = new ArrayList<String>();
     @Expose
     private Integer cmc;
@@ -50,6 +52,7 @@ public class Card {
     private String medPrice;
     private String highPrice;
     private String foilPrice;
+    private boolean PriceHidden;
 
     public String getLayout() {
         return layout;
@@ -98,6 +101,10 @@ public class Card {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<String> getNames() { return names; }
+
+    public void setNames(List<String> names) { this.names = names; }
 
     public List<String> getSubtypes() {
         return subtypes;
@@ -235,6 +242,14 @@ public class Card {
 
     public void setFoilPrice(String foilPrice) {
         this.foilPrice = foilPrice;
+    }
+
+    public boolean isPriceHidden() {
+        return PriceHidden;
+    }
+
+    public void setPriceHidden(boolean priceHidden) {
+        PriceHidden = priceHidden;
     }
 
 

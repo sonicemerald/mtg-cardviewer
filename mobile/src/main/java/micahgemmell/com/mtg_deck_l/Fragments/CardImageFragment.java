@@ -59,7 +59,7 @@ public class CardImageFragment extends Fragment
                 mListener.onCardImageClicked();
             }
         });
-        Picasso.with(mContext).load(image.concat(".jpg")).into(this.itemImageView);
+        Picasso.with(mContext).load(image.concat(".hq.jpg")).into(this.itemImageView);
         return localView;
     }
 
