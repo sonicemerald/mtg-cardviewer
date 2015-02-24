@@ -583,6 +583,14 @@
         public void onCardClicked(int position) {
             // When card is clicked, display full page
             cardView_f = CardViewFragment.newInstance(displayedCards.get(position));
+
+            //Show the action bar on the next page.
+                mActionBarToolbar.animate()
+                    .translationY(0)
+                    .alpha(1)
+                    .setDuration(HEADER_HIDE_ANIM_DURATION)
+                    .setInterpolator(new DecelerateInterpolator());
+
             getFragmentManager().beginTransaction()
                     .detach(spinners_f).detach(listView_f)
                     .replace(R.id.listviewContainer, cardView_f)
