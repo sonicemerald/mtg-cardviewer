@@ -6,6 +6,7 @@
     import micahgemmell.com.mtg_deck_l.Fragments.CardViewFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.DeckFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.DiceRollerFragment;
+    import micahgemmell.com.mtg_deck_l.Fragments.ErrorDialogFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.SpinnerFragment;
     import micahgemmell.com.mtg_deck_l.event.ApiErrorEvent;
@@ -15,6 +16,7 @@
     import micahgemmell.com.mtg_deck_l.helpers.BusProvider;
     import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
 
+    import android.app.AlertDialog;
     import android.app.Fragment;
     import android.app.FragmentTransaction;
     import android.app.ProgressDialog;
@@ -22,6 +24,7 @@
     import android.content.Context;
     import android.content.SharedPreferences;
     import android.os.Bundle;
+    import android.support.v4.app.DialogFragment;
     import android.support.v4.view.MenuItemCompat;
     import android.support.v7.app.ActionBarActivity;
     import android.support.v7.app.ActionBarDrawerToggle;
@@ -891,8 +894,9 @@
 
         @Subscribe
         public void getError(ApiErrorEvent event) {
-            Toast.makeText(this, "There was an error, check your network", Toast.LENGTH_LONG).show();
             Dialog.dismiss();
+            DialogFragment dialog = new ErrorDialogFragment();
+            dialog.show(getSupportFragmentManager(), "ErrorDialogFragment");
         }
 
     }

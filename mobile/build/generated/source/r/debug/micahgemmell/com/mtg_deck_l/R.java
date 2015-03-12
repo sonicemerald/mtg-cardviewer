@@ -1800,8 +1800,9 @@ containing a value of this type.
         public static final int drawer_open=0x7f0d002f;
         public static final int hello_blank_fragment=0x7f0d0030;
         public static final int hello_world=0x7f0d0031;
-        public static final int search_hint=0x7f0d0032;
-        public static final int title_activity_search_results=0x7f0d0033;
+        public static final int network_error=0x7f0d0032;
+        public static final int search_hint=0x7f0d0033;
+        public static final int title_activity_search_results=0x7f0d0034;
     }
     public static final class style {
         public static final int AppTheme=0x7f0e0000;
