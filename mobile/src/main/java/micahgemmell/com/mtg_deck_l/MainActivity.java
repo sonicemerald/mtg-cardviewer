@@ -15,6 +15,7 @@
     import micahgemmell.com.mtg_deck_l.event.SetPricedEvent;
     import micahgemmell.com.mtg_deck_l.helpers.BusProvider;
     import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
+    import micahgemmell.com.mtg_deck_l.helpers.CropTransform;
 
     import android.app.AlertDialog;
     import android.app.Fragment;
@@ -497,7 +498,7 @@
                     sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
                     mSet = spinners_f.adapterforSetArray.getItem(spinnerPosition);
 
-                    if(mSet.equals("SET"))
+                    if(mSet.equals("Select a Set"))
                         break;
                     displayedCards.clear(); //clear the activities currently displayed displayedCards
                     listView_f.adapter.clear(); //clear the adapters list.
@@ -623,7 +624,7 @@
         public void onImageLongClicked(String image){
             favImage = image;
             Toast.makeText(this, "Favorite image replaced", Toast.LENGTH_SHORT).show();
-            Picasso.with(this).load(favImage).fit().centerCrop().into(mDrawerImage);
+            Picasso.with(this).load(favImage).transform(new CropTransform()).into(mDrawerImage);
         }
         //endregion
 

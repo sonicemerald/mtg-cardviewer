@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.R;
+import micahgemmell.com.mtg_deck_l.helpers.CropTransform;
 import micahgemmell.com.mtg_deck_l.helpers.symbolGetter;
 
 /**
@@ -143,8 +144,12 @@ public class CardViewFragment extends Fragment {
         }
         //endregion
         //region images
-        final String imageURL = "http://mtgimage.com/set/".concat(mSet).concat("/").concat(card.getImageName());
-        Picasso.with(mContext).load(imageURL.concat("-crop.hq.jpg")).fit().centerCrop().into(cardImage);
+        final String imageURL = "http://magiccards.info/scans/en/".concat(mSet).concat("/").concat(card.getNumber()).concat(".jpg");
+        //final String cropImage = "http://www.mtg.micahgemmell.com/images/crop/".concat(mSet.toUpperCase()).concat("/").concat(card.getImageName()).concat(".crop.jpg");
+        Picasso.with(mContext).load(imageURL).into(cardImage);
+
+        Picasso.with(mContext).load(imageURL).transform(new CropTransform()).into(cardImage);
+
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,7 +159,7 @@ public class CardViewFragment extends Fragment {
         cardImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mListener.onImageLongClicked(imageURL.concat("-crop.hq.jpg"));
+                mListener.onImageLongClicked(imageURL);
                 return true;
             }
         });
@@ -163,16 +168,16 @@ public class CardViewFragment extends Fragment {
 
         switch (rarity.charAt(0)) {
             case 'C': //common - black
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
             case 'U': //uncommon - silver
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
             case 'R':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
             case 'M':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
         }
         //endregion

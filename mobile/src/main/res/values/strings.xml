@@ -52,7 +52,7 @@
 
     <!-- Rarity Spinner -->
     <string-array name="rarity">
-        <item>-</item>
+        <item>Select Rarity</item>
         <item>All</item>
         <item>C</item>
         <item>U</item>

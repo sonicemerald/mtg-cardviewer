@@ -122,16 +122,16 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
         switch (rarity.charAt(0)) {
             case 'C': //common - black
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
             case 'U': //uncommon - silver
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
             case 'R':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
             case 'M':
-                Picasso.with(mContext).load("http://mtgimage.com/actual/symbol/set/" + mSet + "/" + Character.toLowerCase(rarity.charAt(0)) + "/48.png").into(textRarity);
+                Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
                 break;
         }
 
