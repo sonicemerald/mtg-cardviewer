@@ -17,7 +17,7 @@ import retrofit.client.Response;
  */
 public class CardApiClient {
     private Bus mBus;
-    private CardApi mApi;
+    private static CardApi mApi;
 
     public CardApiClient(CardApi api, Bus bus) {
         mBus = bus;

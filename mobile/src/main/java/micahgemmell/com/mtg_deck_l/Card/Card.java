@@ -45,6 +45,8 @@ public class Card {
     private String number;
     @Expose
     private String imageName;
+    @Expose
+    private String magicCardsInfoCode;
     //@Expose
     private String set;
     private String setName;
@@ -200,6 +202,14 @@ public class Card {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public String getMagicCardsInfoCode() {
+        return magicCardsInfoCode;
+    }
+
+    public void setMagicCardsInfoCode(String magicCardsInfoCode) {
+        this.magicCardsInfoCode = magicCardsInfoCode;
     }
 
     public String getSet() {return set;}

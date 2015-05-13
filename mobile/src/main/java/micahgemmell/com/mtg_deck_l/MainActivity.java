@@ -393,7 +393,7 @@
             } catch (RuntimeException e) {
                 Log.d("priceError","can't parse " + mSet);
                 if(mSet.equals("Innistrad") || mSet.equals("Dragon's Maze")){
-                    Toast.makeText(this, "Sorry, this sets price has trouble, i'm working on it", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Sorry, this sets price has trouble, I'm working on it", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -601,6 +601,17 @@
                     .addToBackStack("back to the mainlist")
                     .commit();
         }
+
+/*      @Override
+        public void onSwipeRefresh() {
+            //refresh the prices.
+            if(gettingPrices){
+                Toast.makeText(this, "Hold your horses, I'm getting prices", Toast.LENGTH_LONG).show();
+                return;
+            }
+            getBus().post(new PleaseGetSetPriceEvent(mSet));
+            gettingPrices = true;
+        }*/
 
         @Override
         public void onCardImageClicked(){

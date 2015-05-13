@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.R;
 import micahgemmell.com.mtg_deck_l.helpers.CropTransform;
+import micahgemmell.com.mtg_deck_l.helpers.CropTransform_gatherer;
 import micahgemmell.com.mtg_deck_l.helpers.symbolGetter;
 
 /**
@@ -144,12 +145,19 @@ public class CardViewFragment extends Fragment {
         }
         //endregion
         //region images
-        final String imageURL = "http://magiccards.info/scans/en/".concat(mSet).concat("/").concat(card.getNumber()).concat(".jpg");
-        //final String cropImage = "http://www.mtg.micahgemmell.com/images/crop/".concat(mSet.toUpperCase()).concat("/").concat(card.getImageName()).concat(".crop.jpg");
-        Picasso.with(mContext).load(imageURL).into(cardImage);
-
-        Picasso.with(mContext).load(imageURL).transform(new CropTransform()).into(cardImage);
-
+        String imageToUse;
+        try {
+            //default: use magiccards.info
+            imageToUse = "http://magiccards.info/scans/en/".concat(mSet.toLowerCase()).concat("/").concat(card.getNumber()).concat(".jpg");
+            Picasso.with(mContext).load(imageToUse).into(cardImage);
+            Picasso.with(mContext).load(imageToUse).transform(new CropTransform()).into(cardImage);
+        } catch (NullPointerException a){
+            //useGatherer
+            imageToUse = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=".concat(card.getMultiverseid().toString()).concat("&type=card");
+            Picasso.with(mContext).load(imageToUse).into(cardImage);
+            Picasso.with(mContext).load(imageToUse).transform(new CropTransform_gatherer()).into(cardImage);
+         }
+        final String imageURL = imageToUse;
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

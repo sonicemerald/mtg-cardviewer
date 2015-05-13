@@ -38,16 +38,22 @@ public class mtgApplication extends Application {
     private CardApi buildCardApi(){
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-        return new RestAdapter.Builder().setEndpoint("http://www.mtgjson.com/json")
-                .setConverter(new GsonConverter(gson)).build().create(CardApi.class);
+        RestAdapter adapter = (new RestAdapter.Builder())
+                .setEndpoint("http://www.mtgjson.com/json")
+                .setConverter(new GsonConverter(gson))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        return adapter.create(CardApi.class);
     }
 
     private SetPriceApi buildPriceApi(){
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-        return new RestAdapter.Builder().setEndpoint("http://notional-buffer-750.appspot.com/api/tcgplayer")
-                .setConverter(new GsonConverter(gson)).build().create(SetPriceApi.class);
+        RestAdapter adapter = (new RestAdapter.Builder())
+                .setEndpoint("http://notional-buffer-750.appspot.com/api/tcgplayer")
+                .setConverter(new GsonConverter(gson))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        return adapter.create(SetPriceApi.class);
     }
 
 }

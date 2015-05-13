@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,7 @@ public class ListViewFragment
     public CardListAdapter adapter; //adapts given set of cards to list
     List<Card> cards;
     ListView listView;
+    SwipeRefreshLayout swipeLayout;
     CardListViewInterface mListener;
     CardListViewInterface sListener;
     //endregion
@@ -74,11 +77,28 @@ public class ListViewFragment
         adapter.addAll(this.cards);
     }
 
-
-
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
     {
         View localView = paramLayoutInflater.inflate(R.layout.fragment_main, paramViewGroup, false);
+/*
+        swipeLayout = (SwipeRefreshLayout)localView.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        mListener.onSwipeRefresh();
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
+        swipeLayout.setColorSchemeColors(R.color.gold, R.color.green, R.color.blue, R.color.black, R.color.white, R.color.red);
+        swipeLayout.setProgressViewOffset(true, getResources().getDimensionPixelSize(R.dimen.action_bar_height), getResources().getDimensionPixelSize(R.dimen.action_bar_auto_hide_min_y));
+        swipeLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.holo_orange_light));
+*/
         this.listView = (ListView)localView.findViewById(R.id.listView);
         this.adapter = new CardListAdapter(this.context, R.id.card_list_layout, cards);
         AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(adapter);
@@ -118,5 +138,6 @@ public class ListViewFragment
         public abstract void addCardToDeck(int position);
 //        public abstract void onCardImageViewUpdate(int paramInt, String calledBy);
         public abstract void onCardClicked(int position);
+        //public abstract void onSwipeRefresh();
     }
 }
