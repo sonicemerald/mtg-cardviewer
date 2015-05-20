@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
     <resources>
         <string-array name="setNames">
+            <item>Select a Set</item>
             <item>Limited Edition Alpha</item>
             <item>Limited Edition Beta</item>
             <item>Unlimited Edition</item>
@@ -136,10 +137,11 @@
             <item>Fate Reforged</item>
             <item>Duel Decks: Elspeth vs. Kiora</item>
             <item>Dragons of Tarkir</item>
-            <item>Select a Set</item>
+            <item>Modern Masters 2015</item>
         </string-array>
 
         <string-array name="sets">
+            <item>SET</item>
             <item>LEA</item>
             <item>LEB</item>
             <item>2ED</item>
@@ -275,6 +277,6 @@
             <item>FRF</item>
             <item>DDO</item>
             <item>DTK</item>
-            <item>SET</item>
+            <item>MM2</item>
         </string-array>
     </resources>

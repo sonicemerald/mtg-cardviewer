@@ -1,5 +1,6 @@
 package micahgemmell.com.mtg_deck_l.Card;
 
+        import java.text.Normalizer;
         import java.util.ArrayList;
         import java.util.List;
         import com.google.gson.annotations.Expose;

@@ -47,6 +47,7 @@
     import android.widget.TextView;
     import android.widget.Toast;
 
+    import java.text.Normalizer;
     import java.util.ArrayList;
     import java.util.Collections;
     import java.util.Comparator;
@@ -235,7 +236,7 @@
             if(favImage == null){
                 favImage = "http://mtgimage.com/actual/cardback.hq.jpg";
             }
-            Picasso.with(this).load(favImage).fit().centerCrop().into(mDrawerImage);
+            Picasso.with(this).load(favImage).transform(new CropTransform()).into(mDrawerImage);
             mDrawerImage.setClickable(true);
            //endregion
             //region searchOverlay
@@ -374,6 +375,9 @@
                 if (PricesArray.size() > 1) {
                     int i = 0;
                     for (Card a : masterCardList) {
+                        if(a.getName().charAt(0) == 'Æ'){
+                            a.setName("Ae".concat(a.getName().substring(1, a.getName().length())));
+                        }
                         if (a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
@@ -645,6 +649,7 @@
                     if (a.getName().contains(card)) {
                         cardView_f = CardViewFragment.newInstance(a);
                         getFragmentManager().beginTransaction()
+                                .addToBackStack("tranform")
                                 .replace(R.id.listviewContainer, cardView_f)
                                 .commit();
                     }
@@ -851,6 +856,9 @@
                 case R.id.resetCardview:
                     listView_f.adapter.clear();
                     listView_f.adapter.addAll(masterCardList);
+                    getBus().post(new PleaseGetSetPriceEvent(mSet));
+                    gettingPrices = true;
+                    Toast.makeText(this, "getting prices", Toast.LENGTH_SHORT).show();
                     refreshFragment();
                     break;
             }

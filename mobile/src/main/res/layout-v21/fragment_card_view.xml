@@ -70,6 +70,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -139,6 +140,13 @@
                         android:paddingBottom="6dp"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@id/card_view_flavortext"/>
+                    <Button
+                        android:id="@+id/transform"
+                        android:text="Transform"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/card_view_powertoughness"
+                        android:visibility="gone"/>
                     </RelativeLayout>
                     <RelativeLayout
                         android:layout_below="@id/relative1"
