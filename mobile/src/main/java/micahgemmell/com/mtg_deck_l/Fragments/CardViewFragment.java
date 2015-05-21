@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.R;
 import micahgemmell.com.mtg_deck_l.helpers.CropTransform;
@@ -145,18 +148,28 @@ public class CardViewFragment extends Fragment {
         }
         //endregion
         //region images
-        String imageToUse;
+        String imageToUse = "";
+        String contentType = "";
+        //default: use magiccards.info
         try {
-            //default: use magiccards.info
             imageToUse = "http://magiccards.info/scans/en/".concat(mSet.toLowerCase()).concat("/").concat(card.getNumber()).concat(".jpg");
+            URL url = new URL(imageToUse);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            contentType = connection.getContentType();
+        } catch (Exception e){
+            //
+        }
+
+        if(contentType.equals("image/jpeg")){
             Picasso.with(mContext).load(imageToUse).into(cardImage);
             Picasso.with(mContext).load(imageToUse).transform(new CropTransform()).into(cardImage);
-        } catch (NullPointerException a){
-            //useGatherer
+        } else {
+            // UseGatherer
             imageToUse = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=".concat(card.getMultiverseid().toString()).concat("&type=card");
             Picasso.with(mContext).load(imageToUse).into(cardImage);
             Picasso.with(mContext).load(imageToUse).transform(new CropTransform_gatherer()).into(cardImage);
-         }
+        }
+
         final String imageURL = imageToUse;
         cardImage.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -47,7 +47,8 @@
         android:id="@+id/drawerImageView"
         android:layout_width="match_parent"
         android:contentDescription="Favorite Image"
-        android:layout_height="160dp"
+        android:backgroundTint="@android:color/background_dark"
+        android:layout_height="200dp"
         android:clickable="true"
         />
 
@@ -71,6 +72,7 @@
             android:id="@+id/right_drawer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:paddingTop="20dp"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"

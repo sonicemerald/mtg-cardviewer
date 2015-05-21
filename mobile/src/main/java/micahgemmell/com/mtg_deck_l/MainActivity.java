@@ -375,17 +375,26 @@
                 if (PricesArray.size() > 1) {
                     int i = 0;
                     for (Card a : masterCardList) {
-                        if(a.getName().charAt(0) == 'Æ'){
-                            a.setName("Ae".concat(a.getName().substring(1, a.getName().length())));
+                        String name = a.getName();
+                        if(name.charAt(0) == 'Æ'){
+                            name = "AE".concat(name.substring(1, name.length()));
                         }
-                        if (a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))) {
+                        name = Normalizer.normalize(name, Normalizer.Form.NFD)
+                                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+                        if (name.substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if (!a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))){
-                            Log.d("", a.getName() + "does not match" + PricesArray.get(i).getName());
+                        } else if(a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))) {
+                            a.setHighPrice(PricesArray.get(i).getHigh());
+                            a.setMedPrice(PricesArray.get(i).getMed());
+                            a.setLowPrice(PricesArray.get(i).getLow());
+                            a.setPriceHidden(false);
+                            i++;
+                        } else if (!name.substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))){
+                            Log.d("", name + "does not match" + PricesArray.get(i).getName());
                             a.setMedPrice("$0.0");
                             a.setPriceHidden(true);
                         }
@@ -462,6 +471,7 @@
             Log.d("enteredSearch", "hi");
             SearchResults.clear();
 
+            cQuery = "";
             cQuery = query;
 
             if (cQuery.length()>1)
@@ -855,11 +865,13 @@
                     break;
                 case R.id.resetCardview:
                     listView_f.adapter.clear();
+                    displayedCards.clear();
+                    displayedCards.addAll(masterCardList);
                     listView_f.adapter.addAll(masterCardList);
                     getBus().post(new PleaseGetSetPriceEvent(mSet));
                     gettingPrices = true;
                     Toast.makeText(this, "getting prices", Toast.LENGTH_SHORT).show();
-                    refreshFragment();
+                    //refreshFragment();
                     break;
             }
 

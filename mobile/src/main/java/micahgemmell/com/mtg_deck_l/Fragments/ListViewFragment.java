@@ -105,6 +105,8 @@ public class ListViewFragment
         alphaInAnimationAdapter.setAbsListView(this.listView);
         this.listView.setAdapter(alphaInAnimationAdapter);
         this.listView.setDivider(null);
+        this.listView.setFastScrollEnabled(true);
+
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

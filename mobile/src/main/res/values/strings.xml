@@ -54,11 +54,11 @@
     <string-array name="rarity">
         <item>Select Rarity</item>
         <item>All</item>
-        <item>C</item>
-        <item>U</item>
-        <item>R</item>
-        <item>MR</item>
-        <item>TS</item>
+        <item>Common</item>
+        <item>Uncommon</item>
+        <item>Rare</item>
+        <item>Mythic</item>
+        <item>Timeshifted</item>
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
