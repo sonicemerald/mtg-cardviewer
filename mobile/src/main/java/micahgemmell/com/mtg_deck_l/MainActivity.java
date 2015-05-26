@@ -362,6 +362,7 @@
             displayedTypes.addAll(masterCardList);
             SearchResults.clear();
             listView_f.adapter.addAll(displayedCards);
+            listView_f.adapter.indexcardsAlphabetically();
             getBus().post(new PleaseGetSetPriceEvent(mSet));
             gettingPrices = true;
             Dialog.dismiss();
@@ -377,7 +378,7 @@
                     for (Card a : masterCardList) {
                         String name = a.getName();
                         if(name.charAt(0) == 'Æ'){
-                            name = "AE".concat(name.substring(1, name.length()));
+                            name = "Ae".concat(name.substring(1, name.length()));
                         }
                         name = Normalizer.normalize(name, Normalizer.Form.NFD)
                                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");

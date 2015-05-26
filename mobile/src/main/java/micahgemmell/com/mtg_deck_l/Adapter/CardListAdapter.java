@@ -5,26 +5,36 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.R;
 import micahgemmell.com.mtg_deck_l.helpers.symbolGetter;
 
 
-public class CardListAdapter extends ArrayAdapter<Card> {
+public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexer {
+    HashMap<String, Integer> cardIndex;
     private List<Card> mCards;
     private Context mContext;
     private static String mSet;
+    String[] sections;
     private int SDK_INT = android.os.Build.VERSION.SDK_INT;
 
     public CardListAdapter (final Context context, int resource, List<Card> cards) {
@@ -33,12 +43,40 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         mCards = cards;
     }
 
-
 //    public void setSet(String set){
 //        mSet = set;
 //    }
 
 
+    public void indexcardsAlphabetically(){
+        cardIndex = new LinkedHashMap<String, Integer>();
+
+        for (int x = 0; x < mCards.size(); x++) {
+            String name = mCards.get(x).getName();
+            String ch = name.substring(0, 1);
+            if(ch.equals("Æ")){
+                ch = "a";
+            }
+            ch = ch.toUpperCase(Locale.US);
+            Log.d("letter", ch);
+            // HashMap will prevent duplicates
+            if(!(cardIndex.containsKey(ch)))
+                cardIndex.put(ch, x);
+
+        }
+
+        Set<String> sectionLetters = cardIndex.keySet();
+
+        // create a list from the set to sort
+        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+
+        Log.d("sectionList", sectionList.toString());
+        Collections.sort(sectionList);
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+    }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -188,4 +226,24 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         return view;
     }
 
+    //SectionIndexer
+    @Override
+    public int getPositionForSection(int section) {
+        Log.d("section", "" + section);
+        return cardIndex.get(sections[section]);
+    }
+    @Override
+    public int getSectionForPosition(int position) {
+        Log.d("position", "" + position);
+        for (int i = sections.length - 1; i >= 0; i--) {
+            if (position >= cardIndex.get(sections[i])) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    @Override
+    public Object[] getSections() {
+        return sections;
+    }
 }
