@@ -50,6 +50,18 @@
     <!-- Search -->
     <string name="title_activity_search_results">SearchResultsActivity</string>
 
+    <!-- Sort by Spinner -->
+    <string-array name="sortby">
+        <item>Sort by:</item>
+        <item>A-Z</item>
+        <item>Set Number</item>
+        <item>Card Type</item>
+        <item>Color</item>
+        <item>Mana Cost</item>
+        <item>Rarity</item>
+        <item>Price</item>
+    </string-array>
+
     <!-- Rarity Spinner -->
     <string-array name="rarity">
         <item>Select Rarity</item>

@@ -43,11 +43,6 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
         mCards = cards;
     }
 
-//    public void setSet(String set){
-//        mSet = set;
-//    }
-
-
     public void indexcardsAlphabetically(){
         cardIndex = new LinkedHashMap<String, Integer>();
 
@@ -77,7 +72,81 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
 
         sectionList.toArray(sections);
     }
+    public void indexCardsByRarity(){
+        cardIndex = new LinkedHashMap<String, Integer>();
 
+        for (int x = 0; x < mCards.size(); x++) {
+            String rarity = mCards.get(x).getRarity();
+//            String r = rarity.substring(0,1);
+
+            // HashMap will prevent duplicates
+            if(!(cardIndex.containsKey(rarity)))
+                cardIndex.put(rarity, x);
+        }
+
+        Set<String> sectionLetters = cardIndex.keySet();
+
+        // create a list from the set to sort
+        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+
+        Log.d("sectionList", sectionList.toString());
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+    }
+    public void indexCardsByColor() {
+        cardIndex = new LinkedHashMap<String, Integer>();
+
+        for (int x = 0; x < mCards.size(); x++) {
+            String color;
+            if (mCards.get(x).getColors().size() > 1) {
+                color = "Gold"; //"gold"
+            } else if (mCards.get(x).getColors().size() == 1) {
+                color = mCards.get(x).getColors().get(0);
+            } else {
+                color = "Colorless";
+            }
+
+            // HashMap will prevent duplicates
+            if (!(cardIndex.containsKey(color)))
+                cardIndex.put(color, x);
+        }
+
+        Set<String> sectionLetters = cardIndex.keySet();
+
+        // create a list from the set to sort
+        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+
+        Log.d("sectionList", sectionList.toString());
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+    }
+    public void indexCardsByType() {
+        cardIndex = new LinkedHashMap<String, Integer>();
+
+        for (int x = 0; x < mCards.size(); x++) {
+            String type;
+            type = mCards.get(x).getTypes().get(0);
+
+            // HashMap will prevent duplicates
+            if (!(cardIndex.containsKey(type)))
+                cardIndex.put(type, x);
+        }
+
+        Set<String> sectionLetters = cardIndex.keySet();
+
+        // create a list from the set to sort
+        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+
+        Log.d("sectionList", sectionList.toString());
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+    }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
@@ -229,12 +298,12 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
     //SectionIndexer
     @Override
     public int getPositionForSection(int section) {
-        Log.d("section", "" + section);
+        //Log.d("section", "" + section);
         return cardIndex.get(sections[section]);
     }
     @Override
     public int getSectionForPosition(int position) {
-        Log.d("position", "" + position);
+        //Log.d("position", "" + position);
         for (int i = sections.length - 1; i >= 0; i--) {
             if (position >= cardIndex.get(sections[i])) {
                 return i;

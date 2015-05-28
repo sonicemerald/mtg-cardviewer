@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:dropDownWidth="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/sortRaritySpinner"
+        android:layout_alignEnd="@+id/sortBySpinner"
         android:id="@+id/filterSetSpinner"
         android:background="@color/primaryColorDark"
         android:spinnerMode="dialog" />
@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dropDownWidth="wrap_content"
-        android:id="@+id/sortRaritySpinner"
+        android:id="@+id/sortBySpinner"
         android:background="@color/primaryColorDark"
         android:textAlignment="center"
         android:paddingStart="10dp"

@@ -10,10 +10,4 @@
         android:title="Search"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <item android:id="@+id/sortPrice"
-        android:title="Sort Prices: high to low"
-    />
-    <item android:id="@+id/resetCardview"
-        android:title="Reload"
-        />
 </menu>

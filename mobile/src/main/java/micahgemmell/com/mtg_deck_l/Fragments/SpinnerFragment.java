@@ -33,7 +33,7 @@ public class SpinnerFragment
     private Spinner sortSetSpinner;
 
     public ArrayAdapter<String> adapterforSetArray;
-    ArrayAdapter<String> adapterforRarityArray;
+    ArrayAdapter<String> adapterforSortArray;
     private AdapterView.OnItemSelectedListener listener;
     private AdapterView.OnItemClickListener clickListener;
     //endregion
@@ -95,11 +95,11 @@ public class SpinnerFragment
             }
         });
 
-        Spinner sortRaritySpinner = (Spinner) localView.findViewById(R.id.sortRaritySpinner);
-        String[] rarity_array = getResources().getStringArray(R.array.rarity);
-        adapterforRarityArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, rarity_array);
-        sortRaritySpinner.setAdapter(adapterforRarityArray);
-        sortRaritySpinner.setOnItemSelectedListener(this);
+        Spinner sortSpinner = (Spinner) localView.findViewById(R.id.sortBySpinner);
+        String[] rarity_array = getResources().getStringArray(R.array.sortby);
+        adapterforSortArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, rarity_array);
+        sortSpinner.setAdapter(adapterforSortArray);
+        sortSpinner.setOnItemSelectedListener(this);
 //
 //        this.listView = (ListView)localView.findViewById(R.id.listView);
 //        this.adapter = new CardListAdapter(this.context, R.id.card_title, cards);

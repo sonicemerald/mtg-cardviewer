@@ -83,7 +83,7 @@
         String listview_tag = "listviewFragment";
 
         //Lists
-        private List<Card> masterCardList; //masterCardList keepshttp://www.gamer-heaven.net/sonic-the-hedgehog-official-socks-3-pack/ a copy of the original parsed list.
+        private List<Card> masterCardList; //masterCardList keeps a copy of the original parsed list.
         List<Card> displayedCards;
         List<Card> displayedTypes;
         List<Card> deck;
@@ -108,7 +108,6 @@
 
         //Navigation Drawer
         ListView NavigationDrawer_listView_Left; // used for the "navigation"
-        ListView NavigationDrawer_listView_Right; // used for sort
         ActionBarDrawerToggle mDrawerToggle;
         DrawerLayout mDrawerLayout;
         ImageView mDrawerImage;
@@ -164,21 +163,13 @@
             // region Arrays
             masterCardList = new ArrayList<Card>();
             displayedCards = new ArrayList<Card>();
-            displayedTypes = new ArrayList<Card>();
             deck = new ArrayList<Card>();
             SearchResults = new ArrayList<Card>();
             temp = new ArrayList<Card>();
             rare = new ArrayList<Card>();
             type = new ArrayList<Card>();
-
-    //        creatures = new ArrayList<Creature>();
-    //        enchantments = new ArrayList<Enchantment>();
-    //        instants = new ArrayList<Instant>();
-    //        sorceries = new ArrayList<Sorcery>();
-    //        lands = new ArrayList<Land>();
-    //        artifacts = new ArrayList<Artifact>();
-    //        planeswalkers = new ArrayList<Planeswalker>();
             //endregion
+
             //region Set up main container for the displayedCards.
             cardSetCode_array = getResources().getStringArray(R.array.sets);
 
@@ -205,17 +196,17 @@
            //NavigationDrawer_listView_Left.setOnItemLongClickListener(new DrawerItemLongClickListener());
 
            //Right Side Setup
-           NavigationDrawer_listView_Right = (ListView) findViewById(R.id.right_drawer); //Find where we want to put the list
-           SortingItems = getResources().getStringArray(R.array.nav_drawer_sorting_items); // Get the Array of items.
-           adapterforStringArray = new ArrayAdapter<String>(this, R.layout.drawer_list_item, SortingItems); // need to adapt the array of items
-           //Now set the adapter.
-           NavigationDrawer_listView_Right.setAdapter(adapterforStringArray);
-           NavigationDrawer_listView_Right.setOnItemClickListener(dListener);
+//           NavigationDrawer_listView_Right = (ListView) findViewById(R.id.right_drawer); //Find where we want to put the list
+//           SortingItems = getResources().getStringArray(R.array.nav_drawer_sorting_items); // Get the Array of items.
+//           adapterforStringArray = new ArrayAdapter<String>(this, R.layout.drawer_list_item, SortingItems); // need to adapt the array of items
+//           //Now set the adapter.
+//           NavigationDrawer_listView_Right.setAdapter(adapterforStringArray);
+//           NavigationDrawer_listView_Right.setOnItemClickListener(dListener);
 
            //setting up for open close drawer
            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
            mDrawerRelativeLeft = (RelativeLayout) findViewById(R.id.drawer_layout_container_left);
-           mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
+           //mDrawerRelativeRight = (RelativeLayout) findViewById(R.id.drawer_layout_container_right);
 
            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mActionBarToolbar, R.string.drawer_open, R.string.drawer_close){
               public void onDrawerClosed(View view) {
@@ -355,11 +346,9 @@
         @Subscribe
         public void onCardsLoaded(CardsParsedEvent event) {
             masterCardList.clear();
-            displayedTypes.clear();
             displayedCards.clear();
             masterCardList.addAll(event.getParsedCards());
             displayedCards.addAll(masterCardList);
-            displayedTypes.addAll(masterCardList);
             SearchResults.clear();
             listView_f.adapter.addAll(displayedCards);
             listView_f.adapter.indexcardsAlphabetically();
@@ -382,19 +371,19 @@
                         }
                         name = Normalizer.normalize(name, Normalizer.Form.NFD)
                                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-                        if (name.substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))) {
+                        if (name.equals(PricesArray.get(i).getName())) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if(a.getName().substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))) {
+                        } else if(a.getName().equals(PricesArray.get(i).getName())) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if (!name.substring(0,4).equals(PricesArray.get(i).getName().substring(0, 4))){
+                        } else if (!name.equals(PricesArray.get(i).getName())){
                             Log.d("", name + "does not match" + PricesArray.get(i).getName());
                             a.setMedPrice("$0.0");
                             a.setPriceHidden(true);
@@ -524,43 +513,86 @@
                     Dialog.setCancelable(false);
                     Dialog.show();
                     break;
-                case R.id.sortRaritySpinner:
-                    String rarity;
-                    switch(position){
+                case R.id.sortBySpinner:
+                    switch (position){
                         case 0:
                             break;
-                        case 1:
+                        case 1: //"A-Z"
+                            listView_f.adapter.clear();
                             displayedCards.clear();
-                            if(!(SearchResults.isEmpty())) {
-                                displayedCards.addAll(SearchResults);
+                            displayedCards.addAll(masterCardList);
+                            listView_f.adapter.addAll(masterCardList);
+                            listView_f.adapter.indexcardsAlphabetically();
+                            break;
+                        case 2: //"Set #"
+                            sortCardsBySetNumber();
+                            break;
+                        case 3: //"Card Type"
+                            listView_f.adapter.clear();
+                            sortCardsByCardType();
+                            listView_f.adapter.addAll(displayedCards);
+                            listView_f.adapter.indexCardsByType();
+                            break;
+                        case 4: //"Color"
+                            listView_f.adapter.clear();
+                            sortCardsByColor();
+                            listView_f.adapter.addAll(displayedCards);
+                            listView_f.adapter.indexCardsByColor();
+                            break;
+                        case 5: //"Mana Cost"
+                            sortCardsByCMC();
+                            break;
+                        case 6: //"Rarity"
+                            listView_f.adapter.clear();
+                            sortCardsByRarity();
+                            listView_f.adapter.addAll(displayedCards);
+                            listView_f.adapter.indexCardsByRarity();
+                            break;
+                        case 7: //"Price"
+                            if(gettingPrices){
+                                Toast.makeText(this, "Please wait", Toast.LENGTH_LONG).show();
                             } else {
-                                displayedCards.addAll(displayedTypes);
-                            }
-                            Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
+                                sortCardsByPrice(); }
                             break;
-                        case 2: // common
-                            rarity = "Common";
-                            setRarityAdapter(rarity);
+                        default:
                             break;
-                        case 3: // uncommon
-                            rarity = "Uncommon";
-                            setRarityAdapter(rarity);
-                            break;
-                        case 4: // rare
-                            rarity = "Rare";
-                            setRarityAdapter(rarity);
-                            break;
-                        case 5: //mythic rare
-                            rarity = "Mythic Rare";
-                            setRarityAdapter(rarity);
-                            break;
-                        default: break;
-                      }
-                    break;
+                    }
+//                case R.id.sortRaritySpinner:
+//                    String rarity;
+//                    switch(position){
+//                        case 0:
+//                            break;
+//                        case 1:
+//                            displayedCards.clear();
+//                            if(!(SearchResults.isEmpty())) {
+//                                displayedCards.addAll(SearchResults);
+//                            } else {
+//                                displayedCards.addAll(displayedTypes);
+//                            }
+//                            Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
+//                            break;
+//                        case 2: // common
+//                            rarity = "Common";
+//                            setRarityAdapter(rarity);
+//                            break;
+//                        case 3: // uncommon
+//                            rarity = "Uncommon";
+//                            setRarityAdapter(rarity);
+//                            break;
+//                        case 4: // rare
+//                            rarity = "Rare";
+//                            setRarityAdapter(rarity);
+//                            break;
+//                        case 5: //mythic rare
+//                            rarity = "Mythic Rare";
+//                            setRarityAdapter(rarity);
+//                            break;
+//                        default: break;
+//                      }
+//                    break;
                 default: break;
-                    }
-
-                    }
+            }
+        }
         private void setRarityAdapter(String rarity){
             temp.clear();
             rare.clear();
@@ -716,8 +748,6 @@
                 switch(parent.getId()){
                     case (R.id.left_drawer):
                         selectItem(position);
-                    case (R.id.right_drawer):
-                        sortItems(position);
                     default:
                         break;
                 }
@@ -726,62 +756,62 @@
             }
         }
 
-        private void sortItems(int position) {
-            switch (position){
-                case 0: //all
-                    listView_f.adapter.clear();
-                    listView_f.adapter.addAll(masterCardList);
-                    break;
-                case 1: //
-                    setTypeAdapter("Planeswalker");
-                    break;
-                case 2: //
-                    setTypeAdapter("Creature");
-                    break;
-                case 3:
-                    setTypeAdapter("Artifact");
-                    break;
-                case 4:
-                    setTypeAdapter("Enchantment");
-                    break;
-                case 5:
-                    setTypeAdapter("Sorcery");
-                    break;
-                case 6:
-                    setTypeAdapter("Instant");
-                    break;
-                case 7:
-                    setTypeAdapter("Land");
-                    break;
-                default:
-                    break;
-            }
-                mDrawerLayout.closeDrawer(mDrawerRelativeRight);
-        }
+//        private void sortItems(int position) {
+//            switch (position){
+//                case 0: //all
+//                    listView_f.adapter.clear();
+//                    listView_f.adapter.addAll(masterCardList);
+//                    break;
+//                case 1: //
+//                    setTypeAdapter("Planeswalker");
+//                    break;
+//                case 2: //
+//                    setTypeAdapter("Creature");
+//                    break;
+//                case 3:
+//                    setTypeAdapter("Artifact");
+//                    break;
+//                case 4:
+//                    setTypeAdapter("Enchantment");
+//                    break;
+//                case 5:
+//                    setTypeAdapter("Sorcery");
+//                    break;
+//                case 6:
+//                    setTypeAdapter("Instant");
+//                    break;
+//                case 7:
+//                    setTypeAdapter("Land");
+//                    break;
+//                default:
+//                    break;
+//            }
+//                mDrawerLayout.closeDrawer(mDrawerRelativeRight);
+//        }
 
-        private void setTypeAdapter(String types){
-            temp.clear();
-            type.clear();
-            displayedCards.clear();
-            displayedTypes.clear();
-            listView_f.adapter.clear();
-
-            if(!(SearchResults.isEmpty())){
-                temp.addAll(SearchResults);
-            } else {
-                temp.addAll(masterCardList);
-            }
-            for (Card card : temp) {
-                if (card.getTypes().contains(types)) {
-                    type.add(card);
-                }
-            }
-            displayedTypes.addAll(type);
-            displayedCards.addAll(type);
-            Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
-            listView_f.adapter.addAll(displayedCards);
-            Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
-        }
+//        private void setTypeAdapter(String types){
+//            temp.clear();
+//            type.clear();
+//            displayedCards.clear();
+//            displayedTypes.clear();
+//            listView_f.adapter.clear();
+//
+//            if(!(SearchResults.isEmpty())){
+//                temp.addAll(SearchResults);
+//            } else {
+//                temp.addAll(masterCardList);
+//            }
+//            for (Card card : temp) {
+//                if (card.getTypes().contains(types)) {
+//                    type.add(card);
+//                }
+//            }
+//            displayedTypes.addAll(type);
+//            displayedCards.addAll(type);
+//            Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
+//            listView_f.adapter.addAll(displayedCards);
+//            Log.d("adapter size", String.valueOf(listView_f.adapter.getCount()));
+//        }
 
         private void selectItem(int position){
             // update the main content by replacing fragments
@@ -851,60 +881,242 @@
             return true;
         }
 
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-
-            switch (item.getItemId()) {
-                case R.id.sortPrice:
-                    if(gettingPrices){
-                        Toast.makeText(this, "Please wait", Toast.LENGTH_LONG).show();
-                    } else {
-                    sortCardsByPrice(); }
-                    break;
-                case R.id.resetCardview:
-                    listView_f.adapter.clear();
-                    displayedCards.clear();
-                    displayedCards.addAll(masterCardList);
-                    listView_f.adapter.addAll(masterCardList);
-                    getBus().post(new PleaseGetSetPriceEvent(mSet));
-                    gettingPrices = true;
-                    Toast.makeText(this, "getting prices", Toast.LENGTH_SHORT).show();
-                    //refreshFragment();
-                    break;
-            }
-
-            if (mDrawerToggle.onOptionsItemSelected(item)) {
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
+//        @Override
+//        public boolean onOptionsItemSelected(MenuItem item) {
+//            // Handle action bar item clicks here. The action bar will
+//            // automatically handle clicks on the Home/Up button, so long
+//            // as you specify a parent activity in AndroidManifest.xml.
+//
+//            switch (item.getItemId()) {
+//                case R.id.sortPrice: //"Sort Prices: high to low"
+//                    if(gettingPrices){
+//                        Toast.makeText(this, "Please wait", Toast.LENGTH_LONG).show();
+//                    } else {
+//                    sortCardsByPrice(); }
+//                    break;
+//                case R.id.resetCardview: //"Reload"
+//                    listView_f.adapter.clear();
+//                    displayedCards.clear();
+//                    displayedCards.addAll(masterCardList);
+//                    listView_f.adapter.addAll(masterCardList);
+//                    listView_f.adapter.indexcardsAlphabetically();
+//                    getBus().post(new PleaseGetSetPriceEvent(mSet));
+//                    gettingPrices = true;
+//                    Toast.makeText(this, "reloading and getting prices", Toast.LENGTH_SHORT).show();
+//                    //refreshFragment();
+//                    break;
+//            }
+//
+//            if (mDrawerToggle.onOptionsItemSelected(item)) {
+//                return true;
+//            }
+//            return super.onOptionsItemSelected(item);
+//        }
         //endregion
+
+        //region sorting
+        void sortCardsByAZ(){
+
+        }
+        void sortCardsBySetNumber(){
+            //because Set Numbers can have letters in them, I need to check for that.
+            Collections.sort(this.displayedCards, new Comparator<Card>() {
+                @Override
+                public int compare(Card a, Card b) {
+                try{
+                    if (Integer.parseInt(a.getNumber()) > Integer.parseInt(b.getNumber()))
+                        return 1;
+                    else if (Integer.parseInt(a.getNumber()) < Integer.parseInt(b.getNumber()))
+                        return -1;
+                    else // equal
+                        return 0;
+                } catch (Exception e){
+                        //if no number, then use multiverse ID
+                        if (a.getMultiverseid() > b.getMultiverseid())
+                            return 1;
+                        else if (a.getMultiverseid() < b.getMultiverseid())
+                            return -1;
+                        else // equal
+                            return 0;
+                    }
+                }
+            });
+            listView_f.adapter.notifyDataSetChanged();
+            refreshFragment();
+        }
+        void sortCardsByCardType(){
+            Log.d("sorting", "sorting by type");
+            Collections.sort(this.displayedCards, new Comparator<Card>() {
+                @Override
+                public int compare(Card a, Card b) {
+                    int c1 = convertTypeToInt(a.getTypes().get(0));
+                    int c2 = convertTypeToInt(b.getTypes().get(0));
+
+                    if (c1 > c2)
+                        return 1;
+                    else if (c1 < c2)
+                        return -1;
+                    else
+                        return 0;
+                }
+            });
+
+        }
+        int convertTypeToInt(String type){
+            switch(type){
+                case "Planeswalker":
+                    return 0;
+                case "Creature":
+                    return 1;
+                case "Artifact":
+                    return 2;
+                case "Enchantment":
+                    return 3;
+                case "Instant":
+                    return 4;
+                case "Sorcery":
+                    return 5;
+                case "Land":
+                    return 6;
+                default:
+                    break;
+            }
+            return 0;
+        }
+
+        void sortCardsByColor(){
+            Log.d("sorting", "sorting by Color");
+            Collections.sort(this.displayedCards, new Comparator<Card>() {
+                @Override
+                public int compare(Card a, Card b) {
+
+                    int c1 = 0;
+                    int c2 = 0;
+
+                    if (a.getColors().size() > 1) {
+                        c1 = 5; //"gold"
+                    } else if (a.getColors().size() == 1) {
+                        c1 = convertColorToInt(a.getColors().get(0).substring(0,3));
+                    } else {
+                        c1 = 6; //"Other"
+                    }
+
+                    if (b.getColors().size() > 1) {
+                        c2 = 5; //"gold"
+                    } else if (b.getColors().size() == 1) {
+                        c2 = convertColorToInt(b.getColors().get(0).substring(0,3));
+                    } else {
+                        c2 = 6; //"Other"
+                    }
+
+
+                    if (c1 > c2)
+                        return 1;
+                    else if (c1 < c2)
+                        return -1;
+                    else
+                        return 0;
+                }
+            });
+        }
+        int convertColorToInt(String color){
+            switch (color){
+                case "Whi":
+                    return 0;
+                case "Gre":
+                    return 1;
+                case "Blu":
+                    return 2;
+                case "Red":
+                    return 3;
+                case "Bla":
+                    return 4;
+                default:
+                    break;
+            }
+            return 0;
+        }
+        void sortCardsByCMC(){
+            Log.d("sorting", "sorting by CMC");
+            Collections.sort(this.displayedCards, new Comparator<Card>() {
+                @Override
+                public int compare(Card a, Card b) {
+                    Log.d("sorting", "comparing CMC of " + a.getName() + " and " + b.getName());
+                    //if the card is a land, it has no CMC.
+                    if(a.getTypes().contains("Land")){
+                        a.setCmc(0);
+                    }
+                    if(b.getTypes().contains("Land")){
+                        b.setCmc(0);
+                    }
+
+                    if (a.getCmc() > b.getCmc())
+                        return 1;
+                    else if (a.getCmc() < b.getCmc())
+                        return -1;
+                    else // equal
+                        return 0;
+                }
+            });
+            listView_f.adapter.notifyDataSetChanged();
+            refreshFragment();
+        }
+        void sortCardsByRarity(){
+            Log.d("sorting", "sorting by Rarity");
+            Collections.sort(this.displayedCards, new Comparator<Card>() {
+                @Override
+                public int compare(Card a, Card b) {
+                    int c1 = convertRarityToInt(a.getRarity().substring(0, 1));
+                    int c2 = convertRarityToInt(b.getRarity().substring(0, 1));
+
+                    if (c1 > c2)
+                        return -1;
+                    else if (c1 < c2)
+                        return 1;
+                    else
+                        return 0;
+                }
+            });
+        }
+
+        int convertRarityToInt(String firstLetter){
+            switch (firstLetter){
+                case "C":
+                    return 0;
+                case "U":
+                    return 1;
+                case "R":
+                    return 2;
+                case "M":
+                    return 3;
+                default:
+                    break;
+            }
+            return 0;
+        }
 
         void sortCardsByPrice(){
                 // low to high
                 Collections.sort(this.displayedCards, new Comparator<Card>() {
                     @Override
-                    public int compare(Card one, Card two) {
-                            if (Double.parseDouble(one.getMedPrice().substring(1)) > Double.parseDouble(two.getMedPrice().substring(1))) {
-                                Log.d(one.getMedPrice() + " > " + two.getMedPrice(), "sorting");
+                    public int compare(Card cardone, Card cardtwo) {
+                        String one = cardone.getMedPrice().replace(",","");
+                        String two = cardtwo.getMedPrice().replace(",","");
+                            if (Double.parseDouble(one.substring(1)) > Double.parseDouble(two.substring(1))) {
+                                Log.d(one + " > " + two, "sorting");
                                 return -1;
-                            }
-                            if (Double.parseDouble(one.getMedPrice().substring(1)) < Double.parseDouble(two.getMedPrice().substring(1))) {
-                                Log.d(one.getMedPrice() + " < " + two.getMedPrice(), "sorting");
+                            } else if (Double.parseDouble(one.substring(1)) < Double.parseDouble(two.substring(1))) {
+                                Log.d(one + " < " + two, "sorting");
                                 return 1;
                             } else // equal
-                                Log.d(one.getMedPrice() + " = " + two.getMedPrice(), "sorting");
+                                Log.d(one + " = " + two, "sorting");
                             return 0;
                     }
                 });
-            //Toast.makeText(this, "sort complete", Toast.LENGTH_SHORT).show();
             listView_f.adapter.notifyDataSetChanged();
             refreshFragment();
         }
-
+        //endregion
         private void refreshFragment() {
             Fragment currentFragment = getFragmentManager().findFragmentByTag(listview_tag);
             FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();

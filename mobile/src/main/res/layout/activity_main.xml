@@ -63,22 +63,21 @@
         android:background="@color/primaryColorDark"
         android:layout_alignParentEnd="true" />
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="end"
-        android:id="@+id/drawer_layout_container_right">
-        <ListView
-            android:id="@+id/right_drawer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingTop="20dp"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:background="#000"
-            />
-
-    </RelativeLayout>
+    <!--<RelativeLayout-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_gravity="end"-->
+        <!--android:id="@+id/drawer_layout_container_right">-->
+        <!--<ListView-->
+            <!--android:id="@+id/right_drawer"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:paddingTop="20dp"-->
+            <!--android:choiceMode="singleChoice"-->
+            <!--android:divider="@android:color/transparent"-->
+            <!--android:dividerHeight="0dp"-->
+            <!--android:background="#000"-->
+            <!--/>-->
+    <!--</RelativeLayout>-->
 
 </android.support.v4.widget.DrawerLayout>

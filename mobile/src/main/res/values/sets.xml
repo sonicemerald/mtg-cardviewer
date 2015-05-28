@@ -2,8 +2,8 @@
     <resources>
         <string-array name="setNames">
             <item>Select a Set</item>
-            <item>Limited Edition Alpha</item>
-            <item>Limited Edition Beta</item>
+            <item>Alpha Edition</item>
+            <item>Beta Edition</item>
             <item>Unlimited Edition</item>
             <item>Arabian Nights</item>
             <item>Antiquities</item>
@@ -73,61 +73,61 @@
             <item>Eventide</item>
             <item>From the Vault: Dragons</item>
             <item>Shards of Alara</item>
-            <item>Duel Decks: Jace vs. Chandra</item>
+            <item>Jace vs. Chandra</item>
             <item>Conflux</item>
-            <item>Duel Decks: Divine vs. Demonic</item>
+            <item>Divine vs. Demonic</item>
             <item>Alara Reborn</item>
             <item>Magic 2010 (M10)</item>
             <item>From the Vault: Exiled</item>
             <item>Planechase</item>
             <item>Zendikar</item>
-            <item>Duel Decks: Garruk vs. Liliana</item>
+            <item>Garruk vs. Liliana</item>
             <item>Premium Deck Series: Slivers</item>
             <item>Worldwake</item>
-            <item>Duel Decks: Phyrexia vs. the Coalition</item>
+            <item>Phyrexia vs. the Coalition</item>
             <item>Rise of the Eldrazi</item>
             <item>Archenemy</item>
             <item>Magic 2011 (M11)</item>
             <item>From the Vault: Relics</item>
-            <item>Duel Decks: Elspeth vs. Tezzeret</item>
+            <item>Elspeth vs. Tezzeret</item>
             <item>Scars of Mirrodin</item>
             <item>Premium Deck Series: Fire &amp; Lightning</item>
             <item>Mirrodin Besieged</item>
-            <item>Duel Decks: Knights vs. Dragons</item>
+            <item>Knights vs. Dragons</item>
             <item>New Phyrexia</item>
             <item>Commander</item>
             <item>Magic 2012 (M12)</item>
             <item>From the Vault: Legends</item>
-            <item>Duel Decks: Ajani vs. Nicol Bolas</item>
+            <item>Ajani vs. Nicol Bolas</item>
             <item>Innistrad</item>
             <item>Premium Deck Series: Graveborn</item>
             <item>Dark Ascension</item>
-            <item>Duel Decks: Venser vs. Koth</item>
+            <item>Venser vs. Koth</item>
             <item>Avacyn Restored</item>
             <item>Planechase 2012 Edition</item>
             <item>Magic 2013 (M13)</item>
             <item>From the Vault: Realms</item>
-            <item>Duel Decks: Izzet vs. Golgari</item>
+            <item>Izzet vs. Golgari</item>
             <item>Return to Ravnica</item>
             <item>Commander\'s Arsenal</item>
             <item>Gatecrash</item>
-            <item>Duel Decks: Sorin vs. Tibalt</item>
+            <item>Sorin vs. Tibalt</item>
             <item>Dragon\'s Maze</item>
             <item>Modern Masters</item>
             <item>Magic 2014 (M14)</item>
             <item>From the Vault: Twenty</item>
-            <item>Duel Decks: Heroes vs. Monsters</item>
+            <item>Heroes vs. Monsters</item>
             <item>Theros</item>
             <item>Commander 2013</item>
             <item>Born of the Gods</item>
-            <item>Duel Decks: Jace vs. Vraska</item>
+            <item>Jace vs. Vraska</item>
             <item>Journey into Nyx</item>
             <item>Modern Event Deck 2014</item>
             <item>Conspiracy</item>
             <item>Vintage Masters</item>
             <item>Magic 2015 (M15)</item>
             <item>From the Vault: Annihilation</item>
-            <item>Dual Decks: Speed vs. Cunning</item>
+            <item>Speed vs. Cunning</item>
             <item>Khans of Tarkir</item>
             <item>Commander 2014</item>
             <item>Duel Decks Anthology, Divine vs. Demonic</item>
@@ -135,7 +135,7 @@
             <item>Duel Decks Anthology, Garruk vs. Liliana</item>
             <item>Duel Decks Anthology, Jace vs. Chandra</item>
             <item>Fate Reforged</item>
-            <item>Duel Decks: Elspeth vs. Kiora</item>
+            <item>Elspeth vs. Kiora</item>
             <item>Dragons of Tarkir</item>
             <item>Modern Masters 2015</item>
         </string-array>
