@@ -16,6 +16,7 @@
     import micahgemmell.com.mtg_deck_l.helpers.BusProvider;
     import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
     import micahgemmell.com.mtg_deck_l.helpers.CropTransform;
+    import micahgemmell.com.mtg_deck_l.helpers.CropTransform_gatherer;
 
     import android.app.AlertDialog;
     import android.app.Fragment;
@@ -371,19 +372,19 @@
                         }
                         name = Normalizer.normalize(name, Normalizer.Form.NFD)
                                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-                        if (name.equals(PricesArray.get(i).getName())) {
+                        if (name.substring(0,2).equals(PricesArray.get(i).getName().substring(0,2))) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if(a.getName().equals(PricesArray.get(i).getName())) {
+                        } else if(a.getName().substring(0,2).equals(PricesArray.get(i).getName().substring(0, 2))) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if (!name.equals(PricesArray.get(i).getName())){
+                        } else if (!name.substring(0,2).equals(PricesArray.get(i).getName().substring(0, 2))){
                             Log.d("", name + "does not match" + PricesArray.get(i).getName());
                             a.setMedPrice("$0.0");
                             a.setPriceHidden(true);
@@ -682,7 +683,8 @@
         public void onImageLongClicked(String image){
             favImage = image;
             Toast.makeText(this, "Favorite image replaced", Toast.LENGTH_SHORT).show();
-            Picasso.with(this).load(favImage).transform(new CropTransform()).into(mDrawerImage);
+            Picasso.with(this).load(favImage).into(mDrawerImage);
+            Picasso.with(this).load(favImage).transform(new CropTransform_gatherer()).into(mDrawerImage);
         }
         //endregion
 
