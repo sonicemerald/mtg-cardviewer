@@ -36,6 +36,7 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
     private static String mSet;
     String[] sections;
     private int SDK_INT = android.os.Build.VERSION.SDK_INT;
+    public ArrayList<String> sectionList;
 
     public CardListAdapter (final Context context, int resource, List<Card> cards) {
         super(context, resource);
@@ -63,7 +64,7 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
         Set<String> sectionLetters = cardIndex.keySet();
 
         // create a list from the set to sort
-        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+        sectionList = new ArrayList<String>(sectionLetters);
 
         Log.d("sectionList", sectionList.toString());
         Collections.sort(sectionList);
@@ -87,7 +88,7 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
         Set<String> sectionLetters = cardIndex.keySet();
 
         // create a list from the set to sort
-        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+        sectionList = new ArrayList<String>(sectionLetters);
 
         Log.d("sectionList", sectionList.toString());
 
@@ -116,7 +117,7 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
         Set<String> sectionLetters = cardIndex.keySet();
 
         // create a list from the set to sort
-        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+        sectionList = new ArrayList<String>(sectionLetters);
 
         Log.d("sectionList", sectionList.toString());
 
@@ -139,7 +140,7 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
         Set<String> sectionLetters = cardIndex.keySet();
 
         // create a list from the set to sort
-        ArrayList<String> sectionList = new ArrayList<String>(sectionLetters);
+        sectionList = new ArrayList<String>(sectionLetters);
 
         Log.d("sectionList", sectionList.toString());
 
@@ -239,6 +240,8 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
                 break;
             case 'M':
                 Picasso.with(mContext).load("http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + mSet + "&size=medium&rarity=" + Character.toLowerCase(rarity.charAt(0))).into(textRarity);
+                break;
+            default:
                 break;
         }
 

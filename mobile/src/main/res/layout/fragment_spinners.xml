@@ -1,23 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/relative_spinners"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentLeft="true">
+    <View android:id="@+id/fakeView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
     <Spinner
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:dropDownWidth="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/sortBySpinner"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
         android:id="@+id/filterSetSpinner"
+        android:layout_toStartOf="@id/fakeView"
+        android:layout_toLeftOf="@+id/fakeView"
+        android:clipChildren="true"
+        android:spinnerMode="dialog"
         android:background="@color/primaryColorDark"
-        android:spinnerMode="dialog" />
+        />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/fakeView"
+        android:layout_toRightOf="@+id/fakeView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/relative_spinners2"
+        >
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dropDownWidth="wrap_content"
-        android:id="@+id/sortBySpinner"
+        android:layout_toStartOf="@+id/fakeView2"
+        android:layout_toLeftOf="@+id/fakeView2"
+        android:id="@+id/sortBy_spinner"
         android:background="@color/primaryColorDark"
-        android:textAlignment="center"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:layout_alignParentEnd="true" />
+        android:drawSelectorOnTop="true"
+        />
+    <View android:id="@+id/fakeView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+        <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:dropDownWidth="wrap_content"
+        android:id="@+id/detailspinner"
+        android:layout_toEndOf="@+id/fakeView2"
+        android:layout_toRightOf="@+id/fakeView2"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/primaryColorDark"
+        android:layout_alignParentTop="true" />
+    </RelativeLayout>
 </RelativeLayout>

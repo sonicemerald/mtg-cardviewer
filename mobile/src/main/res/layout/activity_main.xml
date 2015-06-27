@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" />
 
         <!--Toolbar-->
@@ -61,7 +62,8 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:background="@color/primaryColorDark"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
     </RelativeLayout>
     <!--<RelativeLayout-->
         <!--android:layout_height="wrap_content"-->

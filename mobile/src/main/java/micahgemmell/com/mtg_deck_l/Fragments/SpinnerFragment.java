@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
 
@@ -31,9 +33,15 @@ public class SpinnerFragment
     SpinnerInterface mListener;
     SpinnerInterface sListener;
     private Spinner sortSetSpinner;
+    public Spinner sortbySpinner;
+    public Spinner sortbyDetailSpinner;
+
 
     public ArrayAdapter<String> adapterforSetArray;
-    ArrayAdapter<String> adapterforSortArray;
+           ArrayAdapter<String> adapterforSortArray;
+    public ArrayAdapter<String> adapterforSortDetailArray;
+
+
     private AdapterView.OnItemSelectedListener listener;
     private AdapterView.OnItemClickListener clickListener;
     //endregion
@@ -75,14 +83,12 @@ public class SpinnerFragment
         Log.d("", "resuming list_f"); //+ cards.toString());
     }
 
-
-
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
     {
         View localView = paramLayoutInflater.inflate(R.layout.fragment_spinners, paramViewGroup, false);
         this.sortSetSpinner = (Spinner) localView.findViewById(R.id.filterSetSpinner);
         String[] cardSet_array = getResources().getStringArray(R.array.setNames);
-        adapterforSetArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, cardSet_array);
+        adapterforSetArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_spinner_dropdown_item, cardSet_array);
         this.sortSetSpinner.setAdapter(adapterforSetArray);
         listener = this;
         this.sortSetSpinner.post(new Runnable() {
@@ -95,11 +101,18 @@ public class SpinnerFragment
             }
         });
 
-        Spinner sortSpinner = (Spinner) localView.findViewById(R.id.sortBySpinner);
+        sortbySpinner = (Spinner) localView.findViewById(R.id.sortBy_spinner);
         String[] rarity_array = getResources().getStringArray(R.array.sortby);
-        adapterforSortArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_list_item_1, rarity_array);
-        sortSpinner.setAdapter(adapterforSortArray);
-        sortSpinner.setOnItemSelectedListener(this);
+        adapterforSortArray = new ArrayAdapter<>(this.context, android.R.layout.simple_spinner_dropdown_item, rarity_array);
+        sortbySpinner.setAdapter(adapterforSortArray);
+        sortbySpinner.setOnItemSelectedListener(this);
+
+        sortbyDetailSpinner = (Spinner) localView.findViewById(R.id.detailspinner);
+        adapterforSortDetailArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_spinner_dropdown_item, android.R.id.text1);
+        adapterforSortDetailArray.add("");
+        sortbyDetailSpinner.setAdapter(adapterforSortDetailArray);
+        sortbyDetailSpinner.setOnItemSelectedListener(this);
+        //sortDetailSpinner.setVisibility(View.INVISIBLE);
 //
 //        this.listView = (ListView)localView.findViewById(R.id.listView);
 //        this.adapter = new CardListAdapter(this.context, R.id.card_title, cards);
@@ -120,6 +133,8 @@ public class SpinnerFragment
 //        });
         return localView;
     }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

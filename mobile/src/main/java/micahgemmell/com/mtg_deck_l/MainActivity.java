@@ -24,9 +24,11 @@
     import android.app.ProgressDialog;
     import android.app.SearchManager;
     import android.content.Context;
+    import android.content.DialogInterface;
     import android.content.SharedPreferences;
     import android.os.Bundle;
     import android.support.v4.app.DialogFragment;
+    import android.support.v4.view.GravityCompat;
     import android.support.v4.view.MenuItemCompat;
     import android.support.v7.app.ActionBarActivity;
     import android.support.v7.app.ActionBarDrawerToggle;
@@ -38,22 +40,23 @@
     import android.view.Menu;
     import android.view.MenuItem;
     import android.view.View;
+    import android.view.ViewStub;
     import android.view.animation.DecelerateInterpolator;
     import android.widget.AbsListView;
     import android.widget.AdapterView;
     import android.widget.ArrayAdapter;
     import android.widget.ImageView;
+    import android.widget.LinearLayout;
     import android.widget.ListView;
     import android.widget.RelativeLayout;
+    import android.widget.Spinner;
+    import android.widget.SpinnerAdapter;
     import android.widget.TextView;
     import android.widget.Toast;
 
     import java.text.Normalizer;
-    import java.util.ArrayList;
-    import java.util.Collections;
-    import java.util.Comparator;
-    import java.util.List;
-    import java.util.Random;
+    import java.util.*;
+    import java.util.Set;
 
     import com.squareup.otto.Bus;
     import com.squareup.otto.Subscribe;
@@ -106,6 +109,7 @@
         //Spinners
         //Spinner addSetSpinner; // dropdown list of magic card sets.
         public int spinnerPosition;
+        public Spinner sortbySpinner;
 
         //Navigation Drawer
         ListView NavigationDrawer_listView_Left; // used for the "navigation"
@@ -150,6 +154,9 @@
         private String[] SortingItems;
         //endregion
 
+        //detail sort
+        Set<String> cmcset;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -160,6 +167,7 @@
             Dialog = new ProgressDialog(MainActivity.this);
             sharedPrefs = this.getSharedPreferences("micahgemmell.com.mtg_deck_l", Context.MODE_PRIVATE);
             spinnerPosition = sharedPrefs.getInt("spinnerPos", 0);
+
 
             // region Arrays
             masterCardList = new ArrayList<Card>();
@@ -173,7 +181,6 @@
 
             //region Set up main container for the displayedCards.
             cardSetCode_array = getResources().getStringArray(R.array.sets);
-
             adapter = new CardListAdapter(this, R.id.card_list_layout, displayedCards);
             listView_f = newInstance(displayedCards);
             spinners_f = SpinnerFragment.newInstance();
@@ -184,6 +191,13 @@
                         .add(R.id.listviewContainer, listView_f, listview_tag)
                         .commit();
             }
+            sortbySpinner = (Spinner) findViewById(R.id.sortBy_spinner);
+            //spinnerAdapter = spinners_f.adapterforSortDetailArray;
+//            spinnerAdapter.add("");
+//            sortbyDetailSpinner.setEnabled(false);
+//            sortbyDetailSpinner.setClickable(false);
+//            sortbyDetailSpinner.setAdapter(spinnerAdapter);
+
             // endregion set up main container for the displayedCards
             //region NavDrawer
             dListener = new DrawerItemClickListener();
@@ -196,13 +210,13 @@
            NavigationDrawer_listView_Left.setOnItemClickListener(dListener);
            //NavigationDrawer_listView_Left.setOnItemLongClickListener(new DrawerItemLongClickListener());
 
-           //Right Side Setup
+           //Right Side Setup, not used anymore
 //           NavigationDrawer_listView_Right = (ListView) findViewById(R.id.right_drawer); //Find where we want to put the list
 //           SortingItems = getResources().getStringArray(R.array.nav_drawer_sorting_items); // Get the Array of items.
 //           adapterforStringArray = new ArrayAdapter<String>(this, R.layout.drawer_list_item, SortingItems); // need to adapt the array of items
 //           //Now set the adapter.
 //           NavigationDrawer_listView_Right.setAdapter(adapterforStringArray);
-//           NavigationDrawer_listView_Right.setOnItemClickListener(dListener);
+//           NavigationDrawer_listView_Right.setOnItemCli,ckListener(dListener);
 
            //setting up for open close drawer
            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -212,8 +226,8 @@
            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mActionBarToolbar, R.string.drawer_open, R.string.drawer_close){
               public void onDrawerClosed(View view) {
                   getSupportActionBar().setTitle(R.string.app_name);
+              }
                    //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-               }
               public void onDrawerOpened(View drawerView) {
                    getSupportActionBar().setTitle(mDrawerTitle);
                    //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
@@ -403,6 +417,7 @@
         }
 
         //region LIFECYCLE
+        @Override
         protected void onResume(){
             super.onResume();
             //this gets called?
@@ -412,17 +427,12 @@
             getBus().register(this);
         }
 
-        protected void onPause(){
-            super.onPause();
+        protected void onPause() {
             Log.d("", "MainActivity onPause");
             sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
             sharedPrefs.edit().putString("favImage", favImage).apply();
             getBus().unregister(this);
-        }
-
-        protected void onStart(){
-            super.onStart();
-            Log.d("", "activity started");
+            super.onPause();
         }
 
         @Override
@@ -448,7 +458,7 @@
 
         @Override
         public void onBackPressed() {
-            if(mDrawerLayout.isDrawerOpen(Gravity.START))
+            if(mDrawerLayout.isDrawerOpen(GravityCompat.START))
                 mDrawerLayout.closeDrawers();
             else if(getFragmentManager().getBackStackEntryCount() > 0)
                 getFragmentManager().popBackStack();
@@ -476,22 +486,35 @@
                 }
             }
             if(SearchResults.size() == 0){
-                Card error404 = new Card();
-                error404.setName("Sorry, no cards matched your search.");
-                error404.setType("Error 404 - Not Found");
-                error404.setMedPrice("");
-                error404.setImageName("Null");
-    //            try {
-    //                error404.setCmc();//.setColors(new List<String>= {"Red"});
-    //            } catch (JSONException e) {
-    //                e.printStackTrace();
-    //            }
-                SearchResults.add(error404);
+                // 1. Instantiate an AlertDialog.Builder with its constructor
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                // 2. Chain together various setter methods to set the dialog characteristics
+                builder.setMessage("Sorry, no search results were found in the current set.")
+                        .setTitle("No Results Found");
+
+                // Add the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // 3. Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return;
             }
+
+//            listView_f.adapter.clear();
+//            listView_f.adapter.addAll(SearchResults);
+
             displayedCards.clear();
-            listView_f.adapter.clear();
+            //listView_f.adapter.clear();
             displayedCards.addAll(SearchResults);
             listView_f.adapter.addAll(displayedCards);
+            listView_f.refresh();
          }
 
         //region SPINNERS
@@ -513,10 +536,22 @@
 //                    Dialog.setCanceledOnTouchOutside(false);
                     Dialog.setCancelable(false);
                     Dialog.show();
+                    spinners_f.adapterforSortDetailArray.clear();
+                    spinners_f.adapterforSortDetailArray.add("");
+                    spinners_f.sortbyDetailSpinner.setEnabled(false);
+                    spinners_f.sortbyDetailSpinner.setClickable(false);
+                    spinners_f.sortbySpinner.setSelection(0);
+                    spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                     break;
-                case R.id.sortBySpinner:
+                case R.id.sortBy_spinner:
                     switch (position){
                         case 0:
+                            //show list as normal.
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.adapterforSortDetailArray.add("");
+                            spinners_f.sortbyDetailSpinner.setEnabled(false);
+                            spinners_f.sortbyDetailSpinner.setClickable(false);
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                             break;
                         case 1: //"A-Z"
                             listView_f.adapter.clear();
@@ -524,40 +559,93 @@
                             displayedCards.addAll(masterCardList);
                             listView_f.adapter.addAll(masterCardList);
                             listView_f.adapter.indexcardsAlphabetically();
+                            //populate detail spinner and show it
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.adapterforSortDetailArray.addAll(listView_f.adapter.sectionList);
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
+                            spinners_f.sortbyDetailSpinner.setClickable(true);
                             break;
                         case 2: //"Set #"
                             sortCardsBySetNumber();
+                            //hide detail spinner
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.sortbyDetailSpinner.setEnabled(false);
+                            spinners_f.sortbyDetailSpinner.setClickable(false);
+                            spinners_f.adapterforSortDetailArray.add("");
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                             break;
                         case 3: //"Card Type"
                             listView_f.adapter.clear();
                             sortCardsByCardType();
                             listView_f.adapter.addAll(displayedCards);
                             listView_f.adapter.indexCardsByType();
+                            //populate detail spinner and show
+//                            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.adapterforSortDetailArray.addAll(listView_f.adapter.sectionList);
+                            spinners_f.sortbyDetailSpinner.setEnabled(true);
+                            spinners_f.sortbyDetailSpinner.setClickable(true);
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                             break;
                         case 4: //"Color"
                             listView_f.adapter.clear();
                             sortCardsByColor();
                             listView_f.adapter.addAll(displayedCards);
                             listView_f.adapter.indexCardsByColor();
+                            //populate detail spinner and show it);
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.adapterforSortDetailArray.addAll(listView_f.adapter.sectionList);
+                            spinners_f.sortbyDetailSpinner.setEnabled(true);
+                            spinners_f.sortbyDetailSpinner.setClickable(true);
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                             break;
                         case 5: //"Mana Cost"
                             sortCardsByCMC();
+                            //populate detail spinner and show it
+                            ArrayList<String> s = new ArrayList<String>();
+                            s.addAll(cmcset);
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.adapterforSortDetailArray.addAll(s);
+                            spinners_f.sortbyDetailSpinner.setEnabled(true);
+                            spinners_f.sortbyDetailSpinner.setClickable(true);
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                             break;
                         case 6: //"Rarity"
                             listView_f.adapter.clear();
                             sortCardsByRarity();
                             listView_f.adapter.addAll(displayedCards);
                             listView_f.adapter.indexCardsByRarity();
+                            //populate detail spinner and show it
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.adapterforSortDetailArray.addAll(listView_f.adapter.sectionList);
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
+                            spinners_f.sortbyDetailSpinner.setEnabled(true);
+                            spinners_f.sortbyDetailSpinner.setClickable(true);
                             break;
                         case 7: //"Price"
+                            //hide detail spinner
+                            spinners_f.adapterforSortDetailArray.clear();
+                            spinners_f.adapterforSortDetailArray.add("");
+                            spinners_f.sortbyDetailSpinner.setEnabled(false);
+                            spinners_f.sortbyDetailSpinner.setClickable(false);
+                            spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                             if(gettingPrices){
-                                Toast.makeText(this, "Please wait", Toast.LENGTH_LONG).show();
+                                Toast.makeText(this, "Please wait until the prices show up", Toast.LENGTH_LONG).show();
                             } else {
                                 sortCardsByPrice(); }
                             break;
                         default:
                             break;
                     }
+                case R.id.detailspinner:
+                    //this will require some fanageling,
+                    //because the adapter is being populated dynamically from the sectionlist,
+                    //I am going to have to use the name to find the index of the list,
+                    //then show only that section
+
+                    //listView_f.adapter.sectionList
+                    break;
+
 //                case R.id.sortRaritySpinner:
 //                    String rarity;
 //                    switch(position){
@@ -633,21 +721,25 @@
 
         @Override
         public void onCardClicked(int position) {
-            // When card is clicked, display full page
-            cardView_f = CardViewFragment.newInstance(displayedCards.get(position));
+            //if card clicked isn't an error
+            if(!displayedCards.get(position).getImageName().equals("Null")){
 
-            //Show the action bar on the next page.
-                mActionBarToolbar.animate()
-                    .translationY(0)
-                    .alpha(1)
-                    .setDuration(HEADER_HIDE_ANIM_DURATION)
-                    .setInterpolator(new DecelerateInterpolator());
+                // When card is clicked, display full page
+                cardView_f = CardViewFragment.newInstance(displayedCards.get(position));
 
-            getFragmentManager().beginTransaction()
-                    .detach(spinners_f).detach(listView_f)
-                    .replace(R.id.listviewContainer, cardView_f)
-                    .addToBackStack("back to the mainlist")
-                    .commit();
+                //Show the action bar on the next page.
+                    mActionBarToolbar.animate()
+                        .translationY(0)
+                        .alpha(1)
+                        .setDuration(HEADER_HIDE_ANIM_DURATION)
+                        .setInterpolator(new DecelerateInterpolator());
+
+                getFragmentManager().beginTransaction()
+                        .detach(spinners_f).detach(listView_f)
+                        .replace(R.id.listviewContainer, cardView_f)
+                        .addToBackStack("back to the mainlist")
+                        .commit();
+            }
         }
 
 /*      @Override
@@ -919,6 +1011,11 @@
         //region sorting
         void sortCardsByAZ(){
 
+            //master list has all of them in a-z order.
+            this.displayedCards.clear();
+            this.displayedCards.addAll(masterCardList);
+            listView_f.adapter.notifyDataSetChanged();
+            refreshFragment();
         }
         void sortCardsBySetNumber(){
             //because Set Numbers can have letters in them, I need to check for that.
@@ -945,6 +1042,8 @@
             });
             listView_f.adapter.notifyDataSetChanged();
             refreshFragment();
+            Toast.makeText(this, "set sorted by set number.", Toast.LENGTH_SHORT).show();
+
         }
         void sortCardsByCardType(){
             Log.d("sorting", "sorting by type");
@@ -962,6 +1061,8 @@
                         return 0;
                 }
             });
+            Toast.makeText(this, "set sorted by card type.", Toast.LENGTH_SHORT).show();
+
 
         }
         int convertTypeToInt(String type){
@@ -1020,6 +1121,8 @@
                         return 0;
                 }
             });
+            Toast.makeText(this, "set sorted by color.", Toast.LENGTH_SHORT).show();
+
         }
         int convertColorToInt(String color){
             switch (color){
@@ -1040,6 +1143,7 @@
         }
         void sortCardsByCMC(){
             Log.d("sorting", "sorting by CMC");
+            cmcset = new HashSet<>();
             Collections.sort(this.displayedCards, new Comparator<Card>() {
                 @Override
                 public int compare(Card a, Card b) {
@@ -1060,8 +1164,13 @@
                         return 0;
                 }
             });
+            for(Card c : this.displayedCards){
+                cmcset.add(c.getCmc().toString());
+            }
             listView_f.adapter.notifyDataSetChanged();
             refreshFragment();
+            Toast.makeText(this, "set sorted by cmc (low to high).", Toast.LENGTH_SHORT).show();
+
         }
         void sortCardsByRarity(){
             Log.d("sorting", "sorting by Rarity");
@@ -1079,6 +1188,8 @@
                         return 0;
                 }
             });
+            Toast.makeText(this, "set sorted by rarity", Toast.LENGTH_SHORT).show();
+
         }
 
         int convertRarityToInt(String firstLetter){
@@ -1117,6 +1228,7 @@
                 });
             listView_f.adapter.notifyDataSetChanged();
             refreshFragment();
+            Toast.makeText(this, "set sorted by price.", Toast.LENGTH_SHORT).show();
         }
         //endregion
         private void refreshFragment() {

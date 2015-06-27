@@ -59,12 +59,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:layout_above="@+id/card_view_image"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true" />
 
             <!--Card Image-->
@@ -92,8 +92,8 @@
                             android:paddingRight="16dp"
                             android:paddingTop="4dp"
                             android:paddingBottom="4dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_toStartOf="@+id/card_view_rarity" />
+                            android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@+id/card_view_rarity" />
 
                         <!--Card Rarity-->
                         <ImageView
@@ -104,7 +104,7 @@
                             android:paddingRight="16dp"
                             android:paddingTop="4dp"
                             android:paddingBottom="4dp"
-                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
                             android:layout_alignBottom="@+id/card_list_subtype" />
                         <!--Card Text-->
                         <TextView
@@ -140,10 +140,10 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:text=""
                             android:id="@+id/card_view_powertoughness"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="16dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="16dp"
                             android:paddingBottom="6dp"
-                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
                             android:layout_below="@id/card_view_flavortext"/>
                         <Button
                             android:id="@+id/transform"
@@ -168,8 +168,8 @@
                             android:id="@+id/card_view_lowcost"
                             android:padding="6dp"
                             android:textAlignment="center"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignStart="@+id/card_view_avgcost"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignLeft="@+id/card_view_avgcost"
                             />
 
                         <TextView
@@ -191,8 +191,8 @@
                             android:id="@+id/card_view_highcost"
                             android:padding="6dp"
                             android:textAlignment="center"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignEnd="@id/card_view_avgcost"/>
+                            android:layout_alignParentRight="true"
+                            android:layout_alignRight="@id/card_view_avgcost"/>
                     </RelativeLayout>
                 </RelativeLayout>
         </RelativeLayout>
