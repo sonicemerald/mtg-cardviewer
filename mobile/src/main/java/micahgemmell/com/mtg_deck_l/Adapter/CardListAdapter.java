@@ -30,7 +30,7 @@ import micahgemmell.com.mtg_deck_l.helpers.symbolGetter;
 
 
 public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexer {
-    HashMap<String, Integer> cardIndex;
+    public HashMap<String, Integer> cardIndex;
     private List<Card> mCards;
     private Context mContext;
     private static String mSet;
@@ -135,6 +135,31 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
             // HashMap will prevent duplicates
             if (!(cardIndex.containsKey(type)))
                 cardIndex.put(type, x);
+        }
+
+        Set<String> sectionLetters = cardIndex.keySet();
+
+        // create a list from the set to sort
+        sectionList = new ArrayList<String>(sectionLetters);
+
+        Log.d("sectionList", sectionList.toString());
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+    }
+    public void indexCardsByManaCost(){
+        cardIndex = new LinkedHashMap<String, Integer>();
+
+        for (int x = 0; x < mCards.size(); x++) {
+            String cmc;
+            cmc = mCards.get(x).getCmc().toString();
+            if(cmc.equals("999"))
+                cmc = "Land";
+
+            // HashMap will prevent duplicates
+            if (!(cardIndex.containsKey(cmc)))
+                cardIndex.put(cmc, x);
         }
 
         Set<String> sectionLetters = cardIndex.keySet();
@@ -307,7 +332,7 @@ public class CardListAdapter extends ArrayAdapter<Card> implements SectionIndexe
     @Override
     public int getSectionForPosition(int position) {
         //Log.d("position", "" + position);
-        for (int i = sections.length - 1; i >= 0; i--) {
+        for (int i = sections.length-1; i >= 0; i--) {
             if (position >= cardIndex.get(sections[i])) {
                 return i;
             }

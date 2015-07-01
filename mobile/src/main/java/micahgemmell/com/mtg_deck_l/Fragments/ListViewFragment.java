@@ -31,7 +31,7 @@ public class ListViewFragment
     Context context;
     public CardListAdapter adapter; //adapts given set of cards to list
     List<Card> cards;
-    ListView listView;
+    public ListView listView;
     SwipeRefreshLayout swipeLayout;
     CardListViewInterface mListener;
     CardListViewInterface sListener;
