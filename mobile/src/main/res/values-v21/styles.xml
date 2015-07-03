@@ -2,7 +2,8 @@
 <resources>
     <style name="AppTheme" parent="AppTheme.Base">
             <item name="android:statusBarColor">@color/primaryColorDark</item>
-            <item name="android:windowTranslucentNavigation">true</item>
+            <item name="android:windowTranslucentNavigation">false</item>
+            <item name="android:windowTranslucentStatus">true</item>
             <item name="android:windowContentTransitions">true</item>
             <item name="android:windowAllowEnterTransitionOverlap">true</item>
             <item name="android:windowAllowReturnTransitionOverlap">true</item>

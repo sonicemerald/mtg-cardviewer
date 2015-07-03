@@ -26,6 +26,8 @@
     import android.content.Context;
     import android.content.DialogInterface;
     import android.content.SharedPreferences;
+    import android.content.res.Configuration;
+    import android.os.Build;
     import android.os.Bundle;
     import android.support.v4.app.DialogFragment;
     import android.support.v4.view.GravityCompat;
@@ -41,6 +43,7 @@
     import android.view.Menu;
     import android.view.MenuItem;
     import android.view.View;
+    import android.view.WindowManager;
     import android.view.animation.DecelerateInterpolator;
     import android.widget.AbsListView;
     import android.widget.AdapterView;
@@ -241,9 +244,15 @@
            mDrawerImage = (ImageView) findViewById(R.id.drawerImageView);
            favImage = sharedPrefs.getString("favImage", favImage);
             if(favImage == null){
-                favImage = "http://mtgimage.com/actual/cardback.hq.jpg";
+                favImage = "https://upload.wikimedia.org/wikipedia/en/a/aa/Magic_the_gathering-card_back.jpg";
             }
-            Picasso.with(this).load(favImage).transform(new CropTransform()).into(mDrawerImage);
+            if(favImage.startsWith("http://gatherer")) {
+                Picasso.with(this).load(favImage).placeholder(R.color.black).into(mDrawerImage);
+                Picasso.with(this).load(favImage).transform(new CropTransform_gatherer()).into(mDrawerImage);
+            } else {
+                Picasso.with(this).load(favImage).into(mDrawerImage);
+                Picasso.with(this).load(favImage).transform(new CropTransform()).into(mDrawerImage);
+            }
             mDrawerImage.setClickable(true);
            //endregion
             //region searchOverlay
@@ -385,23 +394,23 @@
                     for (Card a : masterCardList) {
                         String name = a.getName();
                         if(name.charAt(0) == 'Æ'){
-                            name = "Ae".concat(name.substring(1, name.length()));
+                            name = "AE".concat(name.substring(1, name.length()));
                         }
                         name = Normalizer.normalize(name, Normalizer.Form.NFD)
                                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-                        if (name.substring(0,2).equals(PricesArray.get(i).getName().substring(0,2))) {
+                        if (name.toLowerCase().substring(0,2).equals(PricesArray.get(i).getName().toLowerCase().substring(0,2))) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if(a.getName().substring(0,2).equals(PricesArray.get(i).getName().substring(0, 2))) {
+                        } else if(a.getName().toLowerCase().substring(0,2).equals(PricesArray.get(i).getName().toLowerCase().substring(0, 2))) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if (!name.substring(0,2).equals(PricesArray.get(i).getName().substring(0, 2))){
+                        } else if (!name.toLowerCase().substring(0,2).equals(PricesArray.get(i).getName().toLowerCase().substring(0, 2))){
                             Log.d("", name + "does not match" + PricesArray.get(i).getName());
                             a.setMedPrice("$0.0");
                             a.setPriceHidden(true);
@@ -430,6 +439,7 @@
             getBus().register(this);
         }
 
+        @Override
         protected void onPause() {
             Log.d("", "MainActivity onPause");
             sharedPrefs.edit().putInt("spinnerPos", spinnerPosition).apply();
@@ -437,6 +447,13 @@
             getBus().unregister(this);
             super.onPause();
         }
+
+        @Override
+        protected void onStop(){
+            super.onStop();
+            Log.d("", "is this the crash?");
+        }
+
 
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -506,18 +523,19 @@
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
                 return;
             }
+            Log.d("searchResults " +SearchResults.size(), SearchResults.toString());
+            Toast.makeText(this, "Search returned " + SearchResults.size() + " results.", Toast.LENGTH_LONG).show();
 
 //            listView_f.adapter.clear();
 //            listView_f.adapter.addAll(SearchResults);
 
-            displayedCards.clear();
-            //listView_f.adapter.clear();
-            displayedCards.addAll(SearchResults);
-            listView_f.adapter.addAll(displayedCards);
-            listView_f.refresh();
+//            displayedCards.clear();
+            listView_f.adapter.clear();
+//            displayedCards.addAll(SearchResults);
+            listView_f.adapter.addAll(SearchResults);
+            listView_f.adapter.notifyDataSetChanged();
          }
 
         //region SPINNERS
@@ -681,10 +699,7 @@
                             break;
                     }
                 case R.id.detailspinner:
-                    //this will require some fanageling,
-                    //because the adapter is being populated dynamically from the sectionlist,
-                    //I am going to have to use the name to find the index of the list,
-                    //then show only that section
+                    //this will dynamically display cards that fit the selected detail.
                     int spinnerPosition = spinners_f.sortbyDetailSpinner.getSelectedItemPosition();
                     String selected = (String) spinners_f.sortbyDetailSpinner.getSelectedItem();
                     if(spinnerPosition != 0) { // didn't select further sorting options.
@@ -1129,6 +1144,14 @@
                             .replace(R.id.listviewContainer, listView_f)
                             .commit();
                     break;
+                case 1:
+                    /*
+                    manaCalc_f.newInstance();
+                    getFragmentManager().beginTransaction()
+                            .remove(spinners_f).remove(listView_f)
+                            .attach(manaCalc_f).commit();
+                    */
+                    break;
 //                case 1: //second item - decks
 //                    deckView_f.newInstance(deck);
 //                    getFragmentManager().beginTransaction()
@@ -1184,7 +1207,6 @@
             searchView.setOnQueryTextListener(q);
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
-
             return true;
         }
 
