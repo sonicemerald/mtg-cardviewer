@@ -8,19 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
-import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
-
-import java.util.List;
-
-import micahgemmell.com.mtg_deck_l.Adapter.CardListAdapter;
-import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.R;
 
 // The ListViewFragment is a fragment which holds a list. In the application, we used to load the full set of magic oldCards into it, as well as the deck.
@@ -48,8 +39,7 @@ public class SpinnerFragment
 
     //"Constructor" for Fragments;
     public static SpinnerFragment newInstance(){
-        SpinnerFragment f = new SpinnerFragment();
-        return f;
+        return new SpinnerFragment();
     }
 
     public void onAttach(Activity activity)
@@ -90,6 +80,7 @@ public class SpinnerFragment
         String[] cardSet_array = getResources().getStringArray(R.array.setNames);
         adapterforSetArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_spinner_dropdown_item, cardSet_array);
         this.sortSetSpinner.setAdapter(adapterforSetArray);
+
         listener = this;
         this.sortSetSpinner.post(new Runnable() {
             public void run() {
@@ -133,8 +124,6 @@ public class SpinnerFragment
 //        });
         return localView;
     }
-
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/mana_calculator_frag"
+    >
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deckTypeSpinner"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/mana_white"
+        android:layout_alignEnd="@+id/mana_white"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Count up the amount of times a symbol shows up to get an idea of how many sources you need"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:typeface="sans"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/mana_white"
+        android:foregroundTint="@color/white"
+        android:editable="true"
+        android:hint="# of white mana symbols"
+        android:textColor="@color/white"
+        android:layout_below="@+id/deckTypeSpinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="15dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/mana_blue"
+        android:layout_below="@+id/mana_white"
+        android:layout_alignLeft="@+id/mana_white"
+        android:layout_alignStart="@+id/mana_white"
+        android:foregroundTint="@color/blue"
+        android:hint="# of blue mana symbols"
+        android:textColor="@color/blue"
+        android:paddingLeft="15dp" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/mana_black"
+        android:layout_below="@+id/mana_blue"
+        android:layout_alignLeft="@+id/mana_blue"
+        android:layout_alignStart="@+id/mana_blue"
+        android:foregroundTint="@color/black"
+        android:hint="# of black mana symbols"
+        android:textColor="@color/black"
+        android:paddingLeft="15dp" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/mana_red"
+        android:foregroundTint="@color/red"
+        android:hint="# of red mana symbols"
+        android:layout_below="@+id/mana_black"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/red"
+        android:paddingLeft="15dp" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/mana_green"
+        android:foregroundTint="@color/green"
+        android:hint="# of green mana symbols"
+        android:layout_below="@+id/mana_red"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/green"
+        android:paddingLeft="15dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/landsindeck"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/deckTypeSpinner"
+        android:layout_toEndOf="@+id/deckTypeSpinner"
+        android:hint="# of lands"
+        android:text="17"
+        android:paddingRight="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/textView2"
+        android:text="# of lands"
+        android:layout_below="@+id/landsindeck"
+        android:layout_toRightOf="@+id/deckTypeSpinner"
+        android:layout_alignRight="@+id/landsindeck"
+        android:layout_alignEnd="@+id/landsindeck"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:paddingRight="15dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculate!"
+        android:id="@+id/button_calculate"
+        android:onClick="calculateMana"
+        android:layout_below="@+id/mana_green"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Total Symbols:"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/mana_green"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/totalSymbols"
+        android:text=" 0"
+        android:layout_below="@+id/mana_green"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_toRightOf="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/whiteLands"
+        android:layout_below="@+id/deckTypeSpinner"
+        android:layout_toRightOf="@+id/mana_white"
+        android:layout_toEndOf="@+id/mana_white"
+        android:layout_above="@+id/mana_blue"
+        android:gravity="center_vertical"
+        android:textColor="@color/white" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=" plains"
+        android:id="@+id/tv"
+        android:layout_below="@+id/deckTypeSpinner"
+        android:layout_toRightOf="@+id/whiteLands"
+        android:layout_toEndOf="@+id/whiteLands"
+        android:layout_above="@+id/mana_blue"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:paddingRight="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/blueLands"
+        android:layout_below="@+id/mana_white"
+        android:layout_toRightOf="@+id/mana_white"
+        android:layout_toEndOf="@+id/mana_white"
+        android:layout_above="@+id/mana_black"
+        android:gravity="center_vertical"
+        android:textColor="@color/blue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=" islands"
+        android:id="@+id/tv2"
+        android:layout_below="@+id/mana_white"
+        android:layout_toRightOf="@+id/blueLands"
+        android:layout_toEndOf="@+id/blueLands"
+        android:layout_above="@+id/mana_black"
+        android:gravity="center_vertical"
+        android:textColor="@color/blue"
+        android:paddingRight="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/blackLands"
+        android:layout_below="@+id/mana_blue"
+        android:layout_toRightOf="@+id/mana_blue"
+        android:layout_toEndOf="@+id/mana_blue"
+        android:layout_alignBottom="@+id/mana_black"
+        android:gravity="center_vertical"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=" swamps"
+        android:id="@+id/tv3"
+        android:layout_below="@+id/mana_blue"
+        android:layout_toRightOf="@+id/blackLands"
+        android:layout_toEndOf="@+id/blackLands"
+        android:layout_alignBottom="@+id/mana_black"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:paddingRight="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/redLands"
+        android:layout_alignTop="@+id/mana_red"
+        android:layout_toRightOf="@+id/mana_red"
+        android:layout_toEndOf="@+id/mana_red"
+        android:layout_above="@+id/greenLand"
+        android:gravity="center_vertical"
+        android:textColor="@color/red" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=" mountains"
+        android:id="@+id/tv4"
+        android:layout_alignTop="@+id/mana_red"
+        android:layout_toRightOf="@+id/redLands"
+        android:layout_toEndOf="@+id/redLands"
+        android:layout_above="@+id/greenLand"
+        android:gravity="center_vertical"
+        android:textColor="@color/red"
+        android:paddingRight="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/greenLand"
+        android:layout_toRightOf="@+id/mana_red"
+        android:layout_toEndOf="@+id/mana_red"
+        android:layout_alignBottom="@+id/mana_green"
+        android:layout_below="@+id/mana_red"
+        android:gravity="center_vertical"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=" forests"
+        android:layout_toRightOf="@+id/greenLand"
+        android:layout_toEndOf="@+id/greenLand"
+        android:layout_alignBottom="@+id/mana_green"
+        android:layout_below="@+id/mana_red"
+        android:gravity="center_vertical"
+        android:textColor="@color/green"
+        android:paddingRight="15dp" />
+
+
+
+</RelativeLayout>

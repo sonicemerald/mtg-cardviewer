@@ -8,6 +8,7 @@
     import micahgemmell.com.mtg_deck_l.Fragments.DiceRollerFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ErrorDialogFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment;
+    import micahgemmell.com.mtg_deck_l.Fragments.ManaCalculatorFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.SpinnerFragment;
     import micahgemmell.com.mtg_deck_l.event.ApiErrorEvent;
     import micahgemmell.com.mtg_deck_l.event.PleaseGetSetPriceEvent;
@@ -17,6 +18,7 @@
     import micahgemmell.com.mtg_deck_l.event.CardsParsedEvent;
     import micahgemmell.com.mtg_deck_l.helpers.CropTransform;
     import micahgemmell.com.mtg_deck_l.helpers.CropTransform_gatherer;
+    import micahgemmell.com.mtg_deck_l.helpers.InstantAutoComplete;
 
     import android.app.AlertDialog;
     import android.app.Fragment;
@@ -26,48 +28,42 @@
     import android.content.Context;
     import android.content.DialogInterface;
     import android.content.SharedPreferences;
-    import android.content.res.Configuration;
-    import android.os.Build;
     import android.os.Bundle;
     import android.support.v4.app.DialogFragment;
     import android.support.v4.view.GravityCompat;
     import android.support.v4.view.MenuItemCompat;
-    import android.support.v7.app.ActionBarActivity;
     import android.support.v7.app.ActionBarDrawerToggle;
     import android.support.v4.widget.DrawerLayout;
     import android.support.v7.app.AppCompatActivity;
     import android.support.v7.widget.Toolbar;
     import android.support.v7.widget.SearchView;
     import android.util.Log;
-    import android.view.Gravity;
     import android.view.Menu;
     import android.view.MenuItem;
     import android.view.View;
-    import android.view.WindowManager;
     import android.view.animation.DecelerateInterpolator;
     import android.widget.AbsListView;
     import android.widget.AdapterView;
     import android.widget.ArrayAdapter;
     import android.widget.ImageView;
-    import android.widget.LinearLayout;
     import android.widget.ListView;
     import android.widget.RelativeLayout;
     import android.widget.Spinner;
-    import android.widget.SpinnerAdapter;
     import android.widget.TextView;
     import android.widget.Toast;
 
     import java.text.Normalizer;
     import java.util.*;
-    import java.util.Set;
 
     import com.squareup.otto.Bus;
     import com.squareup.otto.Subscribe;
     import com.squareup.picasso.Picasso;
 
+    import org.w3c.dom.Text;
+
     import static micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment.newInstance;
 
-    public class MainActivity extends AppCompatActivity implements ListViewFragment.CardListViewInterface, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, SpinnerFragment.SpinnerInterface, CardImageFragment.OnCardImageClicked {
+    public class MainActivity extends AppCompatActivity implements ListViewFragment.CardListViewInterface, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, SpinnerFragment.SpinnerInterface, ManaCalculatorFragment.ManaCalcInterface, CardImageFragment.OnCardImageClicked {
         //region VARIABLES
         //general
         private Bus mBus;
@@ -85,6 +81,7 @@
         DeckFragment deckView_f;
         CardImageFragment cardImageView_f;
         CardViewFragment cardView_f;
+        ManaCalculatorFragment manaCalc_f;
 
         //ListView container_listView;
         String listview_tag = "listviewFragment";
@@ -114,6 +111,7 @@
         //Spinner addSetSpinner; // dropdown list of magic card sets.
         public int spinnerPosition;
         public Spinner sortbySpinner;
+//        public InstantAutoComplete mtgSetTextView; //future implementation of setSelection?
 
         //Navigation Drawer
         ListView NavigationDrawer_listView_Left; // used for the "navigation"
@@ -163,7 +161,10 @@
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+            if(savedInstanceState != null) {
+
+            }
+                setContentView(R.layout.activity_main);
             //region Toolbar
             mActionBarToolbar = getActionBarToolbar();
             //endregion
@@ -189,7 +190,7 @@
             listView_f = newInstance(displayedCards);
             spinners_f = SpinnerFragment.newInstance();
 
-                if (savedInstanceState == null){
+            if (savedInstanceState == null){
                 getFragmentManager().beginTransaction()
                         .add(R.id.spinnerContainer, spinners_f)
                         .add(R.id.listviewContainer, listView_f, listview_tag)
@@ -379,6 +380,10 @@
             SearchResults.clear();
             listView_f.adapter.addAll(displayedCards);
             listView_f.adapter.indexcardsAlphabetically();
+            if(mSet.contains("Duel Decks Anthology,"))
+                mSet = "Duel Decks: Anthology";
+            if(mSet.contains("vs."))
+                    mSet = "Duel Decks: ".concat(mSet);
             getBus().post(new PleaseGetSetPriceEvent(mSet));
             gettingPrices = true;
             Dialog.dismiss();
@@ -393,12 +398,40 @@
                     int i = 0;
                     for (Card a : masterCardList) {
                         String name = a.getName();
+
                         if(name.charAt(0) == 'Æ'){
-                            name = "AE".concat(name.substring(1, name.length()));
-                        }
+                            name = "AE".concat(name.substring(1, name.length())); }
                         name = Normalizer.normalize(name, Normalizer.Form.NFD)
                                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-                        if (name.toLowerCase().substring(0,2).equals(PricesArray.get(i).getName().toLowerCase().substring(0,2))) {
+
+                        //region doublefaced
+                        if(a.getNames().size()==2){ // double faced cards.
+                            if(a.getNames().contains(PricesArray.get(i).getName())) {
+                                //catches new planeswalkers, innistrad block
+                                a.setHighPrice(PricesArray.get(i).getHigh());
+                                a.setMedPrice(PricesArray.get(i).getMed());
+                                a.setLowPrice(PricesArray.get(i).getLow());
+                                a.setPriceHidden(false);
+                                i++;
+                                continue;
+                            } else if (PricesArray.get(i).getName().contains(name)){
+                                // for Dragon's Maze (Alive // Well)
+                                a.setHighPrice(PricesArray.get(i).getHigh());
+                                a.setMedPrice(PricesArray.get(i).getMed());
+                                a.setLowPrice(PricesArray.get(i).getLow());
+                                a.setPriceHidden(false);
+                                i++;
+                                continue;
+                            } else {
+                                Log.d("", name + "has two names, and does not match" + PricesArray.get(i).getName());
+                                a.setMedPrice("$0.0");
+                                a.setPriceHidden(false);
+                                continue;
+                            }
+
+                        }//endregion
+
+                        if (name.toLowerCase().equals(PricesArray.get(i).getName().toLowerCase())) {
                             a.setHighPrice(PricesArray.get(i).getHigh());
                             a.setMedPrice(PricesArray.get(i).getMed());
                             a.setLowPrice(PricesArray.get(i).getLow());
@@ -410,10 +443,17 @@
                             a.setLowPrice(PricesArray.get(i).getLow());
                             a.setPriceHidden(false);
                             i++;
-                        } else if (!name.toLowerCase().substring(0,2).equals(PricesArray.get(i).getName().toLowerCase().substring(0, 2))){
-                            Log.d("", name + "does not match" + PricesArray.get(i).getName());
-                            a.setMedPrice("$0.0");
-                            a.setPriceHidden(true);
+//                        } else if(a.getName().toLowerCase().substring(a.getName().length()-3, a.getName().length())
+//                                .equals(PricesArray.get(i).getName().toLowerCase().substring(PricesArray.get(i).getName().length()
+//                                        - 3, PricesArray.get(i).getName().length())))
+//                        {
+//                            a.setHighPrice(PricesArray.get(i).getHigh());
+//                            a.setMedPrice(PricesArray.get(i).getMed());
+//                            a.setLowPrice(PricesArray.get(i).getLow());
+//                            a.setPriceHidden(false);
+//                            i++;
+                        } else if (!name.toLowerCase().equals(PricesArray.get(i).getName().toLowerCase())){
+                            Log.d("A: ", name + " is trying to be matched with P: " + PricesArray.get(i).getName());
                         }
                     }
                     listView_f.adapter.notifyDataSetChanged();
@@ -454,6 +494,13 @@
             Log.d("", "is this the crash?");
         }
 
+        @Override
+        protected void onRestart() {
+            super.onRestart();  // Always call the superclass method first
+            Log.d("s", "maybe this is crash.");
+            // Activity being restarted from stopped state
+        }
+
 
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -470,8 +517,6 @@
             super.onRestoreInstanceState(savedInstanceState);
             // Restore UI state from the savedInstanceState.
             // This bundle has also been passed to onCreate.
-
-          //spinnerPosition = savedInstanceState.getInt("spinnerPos");
             spinnerPosition = sharedPrefs.getInt("spinnerPos", spinnerPosition);
             Log.d("restore", "restored");
         }
@@ -501,11 +546,14 @@
                 cQuery = cQuery.toUpperCase();
 
             for (Card card : displayedCards) {
-                if (card.getName().toLowerCase().contains(query) || card.getColors().contains(cQuery)) {
+                if (card.getName().toLowerCase().contains(query) || card.getColors().contains(cQuery)
+                || card.getTypes().contains(cQuery) || card.getSubtypes().contains(cQuery))
+                {
                     SearchResults.add(card);
                 }
             }
             if(SearchResults.size() == 0){
+                listView_f.adapter.clear();
                 // 1. Instantiate an AlertDialog.Builder with its constructor
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -526,16 +574,15 @@
                 return;
             }
             Log.d("searchResults " +SearchResults.size(), SearchResults.toString());
-            Toast.makeText(this, "Search returned " + SearchResults.size() + " results.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Displaying " + SearchResults.size() + " results.", Toast.LENGTH_LONG).show();
 
-//            listView_f.adapter.clear();
-//            listView_f.adapter.addAll(SearchResults);
 
-//            displayedCards.clear();
             listView_f.adapter.clear();
-//            displayedCards.addAll(SearchResults);
-            listView_f.adapter.addAll(SearchResults);
+            displayedCards.clear();
+            displayedCards.addAll(SearchResults);
+            //listView_f.adapter.addAll(displayedCards);
             listView_f.adapter.notifyDataSetChanged();
+//            listView_f.refresh();
          }
 
         //region SPINNERS
@@ -567,6 +614,7 @@
                     break;
                 //endregion
                 case R.id.sortBy_spinner:
+                    //region sorting
                     switch (position){
                         case 0:
                             //show list as normal.
@@ -617,7 +665,6 @@
                             listView_f.listView.setFastScrollEnabled(true);
                             addSortedCardstoList();
                             //populate detail spinner and show
-//                            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
                             spinners_f.adapterforSortDetailArray.clear();
                             spinners_f.adapterforSortDetailArray.add("All");
                             spinners_f.adapterforSortDetailArray.addAll(listView_f.adapter.sectionList);
@@ -697,7 +744,9 @@
                             break;
                         default:
                             break;
+
                     }
+                    //endregion
                 case R.id.detailspinner:
                     //this will dynamically display cards that fit the selected detail.
                     int spinnerPosition = spinners_f.sortbyDetailSpinner.getSelectedItemPosition();
@@ -730,6 +779,22 @@
                         listView_f.adapter.addAll(displayedCards);
                         listView_f.listView.setFastScrollEnabled(true);
                         listView_f.adapter.notifyDataSetChanged();
+                    }
+                    break;
+                case R.id.deckTypeSpinner:
+                    TextView t = (TextView) findViewById(R.id.landsindeck);
+                    switch(position){
+                        case 0: // Limited - 40 cards, default is 17 lands
+                            t.setText("17");
+                            break;
+                        case 1: // Standard - 60 cards, default is 24 lands
+                            t.setText("24");
+                            break;
+                        case 2: // EDH - 100 cards, default is around 40 lands
+                            t.setText("40");
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 default: break;
@@ -1023,7 +1088,7 @@
                 getFragmentManager().beginTransaction()
                         .detach(spinners_f).detach(listView_f)
                         .replace(R.id.listviewContainer, cardView_f)
-                        .addToBackStack("back to the mainlist")
+                        .addToBackStack("mainlist")
                         .commit();
             }
         }
@@ -1071,13 +1136,82 @@
                 for (Card a : displayedCards) {
                     if (a.getName().contains(card)) {
                         cardView_f = CardViewFragment.newInstance(a);
+                        getFragmentManager().popBackStack("mainlist", 0);
                         getFragmentManager().beginTransaction()
-                                .addToBackStack("tranform")
+                                .addToBackStack("transform")
                                 .replace(R.id.listviewContainer, cardView_f)
                                 .commit();
                     }
                 }
         }
+
+        //@Override
+        public void calculateMana(View view){
+            //need to get the mana of all 5 boxes.
+            int b,u,g,r,w,total,lands = 0;
+
+            TextView mb = (TextView)findViewById(R.id.mana_black);
+            if(mb.getText().length() == 0){
+                mb.setText("0");
+            }
+            b = Integer.parseInt(mb.getText().toString());
+
+            TextView mu = (TextView)findViewById(R.id.mana_blue);
+            if(mu.getText().length() == 0){
+                mu.setText("0");
+            }
+            u = Integer.parseInt(mu.getText().toString());
+
+            TextView mr = (TextView)findViewById(R.id.mana_red);
+            if(mr.getText().length() == 0){
+                mr.setText("0");
+            }
+            r = Integer.parseInt(mr.getText().toString());
+
+            TextView mg = (TextView)findViewById(R.id.mana_green);
+            if(mg.getText().length() == 0){
+                mg.setText("0");
+            }
+            g = Integer.parseInt(mg.getText().toString());
+
+            TextView mw = (TextView)findViewById(R.id.mana_white);
+            if(mw.getText().length() == 0){
+                mw.setText("0");
+            }
+            w = Integer.parseInt(mw.getText().toString());
+
+            total = (b+u+r+g+w);
+            Log.d("total symbols = ", Integer.toString(total));
+
+            TextView l = (TextView)findViewById(R.id.landsindeck);
+            lands = Integer.parseInt(l.getText().toString());
+            Log.d("lands in deck", Integer.toString(lands));
+
+            int greenLands = Math.round(g*lands/total);
+            int redLands = Math.round(r*lands/total);
+            int blueLands = Math.round(u*lands/total);
+            int blackLands = Math.round(b*lands/total);
+            int whiteLands = Math.round(w*lands/total);
+
+            TextView GL = (TextView)findViewById(R.id.greenLand);
+            GL.setText(Integer.toString(greenLands));
+
+            TextView RL = (TextView)findViewById(R.id.redLands);
+            RL.setText(Integer.toString(redLands));
+
+            TextView UL = (TextView)findViewById(R.id.blueLands);
+            UL.setText(Integer.toString(blueLands));
+
+            TextView BL = (TextView)findViewById(R.id.blackLands);
+            BL.setText(Integer.toString(blackLands));
+
+            TextView WL = (TextView)findViewById(R.id.whiteLands);
+            WL.setText(Integer.toString(whiteLands));
+
+            TextView TS = (TextView)findViewById(R.id.totalSymbols);
+            TS.setText(Integer.toString(total));
+        }
+
 
         //region Dice Roller
         @Override
@@ -1140,17 +1274,16 @@
             switch (position){
                 case 0: // first item - "main"
                     getFragmentManager().beginTransaction()
-                            .attach(spinners_f).attach(listView_f)
-                            .replace(R.id.listviewContainer, listView_f)
+                            .remove(manaCalc_f)
+                            .add(R.id.spinnerContainer, spinners_f)
+                            .add(R.id.listviewContainer, listView_f, listview_tag)
                             .commit();
                     break;
                 case 1:
-                    /*
-                    manaCalc_f.newInstance();
+                    manaCalc_f = ManaCalculatorFragment.newInstance();
                     getFragmentManager().beginTransaction()
                             .remove(spinners_f).remove(listView_f)
-                            .attach(manaCalc_f).commit();
-                    */
+                            .replace(R.id.content, manaCalc_f).commit();
                     break;
 //                case 1: //second item - decks
 //                    deckView_f.newInstance(deck);

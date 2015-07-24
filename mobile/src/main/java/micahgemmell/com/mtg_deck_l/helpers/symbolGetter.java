@@ -56,7 +56,7 @@ public class symbolGetter {
         if (source == null) {
             return new SpannedString("");
         }
-        source = source.replace("{", "<img src=\"").replace("}", "\"/>").replace("(","<i>(").replace(")",")<\"/i>").replace("\n", "<br />");
+        source = source.replace("{", "<img src=\"").replace("}", "\"/>").replace("(","<i>(").replace(")",")</i>").replace("\n", "<br /><br />");
         if (Build.VERSION.SDK_INT == 16) {
             source = source.replace("<", " <").replace(">", " >").replace("  ", " ");
         }

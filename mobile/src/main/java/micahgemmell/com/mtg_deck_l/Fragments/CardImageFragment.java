@@ -3,7 +3,6 @@ package micahgemmell.com.mtg_deck_l.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import micahgemmell.com.mtg_deck_l.Card.Card;
 import micahgemmell.com.mtg_deck_l.R;
 
 public class CardImageFragment extends Fragment

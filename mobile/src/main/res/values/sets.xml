@@ -138,6 +138,7 @@
             <item>Elspeth vs. Kiora</item>
             <item>Dragons of Tarkir</item>
             <item>Modern Masters 2015</item>
+            <item>Magic Origins</item>
         </string-array>
 
         <string-array name="sets">
@@ -278,5 +279,6 @@
             <item>DDO</item>
             <item>DTK</item>
             <item>MM2</item>
+            <item>ORI</item>
         </string-array>
     </resources>

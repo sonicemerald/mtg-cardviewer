@@ -1,7 +1,6 @@
 package micahgemmell.com.mtg_deck_l.event;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import retrofit.RetrofitError;
 
