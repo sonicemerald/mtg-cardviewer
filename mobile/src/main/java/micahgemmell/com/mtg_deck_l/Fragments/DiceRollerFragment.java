@@ -79,6 +79,7 @@ public class DiceRollerFragment extends Fragment {
     {
     }
 
+
     @Override
     public void onStart() {
         super.onStart();

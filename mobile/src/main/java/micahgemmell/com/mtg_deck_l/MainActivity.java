@@ -7,6 +7,7 @@
     import micahgemmell.com.mtg_deck_l.Fragments.DeckFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.DiceRollerFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ErrorDialogFragment;
+    import micahgemmell.com.mtg_deck_l.Fragments.LifeCounterFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.ManaCalculatorFragment;
     import micahgemmell.com.mtg_deck_l.Fragments.SpinnerFragment;
@@ -55,6 +56,7 @@
     import java.text.Normalizer;
     import java.util.*;
 
+    import com.google.android.gms.common.server.converter.StringToIntConverter;
     import com.squareup.otto.Bus;
     import com.squareup.otto.Subscribe;
     import com.squareup.picasso.Picasso;
@@ -63,7 +65,13 @@
 
     import static micahgemmell.com.mtg_deck_l.Fragments.ListViewFragment.newInstance;
 
-    public class MainActivity extends AppCompatActivity implements ListViewFragment.CardListViewInterface, DiceRollerFragment.OnDiceRoll, CardViewFragment.OnCardViewFragmentInteraction, SpinnerFragment.SpinnerInterface, ManaCalculatorFragment.ManaCalcInterface, CardImageFragment.OnCardImageClicked {
+    public class MainActivity extends AppCompatActivity implements ListViewFragment.CardListViewInterface,
+            DiceRollerFragment.OnDiceRoll,
+            CardViewFragment.OnCardViewFragmentInteraction,
+            SpinnerFragment.SpinnerInterface,
+            ManaCalculatorFragment.ManaCalcInterface,
+            CardImageFragment.OnCardImageClicked,
+            LifeCounterFragment.OnLifeCounterInteraction {
         //region VARIABLES
         //general
         private Bus mBus;
@@ -82,6 +90,7 @@
         CardImageFragment cardImageView_f;
         CardViewFragment cardView_f;
         ManaCalculatorFragment manaCalc_f;
+        LifeCounterFragment lifeCount_f;
 
         //ListView container_listView;
         String listview_tag = "listviewFragment";
@@ -1252,6 +1261,54 @@
             livesLeft = (TextView) findViewById(R.id.livesLeft);
             livesLeft.setText("Life Total: " + String.valueOf(lives));
         }
+
+        @Override
+        public void player1life(String changelife) {
+            TextView p1life = (TextView) findViewById(R.id.player1_life);
+            int P1life = Integer.valueOf(p1life.getText().toString());
+
+            switch(changelife) {
+                case "+1":
+                    P1life++;
+                    break;
+                case "-1":
+                    P1life--;
+                    break;
+                case "+5":
+                    P1life = P1life + 4;
+                    break;
+                case "-5":
+                    P1life = P1life - 4;
+                    break;
+                default:
+                    break;
+            }
+            p1life.setText(Integer.toString(P1life));
+        }
+
+        @Override
+        public void player2life(String changelife) {
+            TextView p2life = (TextView) findViewById(R.id.player2_life);
+            int P2life = Integer.valueOf(p2life.getText().toString());
+            switch(changelife) {
+                case "+1":
+                    P2life++;
+                    break;
+                case "-1":
+                    P2life--;
+                    break;
+                case "+5":
+                    P2life = P2life + 4;
+                    break;
+                case "-5":
+                    P2life = P2life - 4;
+                    break;
+                default:
+                    break;
+            }
+
+            p2life.setText(Integer.toString(P2life));
+        }
         //endregion
 
         //region Navigation Drawer
@@ -1284,6 +1341,11 @@
                     getFragmentManager().beginTransaction()
                             .remove(spinners_f).remove(listView_f)
                             .replace(R.id.content, manaCalc_f).commit();
+                    break;
+                case 2: //lifecounter
+                    lifeCount_f = LifeCounterFragment.newInstance();
+                    getFragmentManager().beginTransaction().remove(spinners_f).remove(listView_f)
+                            .replace(R.id.content, lifeCount_f).commit();
                     break;
 //                case 1: //second item - decks
 //                    deckView_f.newInstance(deck);
