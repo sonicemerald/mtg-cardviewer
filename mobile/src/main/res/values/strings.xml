@@ -30,7 +30,7 @@
         <item>Mana Calculator</item>
         <!--<item>Top 8 Decks</item>-->
         <!--<item>Your List</item>-->
-        <item>Life Counter (coming soon)</item>
+        <item>Life Counter</item>
     </string-array>
     <string-array name="nav_drawer_sorting_items">
         <item>All</item>

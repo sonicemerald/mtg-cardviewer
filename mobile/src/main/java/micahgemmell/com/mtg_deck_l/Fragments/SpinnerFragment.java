@@ -12,6 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import micahgemmell.com.mtg_deck_l.R;
 
 // The ListViewFragment is a fragment which holds a list. In the application, we used to load the full set of magic oldCards into it, as well as the deck.
@@ -78,6 +82,12 @@ public class SpinnerFragment
         View localView = paramLayoutInflater.inflate(R.layout.fragment_spinners, paramViewGroup, false);
         this.sortSetSpinner = (Spinner) localView.findViewById(R.id.filterSetSpinner);
         String[] cardSet_array = getResources().getStringArray(R.array.setNames);
+        //reversing the array for newest at the top.
+        List<String> list = Arrays.asList(cardSet_array);
+        //next, reverse the list using Collections.reverse method
+        Collections.reverse(list);
+        //next, convert the list back to String array
+        cardSet_array = (String[]) list.toArray();
         adapterforSetArray = new ArrayAdapter<String>(this.context, android.R.layout.simple_spinner_dropdown_item, cardSet_array);
         this.sortSetSpinner.setAdapter(adapterforSetArray);
 
@@ -85,7 +95,7 @@ public class SpinnerFragment
         this.sortSetSpinner.post(new Runnable() {
             public void run() {
                 sortSetSpinner.setOnItemSelectedListener(listener);
-                int initialposition = (adapterforSetArray.getCount()-1);
+//                int initialposition = (adapterforSetArray.getCount());
                 int spinnerposition = mListener.getSpinnerPosition();
                 //if(mListener.getSpinnerPosition() = initialposition) { spinnerposition = initialposition; }
                 sortSetSpinner.setSelection(spinnerposition);

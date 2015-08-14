@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
     <resources>
         <string-array name="setNames">
-            <item>Select a Set</item>
             <item>Alpha Edition</item>
             <item>Beta Edition</item>
             <item>Unlimited Edition</item>
@@ -139,10 +138,10 @@
             <item>Dragons of Tarkir</item>
             <item>Modern Masters 2015</item>
             <item>Magic Origins</item>
+            <item>Select a Set</item>
         </string-array>
 
         <string-array name="sets">
-            <item>SET</item>
             <item>LEA</item>
             <item>LEB</item>
             <item>2ED</item>
@@ -280,5 +279,6 @@
             <item>DTK</item>
             <item>MM2</item>
             <item>ORI</item>
+            <item>SET</item>
         </string-array>
     </resources>

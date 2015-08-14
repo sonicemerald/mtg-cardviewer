@@ -28,8 +28,11 @@
     import android.app.SearchManager;
     import android.content.Context;
     import android.content.DialogInterface;
+    import android.content.Intent;
     import android.content.SharedPreferences;
+    import android.net.Uri;
     import android.os.Bundle;
+    import android.support.design.widget.Snackbar;
     import android.support.v4.app.DialogFragment;
     import android.support.v4.view.GravityCompat;
     import android.support.v4.view.MenuItemCompat;
@@ -39,6 +42,7 @@
     import android.support.v7.widget.Toolbar;
     import android.support.v7.widget.SearchView;
     import android.util.Log;
+    import android.view.Gravity;
     import android.view.Menu;
     import android.view.MenuItem;
     import android.view.View;
@@ -195,6 +199,12 @@
 
             //region Set up main container for the displayedCards.
             cardSetCode_array = getResources().getStringArray(R.array.sets);
+            List<String> list = Arrays.asList(cardSetCode_array);
+            //next, reverse the list using Collections.reverse method
+            Collections.reverse(list);
+            //next, convert the list back to String array
+            cardSetCode_array = (String[]) list.toArray();
+
             adapter = new CardListAdapter(this, R.id.card_list_layout, displayedCards);
             listView_f = newInstance(displayedCards);
             spinners_f = SpinnerFragment.newInstance();
@@ -402,6 +412,7 @@
         @Subscribe
         public void onCardsPriced(SetPricedEvent event){
             List<CardPrice> PricesArray = event.getPricesArray();
+            int cardsnotpriced = 0;
             try {
                 if (PricesArray.size() > 1) {
                     int i = 0;
@@ -463,17 +474,56 @@
 //                            i++;
                         } else if (!name.toLowerCase().equals(PricesArray.get(i).getName().toLowerCase())){
                             Log.d("A: ", name + " is trying to be matched with P: " + PricesArray.get(i).getName());
+                            cardsnotpriced++;
                         }
                     }
                     listView_f.adapter.notifyDataSetChanged();
                     gettingPrices = false;
-                    Toast.makeText(this, "finished getting prices", Toast.LENGTH_SHORT).show();
+
+                    if(cardsnotpriced > 10){
+                        Snackbar.make(mDrawerLayout, "Well, this is embarrassing...", Snackbar.LENGTH_LONG).setAction("Report", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // ACTION_SENDTO filters for email apps (discard bluetooth and others)
+                                String uriText =
+                                        "mailto:sonicemerald@gmail.com" +
+                                                "?subject=" + Uri.encode("MTG Library Price Error") +
+                                                "&body=" + Uri.encode( "There's probably an error here. Look into the set " + mSet);
+
+                                Uri uri = Uri.parse(uriText);
+                                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                                intent.setData(uri);
+
+                                startActivity(Intent.createChooser(intent, "Email the developer..."));
+                            }
+                        }).show();
+                    } else {
+                    Snackbar.make(mDrawerLayout, "I found all the prices for you.", Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             } catch (RuntimeException e) {
                 Log.d("priceError","can't parse " + mSet);
                 if(mSet.equals("Innistrad") || mSet.equals("Dragon's Maze")){
                     Toast.makeText(this, "Sorry, this sets price has trouble, I'm working on it", Toast.LENGTH_SHORT).show();
                 }
+
+                Snackbar.make(mDrawerLayout, "Well, this is embarrassing...", Snackbar.LENGTH_LONG).setAction("Report", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // ACTION_SENDTO filters for email apps (discard bluetooth and others)
+                        String uriText =
+                                "mailto:sonicemerald@gmail.com" +
+                                        "?subject=" + Uri.encode("MTG Library Price Error") +
+                                        "&body=" + Uri.encode( "There's an error here. Look into the set " + mSet + "please.");
+
+                        Uri uri = Uri.parse(uriText);
+                        Intent intent = new Intent(Intent.ACTION_SENDTO);
+                        intent.setData(uri);
+
+                        startActivity(Intent.createChooser(intent, "Email the developer..."));
+                    }
+                }).show();
+
             }
         }
 
@@ -583,7 +633,7 @@
                 return;
             }
             Log.d("searchResults " +SearchResults.size(), SearchResults.toString());
-            Toast.makeText(this, "Displaying " + SearchResults.size() + " results.", Toast.LENGTH_LONG).show();
+            Snackbar.make(mDrawerLayout, "I found " + SearchResults.size() + " results.", Snackbar.LENGTH_LONG).show();
 
 
             listView_f.adapter.clear();
@@ -747,7 +797,7 @@
                             spinners_f.adapterforSortDetailArray.notifyDataSetChanged();
                             setUpSortDetailSpinner(false);
                             if(gettingPrices){
-                                Toast.makeText(this, "Please wait until the prices show up", Toast.LENGTH_LONG).show();
+                                Snackbar.make(mDrawerLayout, "I don't have all the prices yet...", Snackbar.LENGTH_SHORT).show();
                             } else {
                                 sortCardsByPrice(); }
                             break;
@@ -871,7 +921,7 @@
             });
             listView_f.adapter.notifyDataSetChanged();
             refreshFragment();
-            Toast.makeText(this, "set sorted by set number.", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "I sorted the set by the set number.", Snackbar.LENGTH_SHORT).show();
 
         }
         void sortCardsByCardType(){
@@ -890,7 +940,7 @@
                         return 0;
                 }
             });
-            Toast.makeText(this, "set sorted by card type.", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "I sorted the cards by type for you.", Snackbar.LENGTH_SHORT).show();
 
 
         }
@@ -928,7 +978,7 @@
                         return 0;
                 }
             });
-            Toast.makeText(this, "set sorted by color.", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "I sorted all the cards by color", Snackbar.LENGTH_SHORT).show();
 
         }
         void sortCardsByCMC(){
@@ -953,7 +1003,7 @@
                         return 0;
                 }
             });
-            Toast.makeText(this, "set sorted by cmc (low to high).", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "I sorted the cards by their cmc.", Snackbar.LENGTH_SHORT).show();
 
         }
         void sortCardsByRarity(){
@@ -972,7 +1022,7 @@
                         return 0;
                 }
             });
-            Toast.makeText(this, "set sorted by rarity", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "I sorted the cards by their rarity.", Snackbar.LENGTH_SHORT).show();
 
         }
         void sortCardsByPrice(){
@@ -995,7 +1045,7 @@
             });
             listView_f.adapter.notifyDataSetChanged();
             refreshFragment();
-            Toast.makeText(this, "set sorted by price.", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "I sorted the cards by their price.", Snackbar.LENGTH_SHORT).show();
         }
         //helper methods
         int convertTypeToInt(String type){
@@ -1033,6 +1083,8 @@
                     return 3;
                 case "Bla":
                     return 4;
+                case "gol":
+                    return 5;
                 default:
                     break;
             }
@@ -1134,7 +1186,14 @@
         @Override
         public void onImageLongClicked(String image){
             favImage = image;
-            Toast.makeText(this, "Favorite image replaced", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "I replaced your favorite image for you.", Snackbar.LENGTH_LONG).
+                    setAction("SHOW", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //open navigation drawer
+                                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                                }
+                            }).show();
             Picasso.with(this).load(favImage).into(mDrawerImage);
             Picasso.with(this).load(favImage).transform(new CropTransform_gatherer()).into(mDrawerImage);
         }
